@@ -1,0 +1,72 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #182030;
+  overflow: hidden;
+}
+#game, #hud {
+  position: fixed;
+  inset: 0;
+}
+#game canvas {
+  image-rendering: pixelated;
+}
+#hud {
+  pointer-events: none;
+  font: bold 14px/1.2 ui-monospace, 'SF Mono', Menlo, monospace;
+  color: #303048;
+}
+.gba-box {
+  position: absolute;
+  background: #f8f8f0;
+  border: 3px solid #303048;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 2px #a8b8d8, 3px 3px 0 rgba(0, 0, 0, 0.25);
+  padding: 6px 12px;
+}
+#banner {
+  top: 12px;
+  left: 12px;
+  transform: translateY(-140%);
+  transition: transform 0.25s steps(5);
+  letter-spacing: 0.5px;
+}
+#banner.show {
+  transform: translateY(0);
+}
+#minimap {
+  right: 12px;
+  top: 12px;
+  padding: 4px;
+  line-height: 0;
+}
+#minimap.hidden {
+  display: none;
+}
+#minimap img {
+  width: 220px;
+  image-rendering: pixelated;
+  display: block;
+}
+#dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #f83838;
+  border: 2px solid #f8f8f8;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: blink 0.8s steps(2) infinite;
+}
+.mm {
+  position: relative;
+}
+@keyframes blink {
+  50% { opacity: 0.35; }
+}
+#help {
+  left: 12px;
+  bottom: 12px;
+  font-size: 12px;
+  font-weight: normal;
+}

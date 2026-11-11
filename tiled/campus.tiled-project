@@ -1,0 +1,77 @@
+{
+ "automappingRulesFile": "",
+ "commands": [],
+ "extensionsPath": "extensions",
+ "folders": [
+  "."
+ ],
+ "propertyTypes": [
+  {
+   "id": 1,
+   "name": "zone",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ff4fc3f7",
+   "drawFill": true,
+   "members": []
+  },
+  {
+   "id": 2,
+   "name": "spawn",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ffffd54f",
+   "drawFill": true,
+   "members": []
+  },
+  {
+   "id": 3,
+   "name": "slot",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ffef9a9a",
+   "drawFill": true,
+   "members": [
+    {
+     "name": "type",
+     "type": "string",
+     "value": "small"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "name": "collision",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ffff0000",
+   "drawFill": true,
+   "members": []
+  },
+  {
+   "id": 5,
+   "name": "door",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ff7e57c2",
+   "drawFill": true,
+   "members": [
+    {
+     "name": "target",
+     "type": "string",
+     "value": ""
+    }
+   ]
+  }
+ ]
+}

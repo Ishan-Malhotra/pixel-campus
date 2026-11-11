@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Map Editor (God Mode)</title>
+  </head>
+  <body>
+    <div id="app">
+      <aside id="left">
+        <section>
+          <h2>Map</h2>
+          <div class="row"><label>Width (tiles)<input id="mapW" type="number" min="8" max="600" /></label>
+            <label>Height (tiles)<input id="mapH" type="number" min="8" max="600" /></label></div>
+          <div class="row"><label>Background<input id="mapBg" type="color" /></label>
+            <label>Snap<select id="snap"><option value="1">1 px</option><option value="8">8 px</option><option value="16" selected>16 px (tile)</option></select></label></div>
+          <div class="row"><label class="chk"><input id="showGrid" type="checkbox" checked /> Grid</label>
+            <label class="chk"><input id="showBounds" type="checkbox" checked /> Piece outlines</label></div>
+        </section>
+        <section>
+          <h2>Library <span class="hint">click to place</span></h2>
+          <div class="row">
+            <button id="btnUpload">Upload images…</button>
+            <button id="btnStarter" title="Add the images already in this project">Starter images</button>
+          </div>
+          <input id="fileInput" type="file" accept="image/*" multiple hidden />
+          <div id="library"></div>
+        </section>
+        <section>
+          <h2>Project</h2>
+          <div class="row">
+            <button id="btnExportPng" class="primary">Export map PNG</button>
+            <button id="btnExportJson">Export layout JSON</button>
+          </div>
+          <div class="row">
+            <button id="btnSave">Save project…</button>
+            <button id="btnLoad">Open project…</button>
+            <button id="btnNew" class="danger">New</button>
+          </div>
+          <input id="projectInput" type="file" accept=".json,application/json" hidden />
+          <p id="status" class="hint"></p>
+        </section>
+      </aside>
+
+      <main id="stage">
+        <canvas id="canvas"></canvas>
+        <div id="hud"><span id="zoomLabel"></span> · <span id="cursorLabel"></span></div>
+        <div id="help">
+          Drag pieces to move · Wheel to zoom · Space+drag / right-drag to pan · Arrows nudge (Shift = 1 tile)
+          · Del delete · Ctrl/⌘+D duplicate · [ ] layer down/up · Ctrl/⌘+Z undo · G grid
+        </div>
+      </main>
+
+      <aside id="right">
+        <section id="props">
+          <h2>Selected piece</h2>
+          <p id="noSel" class="hint">Click a piece on the canvas, or click a library image to place one.</p>
+          <div id="selPanel" hidden>
+            <label>Name<input id="pName" type="text" /></label>
+            <div class="row"><label>X<input id="pX" type="number" /></label><label>Y<input id="pY" type="number" /></label></div>
+            <div class="row"><label>Scale<select id="pScale"><option>0.5</option><option selected>1</option><option>2</option><option>3</option><option>4</option></select></label>
+              <label>Opacity<input id="pOpacity" type="range" min="0.1" max="1" step="0.05" /></label></div>
+            <div class="row"><label class="chk"><input id="pFlip" type="checkbox" /> Mirror ⇆</label>
+              <label class="chk"><input id="pFlipV" type="checkbox" /> Flip ⇅</label>
+              <label class="chk"><input id="pLock" type="checkbox" /> Lock</label></div>
+            <h3>Crop</h3>
+            <div class="row"><label>x<input id="cX" type="number" /></label><label>y<input id="cY" type="number" /></label>
+              <label>w<input id="cW" type="number" /></label><label>h<input id="cH" type="number" /></label></div>
+            <div class="row"><button id="btnCrop">✂ Drag to crop</button><button id="btnUncrop">Reset crop</button></div>
+            <h3>Remove background</h3>
+            <div class="row"><label class="chk"><input id="kOn" type="checkbox" /> On</label>
+              <button id="btnPick">🎯 Pick colour</button><span id="kSwatch" class="swatch"></span></div>
+            <label>Tolerance <span id="kTolVal"></span><input id="kTol" type="range" min="0" max="160" step="1" /></label>
+            <label class="chk"><input id="kEdge" type="checkbox" checked /> Only from the edges (keeps same colours inside the building)</label>
+            <div class="row"><button id="btnDup">Duplicate</button><button id="btnDel" class="danger">Delete</button></div>
+          </div>
+        </section>
+        <section>
+          <h2>Layers <span class="hint">top = front</span></h2>
+          <div class="row"><button id="btnUp">▲ Forward</button><button id="btnDown">▼ Back</button></div>
+          <ol id="layers"></ol>
+        </section>
+      </aside>
+    </div>
+    <script type="module" src="/src/editor/main.ts"></script>
+  </body>
+</html>

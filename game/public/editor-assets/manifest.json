@@ -1,0 +1,5 @@
+[
+  { "name": "Main Building + Rotunda", "file": "main_building_rotunda.png" },
+  { "name": "FD2 scene", "file": "fd2_scene.png" },
+  { "name": "Current game map", "file": "current_map.png" }
+]

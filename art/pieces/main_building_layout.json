@@ -1,0 +1,21 @@
+{
+ "scale_in_figma_screenshot": 0.6683,
+ "note": "positions in native piece pixels; FDs drawn over the body",
+ "pieces": [
+  {
+   "file": "clock tower body.png",
+   "x": 0,
+   "y": 0
+  },
+  {
+   "file": "fd.png",
+   "x": -665,
+   "y": 115
+  },
+  {
+   "file": "fd.png",
+   "x": 1119,
+   "y": 115
+  }
+ ]
+}

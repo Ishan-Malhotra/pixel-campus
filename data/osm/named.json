@@ -1,0 +1,572 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-11-09T16:51:48Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 2895059599,
+  "lat": 28.3640405,
+  "lon": 75.5869438,
+  "tags": {
+    "building": "yes",
+    "name": "BITS Clock Tower"
+  }
+},
+{
+  "type": "node",
+  "id": 3176488443,
+  "lat": 28.3658851,
+  "lon": 75.5868315,
+  "tags": {
+    "building": "residential",
+    "building:levels": "2",
+    "name": "Srinivas Ramanujan Bhawan"
+  }
+},
+{
+  "type": "node",
+  "id": 3176488445,
+  "lat": 28.3639767,
+  "lon": 75.5880798,
+  "tags": {
+    "building": "residential",
+    "building:levels": "2",
+    "name": "FD 2"
+  }
+},
+{
+  "type": "node",
+  "id": 3381440254,
+  "lat": 28.3575630,
+  "lon": 75.5880836,
+  "tags": {
+    "amenity": "place_of_worship",
+    "check_date": "2025-05-11",
+    "name": "Saraswati Temple",
+    "religion": "hindu"
+  }
+},
+{
+  "type": "node",
+  "id": 3393710500,
+  "lat": 28.3565449,
+  "lon": 75.5856748,
+  "tags": {
+    "addr:city": "Jhunjhunu",
+    "addr:postcode": "333031",
+    "addr:street": "Meera Marg",
+    "building": "residential",
+    "building:levels": "2",
+    "name": "Meera Bhawan"
+  }
+},
+{
+  "type": "node",
+  "id": 4191138916,
+  "lat": 28.3583049,
+  "lon": 75.5879720,
+  "tags": {
+    "artwork_type": "statue",
+    "name": "G.D. Birla Statu",
+    "tourism": "artwork"
+  }
+},
+{
+  "type": "node",
+  "id": 4511598613,
+  "lat": 28.3636528,
+  "lon": 75.5859022,
+  "tags": {
+    "building": "yes",
+    "building:levels": "2",
+    "name": "FD3"
+  }
+},
+{
+  "type": "node",
+  "id": 8962661795,
+  "lat": 28.3625455,
+  "lon": 75.5849187,
+  "tags": {
+    "historic": "aircraft",
+    "name": "Birla Aircraft"
+  }
+},
+{
+  "type": "node",
+  "id": 13508063133,
+  "lat": 28.3652609,
+  "lon": 75.5890831,
+  "tags": {
+    "club": "yes",
+    "name": "BITS Pilani Toastmasters Club",
+    "website": "https://www.toastmasters.org/Find-a-Club/07294604-bits-pilani-toastmasters-club"
+  }
+},
+{
+  "type": "node",
+  "id": 13903595394,
+  "lat": 28.3642643,
+  "lon": 75.5869245,
+  "tags": {
+    "amenity": "theatre",
+    "name": "Auditorium"
+  }
+},
+{
+  "type": "way",
+  "id": 31121508,
+  "center": {
+    "lat": 28.3590307,
+    "lon": 75.5884561
+  },
+  "tags": {
+    "amenity": "university",
+    "check_date": "2025-05-11",
+    "name": "Birla Institute of Technology and Science - BITS",
+    "wikidata": "Q2648311",
+    "wikipedia": "en:Birla Institute of Technology and Science"
+  }
+},
+{
+  "type": "way",
+  "id": 285870070,
+  "center": {
+    "lat": 28.3593877,
+    "lon": 75.5904546
+  },
+  "tags": {
+    "leisure": "pitch",
+    "lit": "yes",
+    "name": "BITS Gymkhana Grounds",
+    "sport": "multi",
+    "surface": "ground"
+  }
+},
+{
+  "type": "way",
+  "id": 336073002,
+  "center": {
+    "lat": 28.3574034,
+    "lon": 75.5880886
+  },
+  "tags": {
+    "amenity": "place_of_worship",
+    "building": "yes",
+    "check_date": "2025-05-11",
+    "name": "Saraswati Temple",
+    "religion": "hindu"
+  }
+},
+{
+  "type": "way",
+  "id": 360838099,
+  "center": {
+    "lat": 28.3633673,
+    "lon": 75.5841368
+  },
+  "tags": {
+    "historic": "memorial",
+    "name": "G.D Birla Memorial"
+  }
+},
+{
+  "type": "way",
+  "id": 360838100,
+  "center": {
+    "lat": 28.3624104,
+    "lon": 75.5843733
+  },
+  "tags": {
+    "historic": "memorial",
+    "name": "Aditya Vikram Birla Memorial"
+  }
+},
+{
+  "type": "way",
+  "id": 360838103,
+  "center": {
+    "lat": 28.3630304,
+    "lon": 75.5847783
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Birla Museum",
+    "tourism": "museum"
+  }
+},
+{
+  "type": "way",
+  "id": 360838106,
+  "center": {
+    "lat": 28.3570511,
+    "lon": 75.5872877
+  },
+  "tags": {
+    "addr:postcode": "333031",
+    "addr:street": "Rana Pratap  Marg",
+    "amenity": "school",
+    "building": "yes",
+    "education": "school",
+    "name": "Birla Shishu Vihar",
+    "phone": "01596242208",
+    "website": "https://www.bsvpilani.edu.in/"
+  }
+},
+{
+  "type": "way",
+  "id": 360838109,
+  "center": {
+    "lat": 28.3553684,
+    "lon": 75.5919148
+  },
+  "tags": {
+    "building": "yes",
+    "name": "BITS Pilani - Community Welfare Center"
+  }
+},
+{
+  "type": "way",
+  "id": 360838110,
+  "center": {
+    "lat": 28.3596442,
+    "lon": 75.5865333
+  },
+  "tags": {
+    "addr:street": "Ram Marg",
+    "amenity": "school",
+    "building": "yes",
+    "education": "school",
+    "name": "Birla Balika Vidyapeeth",
+    "phone": "01596242548",
+    "website": "https://www.bbvpilani.edu.in/"
+  }
+},
+{
+  "type": "way",
+  "id": 360846143,
+  "center": {
+    "lat": 28.3591275,
+    "lon": 75.5887486
+  },
+  "tags": {
+    "building": "yes",
+    "name": "NSS BITS Pilani",
+    "website": "https://nss-bits-pilani.org/"
+  }
+},
+{
+  "type": "way",
+  "id": 360846147,
+  "center": {
+    "lat": 28.3612573,
+    "lon": 75.5897478
+  },
+  "tags": {
+    "building": "dormitory",
+    "building:levels": "2",
+    "check_date": "2025-02-28",
+    "name": "Bhagirath Bhawan"
+  }
+},
+{
+  "type": "way",
+  "id": 360846151,
+  "center": {
+    "lat": 28.3613671,
+    "lon": 75.5905353
+  },
+  "tags": {
+    "building": "dormitory",
+    "building:levels": "2",
+    "check_date": "2025-02-28",
+    "name": "Ashok bhawan"
+  }
+},
+{
+  "type": "way",
+  "id": 360851286,
+  "center": {
+    "lat": 28.3628923,
+    "lon": 75.5901794
+  },
+  "tags": {
+    "building": "dormitory",
+    "building:levels": "2",
+    "name": "Rana Pratap Bhawan"
+  }
+},
+{
+  "type": "way",
+  "id": 360851306,
+  "center": {
+    "lat": 28.3636834,
+    "lon": 75.5894581
+  },
+  "tags": {
+    "alt_name": "Old Workshop",
+    "building": "yes",
+    "name": "BITS Workshop"
+  }
+},
+{
+  "type": "way",
+  "id": 360851311,
+  "center": {
+    "lat": 28.3654985,
+    "lon": 75.5892226
+  },
+  "tags": {
+    "addr:city": "Pilani",
+    "addr:district": "Jhunjhunu",
+    "addr:postcode": "333031",
+    "amenity": "library",
+    "building": "yes",
+    "building:levels": "2",
+    "contact:phone": "01596255409",
+    "contact:website": "https://library.bits-pilani.ac.in/",
+    "name": "BITS Library",
+    "operator": "Birla Institute of Technology and Science, Pilani",
+    "operator:type": "university"
+  }
+},
+{
+  "type": "way",
+  "id": 416948715,
+  "center": {
+    "lat": 28.3614120,
+    "lon": 75.5926049
+  },
+  "tags": {
+    "access": "private",
+    "leisure": "swimming_pool",
+    "name": "BITS Swimming Pool"
+  }
+},
+{
+  "type": "way",
+  "id": 1352288842,
+  "center": {
+    "lat": 28.3680848,
+    "lon": 75.5901149
+  },
+  "tags": {
+    "amenity": "conference_centre",
+    "building": "yes",
+    "name": "Auditorium"
+  }
+},
+{
+  "type": "way",
+  "id": 1383436838,
+  "center": {
+    "lat": 28.3650449,
+    "lon": 75.5877583
+  },
+  "tags": {
+    "alt_name": "Central Workshop",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "New BITS Workshop"
+  }
+},
+{
+  "type": "way",
+  "id": 1470182372,
+  "center": {
+    "lat": 28.3593794,
+    "lon": 75.5910405
+  },
+  "tags": {
+    "leisure": "pitch",
+    "name": "BITS Volleyball Court",
+    "sport": "volleyball"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372452,
+  "center": {
+    "lat": 28.3607800,
+    "lon": 75.5862980
+  },
+  "tags": {
+    "building": "dormitory",
+    "building:levels": "2",
+    "name": "Budh Bhawan",
+    "nohousenumber": "yes",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372453,
+  "center": {
+    "lat": 28.3611115,
+    "lon": 75.5887092
+  },
+  "tags": {
+    "addr:city": "Jhunjhunu",
+    "addr:postcode": "333031",
+    "addr:street": "Gandhi Marg",
+    "building": "dormitory",
+    "building:levels": "2",
+    "name": "Gandhi Bhawan",
+    "nohousenumber": "yes",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372454,
+  "center": {
+    "lat": 28.3622947,
+    "lon": 75.5860427
+  },
+  "tags": {
+    "building": "dormitory",
+    "building:levels": "2",
+    "name": "Ram Bhawan",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372455,
+  "center": {
+    "lat": 28.3598931,
+    "lon": 75.5889260
+  },
+  "tags": {
+    "addr:city": "Jhunjhunu",
+    "addr:postcode": "333031",
+    "addr:street": "Krishna Marg",
+    "building": "dormitory",
+    "building:levels": "2",
+    "name": "Shankar Bhawan",
+    "nohousenumber": "yes",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372457,
+  "center": {
+    "lat": 28.3583471,
+    "lon": 75.5891860
+  },
+  "tags": {
+    "building": "dormitory",
+    "building:levels": "2",
+    "name": "Vyas Bhawan",
+    "nohousenumber": "yes",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372458,
+  "center": {
+    "lat": 28.3626467,
+    "lon": 75.5884164
+  },
+  "tags": {
+    "building": "dormitory",
+    "building:levels": "2",
+    "name": "Krishna Bhawan",
+    "nohousenumber": "yes",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372459,
+  "center": {
+    "lat": 28.3575185,
+    "lon": 75.5894470
+  },
+  "tags": {
+    "building": "yes",
+    "name": "Birla Education Trust",
+    "phone": "01596242254",
+    "type": "multipolygon",
+    "website": "https://bet.org.in/"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372463,
+  "center": {
+    "lat": 28.3641492,
+    "lon": 75.5869618
+  },
+  "tags": {
+    "alt_name": "FD 2",
+    "building": "university",
+    "building:levels": "2",
+    "name": "FD-2 & FD-3",
+    "nohousenumber": "yes",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372513,
+  "center": {
+    "lat": 28.3644415,
+    "lon": 75.5894383
+  },
+  "tags": {
+    "building": "university",
+    "name": "FD 1",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 5372514,
+  "center": {
+    "lat": 28.3628061,
+    "lon": 75.5895273
+  },
+  "tags": {
+    "building": "dormitory",
+    "building:levels": "2",
+    "name": "Vishwakarma Bhawan",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 19101882,
+  "center": {
+    "lat": 28.3616691,
+    "lon": 75.5914007
+  },
+  "tags": {
+    "building": "dormitory",
+    "name": "C.V. Raman Bhawan",
+    "type": "multipolygon"
+  }
+},
+{
+  "type": "relation",
+  "id": 20803053,
+  "center": {
+    "lat": 28.3574073,
+    "lon": 75.5855386
+  },
+  "tags": {
+    "building": "dormitory;yes",
+    "name": "Meera Bhawan",
+    "type": "multipolygon"
+  }
+}
+
+  ]
+}

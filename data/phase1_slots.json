@@ -1,0 +1,388 @@
+[
+ {
+  "name": "Budh Bhawan",
+  "osm": "r5372452",
+  "type": "bhawan",
+  "x": 22,
+  "y": 97,
+  "w": 12,
+  "h": 20
+ },
+ {
+  "name": "Gandhi Bhawan",
+  "osm": "r5372453",
+  "type": "bhawan",
+  "x": 69,
+  "y": 97,
+  "w": 13,
+  "h": 19
+ },
+ {
+  "name": "Ram Bhawan",
+  "osm": "r5372454",
+  "type": "bhawan",
+  "x": 21,
+  "y": 63,
+  "w": 13,
+  "h": 20
+ },
+ {
+  "name": "Shankar Bhawan",
+  "osm": "r5372455",
+  "type": "bhawan",
+  "x": 70,
+  "y": 125,
+  "w": 12,
+  "h": 19
+ },
+ {
+  "name": "Krishna Bhawan",
+  "osm": "r5372458",
+  "type": "bhawan",
+  "x": 69,
+  "y": 63,
+  "w": 13,
+  "h": 19
+ },
+ {
+  "name": "Student Activity Center (SAC)",
+  "osm": "r5372461",
+  "type": "small",
+  "x": 2,
+  "y": 91,
+  "w": 15,
+  "h": 27
+ },
+ {
+  "name": "FD 1",
+  "osm": "r5372513",
+  "type": "small",
+  "x": 90,
+  "y": 25,
+  "w": 23,
+  "h": 21
+ },
+ {
+  "name": "Vishwakarma Bhawan",
+  "osm": "r5372514",
+  "type": "bhawan",
+  "x": 91,
+  "y": 63,
+  "w": 13,
+  "h": 18
+ },
+ {
+  "name": "building",
+  "osm": "w360838281",
+  "type": "small",
+  "x": 10,
+  "y": 123,
+  "w": 3,
+  "h": 3
+ },
+ {
+  "name": "building",
+  "osm": "w360846141",
+  "type": "small",
+  "x": 32,
+  "y": 86,
+  "w": 4,
+  "h": 8
+ },
+ {
+  "name": "Malviya-A",
+  "osm": "w360846144",
+  "type": "small",
+  "x": 4,
+  "y": 70,
+  "w": 12,
+  "h": 12
+ },
+ {
+  "name": "Ram-Budh mess",
+  "osm": "w360846145",
+  "type": "mess",
+  "x": 22,
+  "y": 86,
+  "w": 8,
+  "h": 8
+ },
+ {
+  "name": "Krishna Gandhi Warden's Residence",
+  "osm": "w360846146",
+  "type": "small",
+  "x": 68,
+  "y": 86,
+  "w": 4,
+  "h": 6
+ },
+ {
+  "name": "Bhagirath Bhawan",
+  "osm": "w360846147",
+  "type": "bhawan",
+  "x": 91,
+  "y": 97,
+  "w": 11,
+  "h": 19
+ },
+ {
+  "name": "KG mess",
+  "osm": "w360846149",
+  "type": "mess",
+  "x": 74,
+  "y": 86,
+  "w": 8,
+  "h": 7
+ },
+ {
+  "name": "building",
+  "osm": "w360846153",
+  "type": "small",
+  "x": 23,
+  "y": 16,
+  "w": 2,
+  "h": 1
+ },
+ {
+  "name": "building",
+  "osm": "w360846154",
+  "type": "small",
+  "x": 23,
+  "y": 74,
+  "w": 9,
+  "h": 7
+ },
+ {
+  "name": "building",
+  "osm": "w360846155",
+  "type": "small",
+  "x": 34,
+  "y": 16,
+  "w": 1,
+  "h": 3
+ },
+ {
+  "name": "building",
+  "osm": "w360846156",
+  "type": "small",
+  "x": 24,
+  "y": 65,
+  "w": 8,
+  "h": 7
+ },
+ {
+  "name": "building",
+  "osm": "w360846157",
+  "type": "small",
+  "x": 37,
+  "y": 17,
+  "w": 1,
+  "h": 3
+ },
+ {
+  "name": "building",
+  "osm": "w360846159",
+  "type": "small",
+  "x": 4,
+  "y": 123,
+  "w": 2,
+  "h": 3
+ },
+ {
+  "name": "building",
+  "osm": "w360846164",
+  "type": "small",
+  "x": 7,
+  "y": 123,
+  "w": 2,
+  "h": 2
+ },
+ {
+  "name": "building",
+  "osm": "w360846165",
+  "type": "small",
+  "x": 27,
+  "y": 21,
+  "w": 3,
+  "h": 4
+ },
+ {
+  "name": "building",
+  "osm": "w360846167",
+  "type": "small",
+  "x": 22,
+  "y": 22,
+  "w": 3,
+  "h": 3
+ },
+ {
+  "name": "building",
+  "osm": "w360846170",
+  "type": "small",
+  "x": 11,
+  "y": 86,
+  "w": 2,
+  "h": 3
+ },
+ {
+  "name": "building",
+  "osm": "w360846171",
+  "type": "small",
+  "x": 27,
+  "y": 19,
+  "w": 1,
+  "h": 1
+ },
+ {
+  "name": "building",
+  "osm": "w360846175",
+  "type": "small",
+  "x": 13,
+  "y": 86,
+  "w": 4,
+  "h": 3
+ },
+ {
+  "name": "building",
+  "osm": "w360846179",
+  "type": "small",
+  "x": 9,
+  "y": 86,
+  "w": 2,
+  "h": 3
+ },
+ {
+  "name": "building",
+  "osm": "w360851304",
+  "type": "small",
+  "x": 89,
+  "y": 86,
+  "w": 4,
+  "h": 6
+ },
+ {
+  "name": "BITS Workshop",
+  "osm": "w360851306",
+  "type": "small",
+  "x": 90,
+  "y": 48,
+  "w": 17,
+  "h": 9
+ },
+ {
+  "name": "VKB mess",
+  "osm": "w360851307",
+  "type": "mess",
+  "x": 95,
+  "y": 86,
+  "w": 8,
+  "h": 7
+ },
+ {
+  "name": "building",
+  "osm": "w360851331",
+  "type": "small",
+  "x": 88,
+  "y": 124,
+  "w": 6,
+  "h": 5
+ },
+ {
+  "name": "building",
+  "osm": "w360851338",
+  "type": "small",
+  "x": 16,
+  "y": 60,
+  "w": 1,
+  "h": 1
+ },
+ {
+  "name": "building",
+  "osm": "w360851341",
+  "type": "small",
+  "x": 21,
+  "y": 52,
+  "w": 1,
+  "h": 5
+ },
+ {
+  "name": "Food Ministry",
+  "osm": "w1383229108",
+  "type": "small",
+  "x": 76,
+  "y": 25,
+  "w": 2,
+  "h": 2
+ },
+ {
+  "name": "New BITS Workshop",
+  "osm": "w1383436838",
+  "type": "small",
+  "x": 65,
+  "y": 13,
+  "w": 12,
+  "h": 9
+ },
+ {
+  "name": "Sky Lab",
+  "osm": "w1383438142",
+  "type": "small",
+  "x": 15,
+  "y": 41,
+  "w": 1,
+  "h": 2
+ },
+ {
+  "name": "Looters",
+  "osm": "w1384764584",
+  "type": "small",
+  "x": 8,
+  "y": 90,
+  "w": 1,
+  "h": 2
+ },
+ {
+  "name": "New Academic Block",
+  "osm": "w1384781374",
+  "type": "nab",
+  "x": 43,
+  "y": 56,
+  "w": 7,
+  "h": 49
+ },
+ {
+  "name": "NAB",
+  "osm": "w1384781375",
+  "type": "nab",
+  "x": 53,
+  "y": 56,
+  "w": 8,
+  "h": 49
+ },
+ {
+  "name": "Department of Pharmacy",
+  "osm": "w1471885951",
+  "type": "small",
+  "x": 27,
+  "y": 36,
+  "w": 9,
+  "h": 2
+ },
+ {
+  "name": "Main Building",
+  "type": "stamp:main_building",
+  "x": 21,
+  "y": 29,
+  "w": 63,
+  "h": 20
+ },
+ {
+  "name": "Rotunda",
+  "type": "stamp:rotunda",
+  "x": 43,
+  "y": 44,
+  "w": 17,
+  "h": 12,
+  "on_top": true
+ }
+]

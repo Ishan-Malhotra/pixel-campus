@@ -1,0 +1,55 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "name": "buildings",
+ "tilewidth": 1008,
+ "tileheight": 320,
+ "tilecount": 2,
+ "columns": 0,
+ "margin": 0,
+ "spacing": 0,
+ "grid": {
+  "orientation": "orthogonal",
+  "width": 1,
+  "height": 1
+ },
+ "tiles": [
+  {
+   "id": 0,
+   "image": "../stamps/main_building.png",
+   "imagewidth": 1008,
+   "imageheight": 320,
+   "properties": [
+    {
+     "name": "stamp",
+     "type": "string",
+     "value": "main_building"
+    },
+    {
+     "name": "collision",
+     "type": "file",
+     "value": "../stamps/main_building_collision.png"
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "image": "../stamps/rotunda.png",
+   "imagewidth": 272,
+   "imageheight": 192,
+   "properties": [
+    {
+     "name": "stamp",
+     "type": "string",
+     "value": "rotunda"
+    },
+    {
+     "name": "collision",
+     "type": "file",
+     "value": "../stamps/rotunda_collision.png"
+    }
+   ]
+  }
+ ]
+}

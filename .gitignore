@@ -1,0 +1,5 @@
+node_modules/
+game/dist/
+data/debug/
+.env
+.DS_Store

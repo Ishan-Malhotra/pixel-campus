@@ -1,0 +1,35 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #1b2030; color: #e8eaf2; font: 13px/1.35 ui-sans-serif, system-ui, sans-serif; overflow: hidden; }
+#app { display: grid; grid-template-columns: 270px 1fr 280px; height: 100vh; }
+aside { background: #232a3d; overflow-y: auto; padding: 10px; border-right: 1px solid #323a52; }
+#right { border-right: 0; border-left: 1px solid #323a52; }
+section { margin-bottom: 14px; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin: 0 0 8px; color: #b9c2dd; }
+h3 { font-size: 12px; margin: 10px 0 4px; color: #b9c2dd; }
+.hint { font-size: 11px; color: #8a93ad; text-transform: none; letter-spacing: 0; font-weight: normal; }
+.row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+label { display: flex; flex-direction: column; gap: 2px; font-size: 11px; color: #aab3cc; flex: 1; min-width: 0; }
+label.chk { flex-direction: row; align-items: center; gap: 4px; flex: 0 0 auto; }
+input[type=number], input[type=text], select { background: #161b28; color: #e8eaf2; border: 1px solid #3a4360; border-radius: 4px; padding: 3px 5px; width: 100%; }
+input[type=color] { width: 100%; height: 24px; border: 0; background: none; }
+button { background: #34405f; color: #e8eaf2; border: 1px solid #4a5678; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 12px; }
+button:hover { background: #3f4c70; }
+button.primary { background: #3c7a4c; border-color: #4f9a62; }
+button.danger { background: #6a2f37; border-color: #8a3f4a; }
+button.active { outline: 2px solid #ffd35a; }
+#library { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.asset { background: #161b28; border: 1px solid #3a4360; border-radius: 4px; padding: 4px; cursor: pointer; position: relative; }
+.asset:hover { border-color: #ffd35a; }
+.asset img { width: 100%; height: 70px; object-fit: contain; image-rendering: pixelated; display: block; }
+.asset .nm { font-size: 10px; color: #aab3cc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.asset .x { position: absolute; top: 2px; right: 2px; padding: 0 4px; font-size: 10px; line-height: 14px; }
+#stage { position: relative; overflow: hidden; background: #11151f; }
+#canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; cursor: default; }
+#hud { position: absolute; left: 8px; top: 8px; background: #000a; padding: 3px 8px; border-radius: 4px; font-size: 11px; pointer-events: none; }
+#help { position: absolute; left: 8px; bottom: 8px; right: 8px; background: #000a; padding: 4px 8px; border-radius: 4px; font-size: 11px; color: #c7cde0; pointer-events: none; }
+#layers { list-style: none; padding: 0; margin: 0; }
+#layers li { padding: 4px 6px; border: 1px solid #323a52; border-radius: 4px; margin-bottom: 3px; cursor: pointer; display: flex; gap: 6px; align-items: center; }
+#layers li.sel { border-color: #ffd35a; background: #2d3550; }
+#layers li .eye { cursor: pointer; opacity: .8; }
+#layers li .nm { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.swatch { display: inline-block; width: 22px; height: 22px; border-radius: 4px; border: 1px solid #4a5678; }

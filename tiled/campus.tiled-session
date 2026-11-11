@@ -1,0 +1,37 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "maps/phase1.tmj": {
+            "scale": 0.41,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 821.9512195121952,
+                "y": 871.951219512195
+            }
+        },
+        "tilesets/buildings.tsj": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.3316
+        },
+        "tilesets/props.tsj": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "tilesets/terrain.tsj": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        }
+    },
+    "loadedWorlds": [
+        "/Users/ishanmalhotra/Documents/campus/tiled/campus.world"
+    ],
+    "openFiles": [
+    ],
+    "project": "campus.tiled-project",
+    "recentFiles": [
+        "maps/phase1.tmj"
+    ]
+}

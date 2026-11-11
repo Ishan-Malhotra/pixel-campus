@@ -1,0 +1,199 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "name": "props",
+ "tilewidth": 76,
+ "tileheight": 82,
+ "tilecount": 10,
+ "columns": 0,
+ "margin": 0,
+ "spacing": 0,
+ "grid": {
+  "orientation": "orthogonal",
+  "width": 1,
+  "height": 1
+ },
+ "tiles": [
+  {
+   "id": 0,
+   "image": "../props/flag0.png",
+   "imagewidth": 20,
+   "imageheight": 46,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flag0"
+    },
+    {
+     "name": "anim",
+     "type": "string",
+     "value": "flag"
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "image": "../props/flag1.png",
+   "imagewidth": 24,
+   "imageheight": 47,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flag1"
+    },
+    {
+     "name": "anim",
+     "type": "string",
+     "value": "flag"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "image": "../props/flag2.png",
+   "imagewidth": 25,
+   "imageheight": 55,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flag2"
+    },
+    {
+     "name": "anim",
+     "type": "string",
+     "value": "flag"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "image": "../props/flag3.png",
+   "imagewidth": 25,
+   "imageheight": 59,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flag3"
+    },
+    {
+     "name": "anim",
+     "type": "string",
+     "value": "flag"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "image": "../props/flag4.png",
+   "imagewidth": 24,
+   "imageheight": 52,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flag4"
+    },
+    {
+     "name": "anim",
+     "type": "string",
+     "value": "flag"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "image": "../props/flag5.png",
+   "imagewidth": 24,
+   "imageheight": 52,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flag5"
+    },
+    {
+     "name": "anim",
+     "type": "string",
+     "value": "flag"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "image": "../props/palm.png",
+   "imagewidth": 55,
+   "imageheight": 55,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "palm"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "image": "../props/lamp.png",
+   "imagewidth": 21,
+   "imageheight": 45,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "lamp"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "image": "../props/bush.png",
+   "imagewidth": 24,
+   "imageheight": 26,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "bush"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "image": "../props/tree_cluster.png",
+   "imagewidth": 76,
+   "imageheight": 82,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_cluster"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  }
+ ]
+}
