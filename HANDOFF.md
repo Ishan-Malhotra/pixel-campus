@@ -1,7 +1,13 @@
 # Handoff log: BITS Pilani Campus Explorer
-_Last updated: 2026-11-11, late evening (after the Main Building was rebuilt from Figma pieces; repo pushed to GitHub). Read this first, then `SPEC.md` (partly outdated, see §6) and `tiled/GUIDE.md`._
+_Last updated: 2026-11-11, 22:40 (map scale now 3 m/tile; front garden redone after the art; paved terrace between the drive and the Rotunda). Read this first, then the latest entries of `WORKLOG.md`, then `SPEC.md` (partly outdated, see §6) and `tiled/GUIDE.md`._
 
-**GitHub:** [Ishan-Malhotra/pixel-campus](https://github.com/Ishan-Malhotra/pixel-campus) (public).
+**GitHub:** [Ishan-Malhotra/pixel-campus](https://github.com/Ishan-Malhotra/pixel-campus) (public). Only the
+initial commit is there; the work in §2c is not committed (the user has not asked).
+
+**Logging rule (from the user):** every agent logs everything it does in `WORKLOG.md` (what, why, files, commands,
+checks, what is left). This file is the summary of the current state; `WORKLOG.md` is the history.
+
+**Newest status is §2d**, then §2c. §2 and §2b are older and partly superseded (sizes there are at the old 5 m scale).
 
 ## 1. What the project is
 A browser game in the style of Pokémon Emerald: a top-down, pixel-art version of the **BITS Pilani (Pilani)
@@ -15,7 +21,7 @@ it after big stitched AI images kept failing (seams, overlaps, scale and colour 
 1. **Blueprint from OpenStreetMap:**
    - `tools/v4/blueprint.py phase1` reads `data/campus_full.features.json`, the whole-campus OSM extract
      (659 buildings, 269 roads, all key names verified).
-   - It rotates the campus by -8.75° so the street grid is axis-aligned, at **1 tile = 16 px = 5 m**, and writes
+   - It rotates the campus by -8.75° so the street grid is axis-aligned, at **1 tile = 16 px = 3 m** (5 m until §2d), and writes
      the Tiled project in `tiled/`.
    - Ground is painted with the Wang terrain tiles from `tools/v4/tiled_kit.py` (road, path, hedge, garden lawn,
      tall grass, flowerbed).
@@ -29,7 +35,7 @@ it after big stitched AI images kept failing (seams, overlaps, scale and colour 
 
 **Phase 1 area:** Main Building + FD2 + Rotunda, NAB/Snake Path, Krishna & Gandhi Bhawans, KG mess, down to the
 Gandhi Marg circle. The rotated box also includes Ram, Budh, Shankar, Vishwakarma and Bhagirath. The map is
-112×138 tiles.
+187×230 tiles at 3 m/tile (112×138 at the old 5 m).
 
 **Stamps with real art (3):**
 
@@ -73,6 +79,73 @@ Gandhi Marg circle. The rotated box also includes Ram, Budh, Shankar, Vishwakarm
   transparent PNGs to `art/pieces/` (plus a layout screenshot when pieces combine). Prefer this over cutting
   buildings out of scene images.
 
+## 2c. Update (2026-11-11, 21:30): front garden, closer camera, smooth roads
+Full detail is in `WORKLOG.md` (entry "Logging rule, closer camera, front garden").
+
+**Which map is current:** `tiled/maps/phase1.tmj` is the new map with the garden, and the game is converted from
+it. The user agreed to the replacement (`--force`) after being asked; they had never saved edits in the old one.
+The old map is `phase1.backup-2130.tmj`. There is no `phase1.generated.tmj` any more.
+
+**Camera:** the view is 800×450 map pixels (was 1024×576), `VIEW_W`/`VIEW_H` in `game/src/main.ts`. It matches the
+user's reference picture: one FD quad is about 36% of the screen width. This is a camera zoom only. (The map scale
+was changed separately afterwards, see §2d; the view stayed 800×450.)
+
+**Front garden (between the Main Building's wings, north of the Rotunda), generated in `blueprint.py`, section
+"front garden":**
+- The OSM driveway `w285869287` is redrawn as a smooth road 2 tiles wide whose kerb meets the porch steps.
+- Hedges run along the drive's north side with gaps at the porch and the west path. They are **polyline objects of
+  class `hedge`** on the `props` layer (property `width`, default 14 px), so they can run at any angle.
+- West lawn: path from the wing door, tall grass, palm, shrub, flowers. East lawn: vegetable bed, sign, palm, pink
+  flower bush, flowers. Four flags in the hedge line, two lamps.
+- Every position is computed from the Main Building stamp's alpha (porch, recess, wing door steps).
+- To move or remove one thing by hand, edit the `props` layer in Tiled. To change the design, edit the section.
+
+**Props (`tiled_kit.py`):** new `shrub`, `flowers_red`, `flowers_white`, `flowers_pink`, `sign`, `crop`, cut from
+`art/reference_main.png` with `key_cut()`. Tile properties: `solid_base` (blocks at the base), `base_w`/`base_h`
+(base size as a fraction of the image), `flat` (baked into the ground, walkable).
+
+**Converter (`tiled_to_game.py`):**
+- **Smoothing pass over the whole map:** terrain-brush tiles (road, path, hedge, garden lawn) are repainted from a
+  smooth outline instead of being copied as tiles. Set `SMOOTH = 0` at the top of the file for the old tile-exact
+  look. Tiled itself still shows the stepped tiles; only the game is smooth.
+- Upright props are depth-sorted sprites (the player walks behind palms and lamps); they ride in the `animProps`
+  list with one frame.
+- `data/debug/game_render.png` shows the whole map as the game draws it.
+
+**Known leftovers:**
+- The old Rotunda stamp has stray specks and two tiny flags beside the drive. It is the user's file, so it was
+  left; it goes when `rotunda.png` arrives.
+- The tall-grass patch is square-edged.
+- ~~Props and the player are large next to the real-scale buildings.~~ Fixed by the 3 m/tile scale (§2d).
+
+## 2d. Update (2026-11-11, 22:40): 3 m per tile, garden after the art, gap before the Rotunda
+Full detail: `WORKLOG.md`, entry "Map scale 3 m/tile, garden redone after the art…".
+
+- **Scale decided by the user: the bigger map.** `M_PER_TILE = 3` in `blueprint.py` (was 5). One map pixel = one
+  pixel of `art/reference_main.png`, so props cut from the art fit the buildings. Map: **187×230 tiles
+  (2992×3680 px)**. Blueprint takes about 60 s now. The Main Building is still fitted to its real OSM width; its porch
+  is `PORCH_SOUTH_M = 20` m south of the OSM Clock Tower point.
+- **Current map:** `tiled/maps/phase1.tmj` (replaced with the user's OK; previous map in `phase1.backup-2233.tmj`).
+  The game is converted from it. Spawn (1382, 1122).
+- **Rotunda:** stamp `rotunda_art` = the art's Rotunda at the art's size (`art/stamps/rotunda_art.png`, seeded, now
+  user-owned like every stamp). The old half-size `rotunda` stamp is no longer placed.
+- **Layout south of the porch, from the satellite view (`art/satellite/main_rotunda.jpg`):** porch steps, the drive
+  (`DRIVE_W = 76` px: a drop-off lane and the two-lane road, split by median hedges on both sides of the porch),
+  a paved terrace (`TERRACE = 40` px, painted with path tiles around the Rotunda's north half), then the arcade.
+- **Garden, laid out like the art** (`blueprint.py`, section "front garden"): hedges drawn like the art's
+  (`draw_hedge()` in the converter); west lawn with the art's tall-grass patch (`thicket`, walkable, rustles),
+  palm, shrubs, flowers and the path from the wing door; east lawn with the art's whole vegetable bed (`veg_bed`),
+  palms, conifers, bushes and sign; flags and lamps on the hedges; bougainvillea against the Rotunda's arcade and
+  plants on its flanks, placed by `plant_free()` only where they fit.
+- Photos of the real drive are in `art/photos/` (hedge islands with white kerbs, an "Only for bicycle" sign).
+- **Known leftovers:**
+  - The Rotunda stamp is cut flat at the bottom, overlaps the two NAB placeholders, and is missing its
+    amphitheatre steps. All of this goes when `rotunda.png` arrives.
+  - The art's Rotunda is about 1.5× its real size. It was kept because its width relative to the FD wings matches
+    the satellite view.
+  - The terrace uses the tan path colour; the real one is paler paving.
+  - Plants exist only between the FD wings.
+
 ## 3. Open problems (what the user is unhappy about / unfinished)
 1. ~~**The Main Building stamp looks "wrong" to the user.**~~ (SUPERSEDED by the Figma pieces above; kept for history) They said "the base of the clock tower is a bit ruined",
    then "still not correct" after the fix.
@@ -86,15 +159,16 @@ Gandhi Marg circle. The rotated box also includes Ram, Budh, Shankar, Vishwakarm
    - Rect cutting from measured boxes is fragile. A per-pixel mask the user paints, or a cleaner regenerated
      isolated Main Building image, may be better.
 2. **The Rotunda stamp's bottom is cut flat:** the source image ends at y = 687. It needs a complete Rotunda image or a manual edit.
-3. **Roads look chunky:** corner Wang tiles turn OSM curves into stair-steps, and the loop around the Rotunda forms
-   grey blobs. The kerb look is weaker than the art's road.
+3. ~~**Roads look chunky:** corner Wang tiles turn OSM curves into stair-steps, and the loop around the Rotunda forms
+   grey blobs.~~ Fixed in the game by the converter's smoothing pass and the redrawn driveway (§2c). Still true
+   inside Tiled, and the kerb look is still weaker than the art's road.
 4. **Main Building depth:** the art compresses the building north–south compared with OSM, leaving lawn where the
    real north wings are.
 5. A stray placeholder slot (a small OSM building) sits on the lawn west of the Main Building. The user may delete it in Tiled.
 6. **Not built yet:**
    - `stamp_prep.py` (pixel-grid detection → 1 px downsample, background removal, palette lock, fit to slot
      footprint) and `fill_slots.py`;
-   - flags and tall grass placed on the Tiled map (the props tileset exists; the `props`/`decor` layers are empty);
+   - flags and tall grass outside the front garden (the garden has them since §2c; the rest of the map has none);
    - multi-area world beyond Phase 1.
 7. The `above` layer works in the converter and the game but is unused.
 
@@ -107,13 +181,14 @@ cd game && npx vite --port 5179 --strictPort    # dev server (game at /, old edi
 cd game && npx tsc --noEmit -p .                # type-check
 ```
 - **Headless playtests:** Playwright-core is installed in `/tmp/campus-check` (scripts `tiled.mjs`, `live.mjs`,
-  `editor.mjs`). They use the system Chrome with `--use-angle=swiftshader`.
+  `editor.mjs`, and `garden.mjs` for the front garden). They use the system Chrome with `--use-angle=swiftshader`.
   - `window.__game` is exposed in dev; `scene('world')` has `player`, `onBike`, `zoneName`.
   - `/tmp` may be wiped between sessions. Recreate with `npm i playwright-core` in a temp dir.
 - **Python gotcha:** Pillow and numpy are in the *user* site-packages, so `python3 -I` fails to import PIL.
   Run the repo's own scripts with plain `python3`.
 - Debug renders go to `data/debug/`: `phase1_render.png`, `phase1_check.png` (cyan = OSM outlines,
-  yellow = road centre lines), `compare_satellite.png`, `game_collision.png`.
+  yellow = road centre lines), `compare_satellite.png`, `game_collision.png`, `game_render.png` (the map as the
+  game draws it, the best one to look at).
 
 ## 5. User preferences / rules (hard-won, respect them)
 - **As cheap as possible:** free tools only; flag any paid step first. The user generates images themselves in a
@@ -177,7 +252,8 @@ The remaining ~29 small slots stay as placeholder blocks until an optional `smal
 south (Shiv Ganga, Saraswati Temple, Meera Bhawan, Med-C, C'not), then the main gate. Each needs a new
 `AREAS` entry in `blueprint.py` and its own map in `campus.world`.
 
-**Pending user decision (affects every piece, so ask early):**
+**~~Pending user decision~~ DECIDED 2026-11-11: the bigger map, 3 m/tile (§2d).** Slot sizes in the table above
+are still in 5 m tiles; multiply by 5/3 for the current map. Kept for history:
 - **Scale:** at real 5 m/tile, pieces are shrunk to about 41% and look small next to the player. The options are:
   - keep the real scale (current);
   - make the whole map about 1.7× bigger (about 3 m/tile), so buildings feel Emerald-grand but walking takes longer.
@@ -193,8 +269,8 @@ south (Shiv Ganga, Saraswati Temple, Meera Bhawan, Med-C, C'not), then the main 
   - build a collision mask from alpha (with the steps walkable) or from the user's `_collision.png`.
 
 ## 8. Suggested next steps
-1. Get the user's scale decision (§7).
-2. When `rotunda.png` or any type piece arrives, implement the piece loader (§7), fill the slots, convert, and
-   playtest (`/tmp/campus-check/tiled.mjs`). Send the user `data/debug/compare_satellite.png`.
-3. Pre-place flags and tall grass (from the art's original positions) into the Tiled `props`/`decor` layers.
-4. Improve road rendering: extra hand-made corner tiles, or a kerb pass in `tiled_to_game.py`.
+1. **Rotunda** (the user named it as the next piece of work). When `rotunda.png` or any type piece arrives,
+   implement the piece loader (§7), fill the slots, convert, and playtest (`/tmp/campus-check/garden.mjs`). Send the
+   user `data/debug/compare_satellite.png`. Check the garden's drive and hedges against the new Rotunda's outline.
+2. Flags, tall grass and plants for the rest of the map, the way the front garden does it (§2d).
+3. Kerb look of the roads closer to the art (`tiled_kit.paint('road', …)`).

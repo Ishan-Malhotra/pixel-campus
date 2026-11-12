@@ -5,8 +5,9 @@ export class BootScene extends Phaser.Scene {
   constructor() { super('boot'); }
 
   preload() {
-    const bar = this.add.rectangle(412, 288, 0, 8, 0xf8f8f8).setOrigin(0, 0.5);
-    this.add.rectangle(512, 288, 204, 12).setStrokeStyle(2, 0x283048);
+    const { centerX, centerY } = this.cameras.main;
+    const bar = this.add.rectangle(centerX - 100, centerY, 0, 8, 0xf8f8f8).setOrigin(0, 0.5);
+    this.add.rectangle(centerX, centerY, 204, 12).setStrokeStyle(2, 0x283048);
     this.load.on('progress', (p: number) => (bar.width = 200 * p));
     this.load.tilemapTiledJSON('map', 'maps/main.json');
     this.load.json('meta', 'maps/main.meta.json');

@@ -72,6 +72,23 @@
      "value": ""
     }
    ]
+  },
+  {
+   "id": 6,
+   "name": "hedge",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ff2e7d32",
+   "drawFill": false,
+   "members": [
+    {
+     "name": "width",
+     "type": "int",
+     "value": 14
+    }
+   ]
   }
  ]
 }

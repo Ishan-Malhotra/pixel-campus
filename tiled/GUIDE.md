@@ -14,7 +14,7 @@ The map is already laid out from real campus data. Roads, buildings and spots ar
 | `ground` | grass, roads, dirt paths, hedges, garden lawn | paint with the **Terrain** brush |
 | `decor` | extra tiles on top of the ground (tall grass, flowerbeds) | paint with the **Stamp** brush |
 | `buildings` | building stamps + red-outlined **slots** waiting for art | drag to move, Delete to remove, flip with **X / Y** |
-| `props` | flags, lamps, palms, bushes, trees | **Insert Tile** (T), then click to place from the `props` tileset |
+| `props` | flags, lamps, palms, bushes, flowers, signs, and hedge lines | **Insert Tile** (T), then click to place from the `props` tileset |
 | `above` | tiles drawn **over** the player (tree tops, roof edges) | paint with the Stamp brush |
 | `collision` | extra walls | draw rectangles (R) where the player must not walk |
 | `events` | area names (`zone` rectangles) + `spawn` point | rename a zone to change its banner text |
@@ -27,6 +27,17 @@ The map is already laid out from real campus data. Roads, buildings and spots ar
 
 Tall grass (rustles when walked through) and flowerbeds are on the bottom row of the `terrain` tileset.
 Paint them with the **Stamp Brush** (B) on `decor`.
+
+Roads and paths look stepped in Tiled. The game rounds them off when the map is converted, so don't fix the steps
+by hand.
+
+**Slanted or curved hedges** (like the ones in front of the clock tower) are lines, not tiles:
+1. Select the `props` layer.
+2. Pick **Insert Polygon** (P), click along where the hedge should run, and press Enter (or right-click) to finish.
+   Don't click back on the first point: the hedge must stay an open line.
+3. In the Properties panel set **Class** to `hedge`. Its `width` (14) is the hedge's thickness in pixels.
+
+To reshape one, select it with **Edit Polygons** (O) and drag its points.
 
 ## 5. Buildings
 - **Move:** select the `buildings` layer, use **Select Objects** (S), and drag.

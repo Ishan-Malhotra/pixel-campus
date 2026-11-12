@@ -3,9 +3,9 @@
  "version": "1.10",
  "tiledversion": "1.10.2",
  "name": "props",
- "tilewidth": 76,
- "tileheight": 82,
- "tilecount": 10,
+ "tilewidth": 134,
+ "tileheight": 124,
+ "tilecount": 23,
  "columns": 0,
  "margin": 0,
  "spacing": 0,
@@ -192,6 +192,270 @@
      "name": "solid_base",
      "type": "bool",
      "value": true
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "image": "../props/shrub.png",
+   "imagewidth": 16,
+   "imageheight": 21,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "shrub"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "image": "../props/flowers_red.png",
+   "imagewidth": 17,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flowers_red"
+    },
+    {
+     "name": "flat",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "image": "../props/flowers_white.png",
+   "imagewidth": 18,
+   "imageheight": 15,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flowers_white"
+    },
+    {
+     "name": "flat",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "image": "../props/flowers_pink.png",
+   "imagewidth": 65,
+   "imageheight": 29,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "flowers_pink"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    },
+    {
+     "name": "base_w",
+     "type": "float",
+     "value": 0.8
+    },
+    {
+     "name": "base_h",
+     "type": "float",
+     "value": 0.5
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "image": "../props/sign.png",
+   "imagewidth": 23,
+   "imageheight": 25,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "sign"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "image": "../props/crop.png",
+   "imagewidth": 18,
+   "imageheight": 18,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "crop"
+    },
+    {
+     "name": "flat",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 16,
+   "image": "../props/thicket.png",
+   "imagewidth": 103,
+   "imageheight": 92,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "thicket"
+    },
+    {
+     "name": "flat",
+     "type": "bool",
+     "value": true
+    },
+    {
+     "name": "tallgrass",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 17,
+   "image": "../props/thicket_tall.png",
+   "imagewidth": 92,
+   "imageheight": 103,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "thicket_tall"
+    },
+    {
+     "name": "flat",
+     "type": "bool",
+     "value": true
+    },
+    {
+     "name": "tallgrass",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 18,
+   "image": "../props/veg_bed.png",
+   "imagewidth": 134,
+   "imageheight": 124,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "veg_bed"
+    },
+    {
+     "name": "flat",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 19,
+   "image": "../props/palm_small.png",
+   "imagewidth": 26,
+   "imageheight": 32,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "palm_small"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 20,
+   "image": "../props/conifer.png",
+   "imagewidth": 15,
+   "imageheight": 25,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "conifer"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 21,
+   "image": "../props/bush_big.png",
+   "imagewidth": 20,
+   "imageheight": 21,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "bush_big"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 22,
+   "image": "../props/bougainvillea.png",
+   "imagewidth": 84,
+   "imageheight": 78,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "bougainvillea"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    },
+    {
+     "name": "base_w",
+     "type": "float",
+     "value": 0.8
+    },
+    {
+     "name": "base_h",
+     "type": "float",
+     "value": 0.5
     }
    ]
   }

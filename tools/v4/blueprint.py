@@ -1,12 +1,13 @@
 """Blueprint: OpenStreetMap -> accurate, grid-locked campus map (Emerald-style: tile ground + building stamps).
 
 Geometry (where every road and building is) comes ONLY from OpenStreetMap, rotated ~8 deg so the campus street grid is
-axis-aligned, at 1 tile = 16 px = 5 m (same scale as the approved art). Looks come from the user's approved images:
+axis-aligned, at 1 tile = 16 px = 3 m. At that scale one map pixel is one pixel of the user's art (art/reference_main.png),
+so buildings, plants and the player keep the proportions of the art. Looks come from the user's approved images:
   - ground (lawn, roads with kerbs, paths) is painted with textures/colours sampled from the approved art,
   - buildings are STAMPS placed into their real OSM footprints (slots):
-      main_west : Clock Tower + west part of the Main Building, cut from art/reference_main.png
-      fd2       : FD2 quad, cut from art/reference_fd2.png
-      rotunda   : the Rotunda, cut from art/reference_main.png at 1/2 scale (the art draws it ~2x real size)
+      main_building : FD3 + Clock Tower body + FD2, composed from the user's Figma pieces (art/pieces)
+      rotunda_art   : the Rotunda, cut from art/reference_main.png at the art's own size
+      (main_west, fd2, rotunda are older cut-outs; they are still built but no longer placed)
     Slots without art yet (bhawans, mess, NAB, small buildings) get a neutral placeholder block until the
     user's one-off image for that building type arrives (tools/v4/stamp_prep.py, next step).
 
@@ -18,10 +19,11 @@ Usage (repo root): python3 tools/v4/blueprint.py [area]      (default area: phas
 """
 import json, math, os, sys
 import numpy as np
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-T, M_PER_TILE = 16, 5.0
-PPM = T / M_PER_TILE                       # px per metre (3.2)
+T, M_PER_TILE = 16, 3.0                    # 3 m per tile: map px = art px (was 5 m until 2026-11-11; see WORKLOG.md)
+PPM = T / M_PER_TILE                       # px per metre (5.33)
+PORCH_SOUTH_M = 20                         # the porch front stands this far south of the OSM Clock Tower point (satellite)
 AREA = sys.argv[1] if len(sys.argv) > 1 else 'phase1'
 # area of interest in OSM metres (un-rotated frame of data/campus_full.features.json)
 AREAS = {'phase1': (540, 560, 1010, 1185)}   # Main Building + FD2 + Rotunda, NAB/Snake Path, Krishna & Gandhi Bhawans, KG mess, Gandhi Marg circle
@@ -132,12 +134,17 @@ def thick(draw, pts, w):
         draw.ellipse((x - r, y - r, x + r, y + r), fill=255)
 
 
+DRIVEWAY = 'w285869287'    # OSM service road: west circle -> past the Clock Tower porch -> east circle
+driveway = None
 slots = []
 for f in F:
     t = f['tags']
     if f['kind'] == 'line' and 'highway' in t:
         pts = [P(p) for p in f['pts']]
         hw = t['highway']
+        if f['id'] == DRIVEWAY:                          # redrawn as a smooth drive in the front-garden section below
+            driveway = pts
+            continue
         if t.get('junction') == 'roundabout':
             continue
         if hw in ROAD_TILES:
@@ -202,7 +209,29 @@ def flood_bg(crop, tol, green_only):
     return bg
 
 
-def make_stamp(name, src, box, tol=40, green_only=True, half=False, rects=None):
+def big_parts(fg, min_px):
+    """keep only the connected parts of a mask that have at least min_px pixels (drops flags, plants, specks)"""
+    keep = np.zeros(fg.shape, bool); seen = np.zeros(fg.shape, bool)
+    h, w = fg.shape
+    for sy, sx in zip(*np.nonzero(fg)):
+        if seen[sy, sx]:
+            continue
+        blob, st = [], [(sy, sx)]
+        seen[sy, sx] = True
+        while st:
+            y, x = st.pop()
+            blob.append((y, x))
+            for ny, nx in ((y + 1, x), (y - 1, x), (y, x + 1), (y, x - 1)):
+                if 0 <= ny < h and 0 <= nx < w and fg[ny, nx] and not seen[ny, nx]:
+                    seen[ny, nx] = True
+                    st.append((ny, nx))
+        if len(blob) >= min_px:
+            ys, xs = zip(*blob)
+            keep[list(ys), list(xs)] = True
+    return keep
+
+
+def make_stamp(name, src, box, tol=40, green_only=True, half=False, rects=None, min_part=0):
     x0, y0, x1, y1 = box
     crop = src[y0:y1, x0:x1].copy()
     if rects is not None:                                   # exact building outline (measured rects, in px of src)
@@ -211,6 +240,8 @@ def make_stamp(name, src, box, tol=40, green_only=True, half=False, rects=None):
             fg[max(0, ry0 - y0):max(0, ry1 - y0), max(0, rx0 - x0):max(0, rx1 - x0)] = True
     else:
         fg = ~flood_bg(crop, tol, green_only)
+        if min_part:
+            fg = big_parts(fg, min_part)
     rgba = np.dstack([crop, np.where(fg, 255, 0)]).astype(np.uint8)
     im = Image.fromarray(rgba)
     full = Image.fromarray(np.dstack([crop, np.full(crop.shape[:2], 255, np.uint8)]).astype(np.uint8))
@@ -288,6 +319,8 @@ STAMPS = {
     'fd2': make_stamp('fd2', NEW, (596, 6, 1010, 374)),
     # Rotunda: art draws it ~2x real size -> exact 1/2 (the art's rotunda runs off the image bottom: flat cut)
     'rotunda': make_stamp('rotunda', ART, (256, 330, 776, 687), tol=30, green_only=True, half=True),
+    # the same cut at the art's own size (the map is at the art's scale now); loose flags and plants are dropped
+    'rotunda_art': make_stamp('rotunda_art', ART, (256, 330, 776, 687), tol=30, green_only=True, min_part=1500),
 }
 
 
@@ -338,18 +371,258 @@ for f in F:
                   'x': x0, 'y': y0, 'w': x1 - x0, 'h': y1 - y0, 'outline': pts})
 
 # the Main Building complex (FD3 + clock tower body + FD2) is ONE stamp from the user's pieces, centred on the OSM Clock
-# Tower point, with the porch ~25 m (80 px) south of the tower point -- as in the real campus
+# Tower point, with the porch front PORCH_SOUTH_M south of the tower point -- as in the satellite view
 for s_ in [s_ for s_ in slots if s_['name'] == 'FD-2 & FD-3']:
     slots.remove(s_)
     tx_, ty_ = P(next(f['pt'] for f in F if f['tags'].get('name') == 'BITS Clock Tower'))
     mh, mw = MB_STAMP.shape[0] // T, MB_STAMP.shape[1] // T
     slots.append({'name': 'Main Building', 'type': 'stamp:main_building', 'x': round((tx_ - MB_PORCH_X) / T),
-                  'y': round((ty_ + 80 - MB_PORCH_Y) / T), 'w': mw, 'h': mh, 'outline': s_['outline']})
-# the Rotunda is a point in OSM: centre its stamp on it, just south of the Main Building
-rx, ry = P(next(f['pt'] for f in F if f['tags'].get('name') == 'Rotunda'))
-rw, rh = STAMPS['rotunda'].shape[1] // T, STAMPS['rotunda'].shape[0] // T
-slots.append({'name': 'Rotunda', 'type': 'stamp:rotunda', 'x': round(rx / T - rw / 2), 'y': round(ry / T - rh / 2),
-              'w': rw, 'h': rh, 'outline': [], 'on_top': True})
+                  'y': round((ty_ + PORCH_SOUTH_M * PPM - MB_PORCH_Y) / T), 'w': mw, 'h': mh, 'outline': s_['outline']})
+# (the Rotunda is only a point in OSM; its stamp is placed in the front-garden section below, south of the drive)
+
+# ===================================================================== front garden (Clock Tower porch <-> Rotunda)
+# OSM has the drive past the porch only as a coarse line and nothing at all for the gardens. This section lays the
+# area out the way the user's art (art/reference_main.png) and the satellite view show it:
+#   - the drive is one wide arc from the west circle, past the porch steps, to the east circle;
+#   - the Rotunda sits one drive-width south of the porch (its stamp is at the art's own size), with lawn around it;
+#   - west of the porch a lane leaves the drive towards the building, with a hedge between lane and drive;
+#   - hedges run along the drive, with flags and lamps; the lawns get the art's plants (cut out in tiled_kit.py).
+# All sizes here are in art pixels: they assume the map is at the art's scale (M_PER_TILE = 3).
+# It is all ordinary Tiled data (road / path tiles and objects on the `props` layer), so every piece can be moved or
+# deleted in Tiled.
+HEDGE_W = 17                                  # px, as thick as the art's hedges
+KERB = 2                                      # px of kerb between asphalt and the porch steps / Rotunda apron / hedges
+LANE_W, MED_W = 24, 13                        # the lane past the porch steps, and the median hedge between it and the road
+DRIVE_W = 4 * T + 12                          # the whole drive, kerb to kerb (13 m in the satellite view)
+TERRACE = 40                                  # paved terrace between the drive and the Rotunda (7 m in the satellite view)
+ROT_AXIS = 260                                # column of the Rotunda's axis inside its stamp (art x 516 - crop x 256)
+K = PPM / 3.2                                 # distances measured on the old 5 m map -> this map
+garden_props, garden_hedges, tall_tiles = [], [], []   # (prop name, x of its base centre, y of its base), polylines, (tx, ty)
+
+
+def circle3(a, b, c):
+    """centre and radius of the circle through three points"""
+    (ax, ay), (bx, by), (cx, cy) = a, b, c
+    d = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by))
+    ux = ((ax * ax + ay * ay) * (by - cy) + (bx * bx + by * by) * (cy - ay) + (cx * cx + cy * cy) * (ay - by)) / d
+    uy = ((ax * ax + ay * ay) * (cx - bx) + (bx * bx + by * by) * (ax - cx) + (cx * cx + cy * cy) * (bx - ax)) / d
+    return ux, uy, math.hypot(ax - ux, ay - uy)
+
+
+def chaikin(pts, n=3):
+    """corner-cutting: a coarse polyline -> a smooth curve"""
+    for _ in range(n):
+        q = [pts[0]]
+        for (ax, ay), (bx, by) in zip(pts, pts[1:]):
+            q += [(0.75 * ax + 0.25 * bx, 0.75 * ay + 0.25 * by), (0.25 * ax + 0.75 * bx, 0.25 * ay + 0.75 * by)]
+        pts = q + [pts[-1]]
+    return pts
+
+
+if driveway:
+    mb = next(s for s in slots if s['type'] == 'stamp:main_building')
+    mbx, mby = mb['x'] * T, mb['y'] * T
+    opaque = MB_STAMP[..., 3] > 0
+    # per stamp column: map y just below the building (H where the column is empty)
+    foot = np.where(opaque.any(axis=0), mby + opaque.shape[0] - np.argmax(opaque[::-1], axis=0), H)
+    PX = round(mbx + MB_PORCH_X)                                         # centre of the porch steps
+    PY = int(foot[PX - mbx])                                             # ... and their bottom edge
+    recess = np.nonzero(foot < PY)[0]                                    # columns where the building stops north of the porch:
+    gx0, gx1 = mbx + int(recess[0]), mbx + int(recess[-1])               # the lawns between the two FD quads
+
+    def door_steps(x_from, x_to):
+        """wing door steps = the columns between x_from and x_to that reach a few px below the wing wall.
+        Returns the steps' centre x, their bottom y, and the y of the wing wall's foot."""
+        cols = np.arange(x_from - mbx, x_to - mbx)
+        wall = np.bincount(foot[cols]).argmax()
+        s = cols[(foot[cols] > wall + 4 * K) & (foot[cols] < wall + 14 * K)]
+        return round(s.mean() + mbx), int(foot[s].max()), int(wall)
+
+    # --- the Rotunda: its axis on the porch's, its apron one drive-width south of the porch steps
+    rot_st = STAMPS['rotunda_art']
+    rot_op = rot_st[..., 3] > 0
+    rot_top = int(np.argmax(rot_op[:, ROT_AXIS - 10:ROT_AXIS + 10].any(axis=1)))     # first row of the apron on the axis
+    # satellite, on the porch's axis: porch steps, the drive (a drop-off lane + the two-lane road, ~13 m), a paved
+    # terrace (~7 m), then the Rotunda's arcade
+    rtx = round((PX - ROT_AXIS) / T)
+    rty = round((PY + 2 * KERB + DRIVE_W + TERRACE - rot_top) / T)
+    slots.append({'name': 'Rotunda', 'type': 'stamp:rotunda_art', 'x': rtx, 'y': rty, 'w': rot_st.shape[1] // T,
+                  'h': rot_st.shape[0] // T, 'outline': [], 'on_top': True})
+    rot_rows = np.nonzero(rot_op.any(axis=1))[0]
+    rcx, rcy = rtx * T + ROT_AXIS, rty * T + (rot_rows.min() + rot_rows.max()) // 2   # the Rotunda's centre
+    rot_hw = (np.ptp(np.nonzero(rot_op.any(axis=0))[0]) + 1) // 2                         # ... and half its width
+
+    # --- the drive: a circular arc through the west circle, just south of the porch steps, and the east circle
+    ends = sorted((driveway[0], driveway[-1]))
+    ux, uy, R = circle3(ends[0], (PX, PY + KERB + DRIVE_W / 2), ends[1])
+    aW = math.atan2(ends[0][1] - uy, ends[0][0] - ux)                    # angles on the arc, west end .. east end
+    aE = math.atan2(ends[1][1] - uy, ends[1][0] - ux)                    # (the arc's top is at -pi / 2)
+
+    def arc(off, a0, a1, step=3.0):
+        """points along the drive, `off` px outside its centre line (a number, or a function of the angle)"""
+        f = off if callable(off) else (lambda a: off)
+        n = max(2, int(abs(a1 - a0) * R / step))
+        return [(ux + (R + f(a)) * math.cos(a), uy + (R + f(a)) * math.sin(a))
+                for a in (a0 + (a1 - a0) * i / n for i in range(n + 1))]
+
+    def ang(x):
+        """the angle at which the drive's centre line passes map x"""
+        return -math.acos(max(-1.0, min(1.0, (x - ux) / R)))
+
+    walls_im = Image.new('L', (W, H), 0)                                 # the Main Building and the Rotunda
+    for st_, sx_, sy_ in ((MB_STAMP, mbx, mby), (rot_st, rtx * T, rty * T)):
+        m_ = Image.fromarray(((st_[..., 3] > 0) * 255).astype(np.uint8))
+        walls_im.paste(m_, (sx_, sy_), m_)
+    walls = to_np(walls_im)
+
+    def grown(im, r):
+        return im.filter(ImageFilter.MaxFilter(2 * r + 1))
+
+    busy_im = Image.fromarray(((road | path) * 255).astype(np.uint8))    # other roads and footpaths: hedges stop there too
+    line = arc(0, aW, aE)
+    drive_im = poly_im()
+    thick(ImageDraw.Draw(drive_im), line, DRIVE_W)
+    drive = to_np(drive_im)
+    road |= drive
+
+    def disc_grow(m, r):
+        """grow a mask by r px with rounded corners (alternating 4- and 8-neighbour steps)"""
+        for i in range(r):
+            p = np.pad(m, 1)
+            g = m | p[:-2, 1:-1] | p[2:, 1:-1] | p[1:-1, :-2] | p[1:-1, 2:]
+            if i % 2:
+                g |= p[:-2, :-2] | p[:-2, 2:] | p[2:, :-2] | p[2:, 2:]
+            m = g
+        return m
+
+    # --- the paved terrace around the Rotunda's north half (path tiles); lawn too thin to draw between it and the
+    # drive is paved too
+    pad_ = TERRACE + 40
+    ry0, rx0 = rty * T - pad_, rtx * T - pad_
+    loc = np.zeros((rot_op.shape[0] + 2 * pad_, rot_op.shape[1] + 2 * pad_), bool)
+    loc[pad_:pad_ + rot_op.shape[0], pad_:pad_ + rot_op.shape[1]] = rot_op
+    ter_loc = disc_grow(loc, TERRACE + KERB + T) & ~loc                  # a tile wider: it reaches the drive's kerb
+    terrace = np.zeros((H, W), bool)
+    terrace[max(0, ry0):ry0 + loc.shape[0], max(0, rx0):rx0 + loc.shape[1]] = ter_loc[max(0, -ry0):, max(0, -rx0):][:H - max(0, ry0), :W - max(0, rx0)]
+    terrace[rcy - 30:] = False                                            # the flanks further down stay lawn, for the beds
+    terrace &= ~drive
+    sliver = to_np(grown(drive_im, T)) & disc_grow(terrace, T) & ~drive & ~walls   # under a tile wide: blobs once smoothed
+    sliver[:PY + KERB] = False
+    terrace |= sliver
+    path |= terrace
+
+    def dirt(cx0, cy0, cx1, cy1):
+        """dirt over the tile corners cx0..cx1 x cy0..cy1 (one column or row of corners = a 1-tile path)"""
+        path[cy0 * T - 3:cy1 * T + 4, cx0 * T - 3:cx1 * T + 4] = True
+
+    # --- hedges: polylines along the drive at a fixed distance from its centre line; they stop short of buildings
+    busy = to_np(grown(busy_im, HEDGE_W // 2 + 2))
+    near_wall = to_np(grown(walls_im, HEDGE_W // 2 + 4)) | busy
+    OUT = DRIVE_W / 2 + KERB + 1 + HEDGE_W / 2                           # hedge centre line: just outside the drive's kerb
+    MED_OFF = DRIVE_W / 2 - LANE_W - MED_W / 2                           # the median: LANE_W inside the drive's outer kerb
+
+    def hedge(off, a0, a1, width=HEDGE_W, gaps=(), clear=None):
+        """hedge runs along the drive between two angles; `gaps` = (x0, x1) openings; `clear` = mask the centre line
+        must stay out of. Returns the runs, west to east."""
+        clear = near_wall if clear is None else clear
+        runs, run = [], []
+        for x, y in arc(off, a0, a1, step=6.0):
+            if 0 <= y < H and 0 <= x < W and not clear[int(y), int(x)] and not any(g0 <= x <= g1 for g0, g1 in gaps):
+                run.append((round(x, 1), round(y, 1)))
+            else:
+                runs.append(run); run = []
+        runs = [r for r in runs + [run] if len(r) >= 6]
+        garden_hedges.extend((r, width) for r in runs)
+        return runs
+
+    def on_hedge(run, f):
+        """the point a fraction f along a hedge run"""
+        return run[min(len(run) - 1, int(f * len(run)))]
+
+    wx, wy, wwall = door_steps(round(PX - 205 * K), round(PX - 115 * K))  # west wing door
+    ex, ey, ewall = door_steps(round(PX + 115 * K), round(PX + 215 * K))  # east wing door
+    a_top = -math.pi / 2
+    west_out = hedge(OUT, ang(gx0 + 12), a_top, gaps=[(wx - 24, wx + 24)])    # FD3 corner -> porch, open at the door path
+    east = hedge(OUT, a_top, ang(gx1 - 12))                                  # porch -> FD2 corner
+    # the medians: a lower hedge inside the drive on either side of the porch. North of it is the lane that passes the
+    # porch steps, south of it the through road (the satellite view shows both medians, the art the west one)
+    med_w = hedge(MED_OFF, ang(PX - 0.74 * (PX - gx0)), ang(PX - 58), width=MED_W)
+    med_e = hedge(MED_OFF, ang(PX + 58), ang(PX + 0.74 * (gx1 - PX)), width=MED_W)
+    # Rotunda side of the drive: planters along the terrace's edge, open in front of the arcade (satellite)
+    in_clear = to_np(grown(walls_im, HEDGE_W // 2 + 6)) | busy
+    west_in = hedge(-OUT, aW + 0.06, ang(PX - 150), clear=in_clear)
+    east_in = hedge(-OUT, ang(PX + 150), aE - 0.06, clear=in_clear)
+
+    # --- west lawn: dirt path from the wing door down to the drive
+    wc = round(wx / T)
+    kerb_y = uy + (R + DRIVE_W / 2) * math.sin(ang(wx))
+    dirt(wc, math.ceil((wy + 2) / T), wc, int(kerb_y // T) + 1)
+    # --- along the hedges: flags standing in the hedge line, lamps where the hedges open or end
+    for run, f, flag in ((west_out[0], 0.15, 'flag1'), (west_out[0], 0.92, 'flag0'), (west_out[-1], 0.5, 'flag4'),
+                         (east[0], 0.14, 'flag2'), (east[0], 0.5, 'flag0'), (east[0], 0.86, 'flag1')) + \
+                        (((west_in[0], 0.5, 'flag2'),) if west_in else ()):
+        fx, fy = on_hedge(run, f)
+        garden_props.append((flag, fx, fy - 2))
+    garden_props += [('lamp', west_out[0][-1][0] - 2, west_out[0][-1][1] - 14), ('lamp', east[0][-1][0] + 6, east[0][-1][1] - 16)]
+
+    # --- plants, cut from the art (tiled_kit.py). Positions are px from the porch (PX, PY), the wing doors and the
+    # FD walls, laid out like the art: tall grass, palm and shrubs on the west lawn; the vegetable bed with its
+    # flowers, palms and small trees on the east lawn.
+    def plant(name, x, y):
+        garden_props.append((name, round(x), round(y)))
+
+    tw, th = Image.open('tiled/props/thicket_tall.png').size
+    ty1 = wwall + 8 + th                                                 # west: tall grass in the corner by FD3
+    plant('thicket_tall', gx0 + 8 + tw / 2, ty1)
+    for name, dx, dy in (('shrub', 22, 30), ('flowers_red', 24, 50), ('shrub', 22, 72), ('bush', 62, 44), ('flowers_white', 60, 70)):
+        plant(name, gx0 + dx, ty1 + dy)
+    plant('palm', wx + 50, PY - 30); plant('bush', wx + 46, PY + 16)
+    plant('shrub', PX - 150, PY - 10); plant('flowers_red', PX - 116, PY - 12)
+    bw, bh = Image.open('tiled/props/veg_bed.png').size
+    bx0, by1 = min(ex - 82, gx1 - 10 - bw), ey + 6 + bh                  # east: the bed below the wing door
+    plant('veg_bed', bx0 + bw / 2, by1)
+    plant('palm', bx0 - 34, PY + 10); plant('palm_small', PX + 142, PY - 6); plant('shrub', PX + 110, PY - 10)
+    for name, dx, dy in (('flowers_white', 40, 18), ('bush_big', 70, 30), ('conifer', 100, 36), ('conifer', 124, 58)):
+        plant(name, bx0 + dx, by1 + dy)
+    plant('sign', east[0][-1][0] - 16, east[0][-1][1] - 22)
+
+    # --- beside the Rotunda's south half: bougainvillea beds (red in the satellite view), palms and bushes, as in the
+    # art. Each one goes where its base is clear of roads, paths, walls, hedges and other plants, nudged outwards.
+    occ_im = Image.fromarray(((road | path | walls) * 255).astype(np.uint8)); do_ = ImageDraw.Draw(occ_im)
+    for run, hw in garden_hedges:
+        do_.line(run, fill=255, width=hw + 6)
+    for s_ in slots:
+        if not s_['type'].startswith('stamp:'):
+            do_.rectangle((s_['x'] * T - 4, s_['y'] * T - 4, (s_['x'] + s_['w']) * T + 4, (s_['y'] + s_['h']) * T + 4), fill=255)
+    occ = to_np(occ_im)
+    for name, x, y in garden_props:
+        w_, h_ = Image.open(f'tiled/props/{name}.png').size
+        x, y = int(x), int(y)
+        occ[max(0, y - h_ // 2):y + 2, max(0, x - w_ // 2):x + w_ // 2] = True
+
+    def plant_free(name, x, y, side, force=False):
+        w_, h_ = Image.open(f'tiled/props/{name}.png').size
+        for step in [0] + [s * k for k in range(1, 9) for s in (1, -1)]:          # outwards first, then inwards
+            cx_ = round(x + side * 6 * step)
+            box = occ[max(0, y - h_ // 2):y + 3, max(0, cx_ - w_ // 2 - 2):cx_ + w_ // 2 + 2]
+            if force or not box.any():
+                plant(name, cx_, y)
+                occ[max(0, y - h_ // 2):y + 3, max(0, cx_ - w_ // 2 - 2):cx_ + w_ // 2 + 2] = True
+                return True
+        return False
+
+    # the art's bougainvillea against the Rotunda's arcade wall (the stamp still holds a few of its leaves there)
+    for side, dx in ((-1, -232), (1, 236)):
+        plant_free('bougainvillea', rcx + dx, rty * T + 318, side, force=True)
+    for side in (-1, 1):
+        for name, dx, dy in (('palm', 22, -40), ('bush_big', 18, 20), ('palm_small', 20, 175), ('flowers_pink', 10, 215),
+                             ('bush', 14, 140), ('flowers_red', 24, 60), ('shrub', 12, 250)):
+            plant_free(name, rcx + side * (rot_hw + dx), rcy + dy, side)
+    path &= ~road
+    print(f'front garden: porch ({PX}, {PY}), recess x {gx0}..{gx1}, drive {DRIVE_W} px wide, Rotunda centre ({rcx}, {rcy}), '
+          f'terrace {rty * T + rot_top - PY - 2 * KERB - DRIVE_W} px, arc centre ({ux:.0f}, {uy:.0f}) '
+          f'r {R:.0f}, west door ({wx}, {wy}, wall {wwall}), east door ({ex}, {ey}, wall {ewall}), '
+          f'hedges {[len(r) for r, _ in garden_hedges]}, drive over buildings: {int((drive & walls).sum())} px')
 
 # ===================================================================== ground as TERRAIN TILES (editable in Tiled)
 TERR = np.array(Image.open('tiled/tilesets/terrain.png').convert('RGB'))
@@ -375,6 +648,9 @@ for ty in range(MH):
             bits = sum((1 << (3 - i)) for i, k in enumerate(c) if k == 'P'); ground_ids[ty, tx] = 16 + bits
         else:
             ground_ids[ty, tx] = 64 if (tx * 7 + ty * 13) % 11 else 64 + 1 + (tx + ty) % 3
+for tx, ty in tall_tiles:
+    if ground_ids[ty, tx] >= 64:
+        ground_ids[ty, tx] = 68                              # tall grass (sways and rustles in the game)
 GROUND = np.zeros((H, W, 3), np.uint8)
 for ty in range(MH):
     for tx in range(MW):
@@ -389,6 +665,14 @@ for s in sorted(slots, key=lambda s: (s.get('on_top', False), s['y'] + s['h'])):
     sub = render[max(0, y):y + h, max(0, x):x + w]
     stc = st[max(0, -y):max(0, -y) + sub.shape[0], max(0, -x):max(0, -x) + sub.shape[1]]
     sub[:] = np.where(stc[..., 3:4] > 0, stc[..., :3], sub)
+PROP_IMG = {n: Image.open(f'tiled/props/{n}.png').convert('RGBA') for n in PROP_NAMES}
+if garden_props or garden_hedges:                            # rough preview only: the game draws the hedges properly
+    pre = Image.fromarray(render).convert('RGBA'); dpre = ImageDraw.Draw(pre)
+    for run, hw in garden_hedges:
+        dpre.line(run, fill=(92, 188, 72, 255), width=hw, joint='curve')
+    for name, cx, by in sorted(garden_props, key=lambda g: g[2]):
+        pre.alpha_composite(PROP_IMG[name], (round(cx - PROP_IMG[name].width / 2), round(by - PROP_IMG[name].height)))
+    render = np.array(pre.convert('RGB'))
 Image.fromarray(render).save(f'data/debug/{AREA}_render.png')
 chk = Image.fromarray(render).convert('RGB'); dc = ImageDraw.Draw(chk)
 for f in F:
@@ -422,7 +706,7 @@ for i, nm in enumerate(stamp_files):
         mask = np.array(Image.open(user_mask).convert('RGBA'))[..., 3] > 0
     else:
         mask = a[..., 3] > 0
-        if nm == 'rotunda':                                   # only the arched gallery (north third) blocks; the floor is walkable
+        if nm.startswith('rotunda'):                           # only the arched gallery (north third) blocks; the floor is walkable
             rows_ = np.nonzero(mask.any(axis=1))[0]
             mask[rows_.min() + int((rows_.max() - rows_.min()) * 0.30):] = False
         if not from_pieces:                                  # seed once; yours to edit afterwards
@@ -460,6 +744,17 @@ for s in slots:
 mw_slot = next(s for s in slots if s['type'] == 'stamp:main_building')
 events.append({'id': oid, 'name': 'spawn', 'type': 'spawn', 'point': True, 'x': round(mw_slot['x'] * T + MB_PORCH_X),
                'y': round(mw_slot['y'] * T + MB_PORCH_Y + 18), 'width': 0, 'height': 0, 'rotation': 0, 'visible': True}); oid += 1
+prop_objs = []
+for name, cx, by in garden_props:                            # tile objects are anchored bottom-left; flags by their pole
+    w_, h_ = PROP_IMG[name].size
+    prop_objs.append({'id': oid, 'name': name, 'type': 'prop', 'gid': PROPS_FIRST + PROP_NAMES.index(name),
+                      'x': round(cx - (3 if name.startswith('flag') else w_ / 2)), 'y': round(by), 'width': w_, 'height': h_,
+                      'rotation': 0, 'visible': True}); oid += 1
+for run, hw in garden_hedges:
+    x0_, y0_ = run[0]
+    prop_objs.append({'id': oid, 'name': 'hedge', 'type': 'hedge', 'x': x0_, 'y': y0_, 'width': 0, 'height': 0, 'rotation': 0,
+                      'visible': True, 'polyline': [{'x': round(x - x0_, 1), 'y': round(y - y0_, 1)} for x, y in run],
+                      'properties': [{'name': 'width', 'type': 'int', 'value': hw}]}); oid += 1
 empty = [0] * (MW * MH)
 tmj = {
     'type': 'map', 'version': '1.10', 'tiledversion': '1.10.2', 'orientation': 'orthogonal', 'renderorder': 'right-down',
@@ -473,7 +768,7 @@ tmj = {
          'data': [int(v) + TERRAIN_FIRST for v in ground_ids.ravel()]},
         {'id': 3, 'name': 'decor', 'type': 'tilelayer', 'x': 0, 'y': 0, 'width': MW, 'height': MH, 'opacity': 1, 'visible': True, 'data': empty},
         {'id': 4, 'name': 'buildings', 'type': 'objectgroup', 'draworder': 'index', 'x': 0, 'y': 0, 'opacity': 1, 'visible': True, 'objects': objs},
-        {'id': 5, 'name': 'props', 'type': 'objectgroup', 'draworder': 'topdown', 'x': 0, 'y': 0, 'opacity': 1, 'visible': True, 'objects': []},
+        {'id': 5, 'name': 'props', 'type': 'objectgroup', 'draworder': 'topdown', 'x': 0, 'y': 0, 'opacity': 1, 'visible': True, 'objects': prop_objs},
         {'id': 6, 'name': 'above', 'type': 'tilelayer', 'x': 0, 'y': 0, 'width': MW, 'height': MH, 'opacity': 1, 'visible': True, 'data': empty},
         {'id': 7, 'name': 'collision', 'type': 'objectgroup', 'draworder': 'topdown', 'x': 0, 'y': 0, 'opacity': 0.6, 'visible': True, 'objects': []},
         {'id': 8, 'name': 'events', 'type': 'objectgroup', 'draworder': 'topdown', 'x': 0, 'y': 0, 'opacity': 1, 'visible': True, 'objects': events},

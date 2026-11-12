@@ -44,6 +44,6 @@ Previews: `data/debug/map_v3.png`, `data/debug/map_v3_collision.png` (red = bloc
   amphitheatre. Bakes static art into deduplicated tiles and writes a Tiled map
   (`game/public/maps/main.json`) plus `main.meta.json` (props, collision, zones, spawn).
 - `tools/osm_parse.py`, `tools/debug_plan.py`: OpenStreetMap extraction, used only as a layout guide.
-- `game/`: Phaser 3 + Vite + TypeScript, 1024×576 view (64 tiles wide).
+- `game/`: Phaser 3 + Vite + TypeScript, 800×450 view (50 tiles wide).
 
 Map layout reference data © OpenStreetMap contributors (ODbL).
