@@ -1,0 +1,510 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "name": "exterior",
+ "image": "../generated/exterior_tiles.png",
+ "imagewidth": 128,
+ "imageheight": 64,
+ "tilewidth": 16,
+ "tileheight": 16,
+ "tilecount": 26,
+ "columns": 8,
+ "margin": 0,
+ "spacing": 0,
+ "tiles": [
+  {
+   "id": 0,
+   "type": "paver_a"
+  },
+  {
+   "id": 1,
+   "type": "paver_b"
+  },
+  {
+   "id": 2,
+   "type": "paver_c"
+  },
+  {
+   "id": 3,
+   "type": "kerb_left"
+  },
+  {
+   "id": 4,
+   "type": "kerb_right"
+  },
+  {
+   "id": 5,
+   "type": "kerb_top"
+  },
+  {
+   "id": 6,
+   "type": "kerb_bottom"
+  },
+  {
+   "id": 7,
+   "type": "kerb_corner_nw"
+  },
+  {
+   "id": 8,
+   "type": "kerb_corner_ne"
+  },
+  {
+   "id": 9,
+   "type": "kerb_corner_sw"
+  },
+  {
+   "id": 10,
+   "type": "kerb_corner_se"
+  },
+  {
+   "id": 11,
+   "type": "hedge_v",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "type": "hedge_h",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "type": "hedge_corner_nw",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "type": "hedge_corner_ne",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "type": "hedge_corner_sw",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 16,
+   "type": "hedge_corner_se",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 17,
+   "type": "hedge_end_top",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 18,
+   "type": "hedge_end_bottom",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 19,
+   "type": "hedge_end_left",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 20,
+   "type": "hedge_end_right",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 21,
+   "type": "fence_post_v",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 22,
+   "type": "fence_post_h",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 23,
+   "type": "tree_pit"
+  },
+  {
+   "id": 24,
+   "type": "zebra_v"
+  },
+  {
+   "id": 25,
+   "type": "zebra_h"
+  }
+ ],
+ "wangsets": [
+  {
+   "name": "Paver path",
+   "type": "edge",
+   "tile": 0,
+   "colors": [
+    {
+     "name": "Paver path",
+     "color": "#d2c0b3",
+     "tile": 0,
+     "probability": 1
+    }
+   ],
+   "wangtiles": [
+    {
+     "tileid": 0,
+     "wangid": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 1,
+     "wangid": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 2,
+     "wangid": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 3,
+     "wangid": [
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 4,
+     "wangid": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 5,
+     "wangid": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 6,
+     "wangid": [
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 7,
+     "wangid": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 8,
+     "wangid": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 9,
+     "wangid": [
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 10,
+     "wangid": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Hedge",
+   "type": "edge",
+   "tile": 11,
+   "colors": [
+    {
+     "name": "Hedge",
+     "color": "#1a6c09",
+     "tile": 11,
+     "probability": 1
+    }
+   ],
+   "wangtiles": [
+    {
+     "tileid": 11,
+     "wangid": [
+      1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 12,
+     "wangid": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 13,
+     "wangid": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 14,
+     "wangid": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 15,
+     "wangid": [
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 16,
+     "wangid": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+     ]
+    },
+    {
+     "tileid": 17,
+     "wangid": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 18,
+     "wangid": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 19,
+     "wangid": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "tileid": 20,
+     "wangid": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+     ]
+    }
+   ]
+  }
+ ]
+}

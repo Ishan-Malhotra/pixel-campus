@@ -232,3 +232,447 @@ are walkable. Type-check passes.
 saved references) as one commit, and pushed it to `origin`. `main` is unchanged.
 **Commands:** `git checkout -b garden-3m-scale`, `git add -A`, `git commit`, `git push -u origin garden-3m-scale`.
 **Left:** merging into `main` (or opening a pull request) is up to the user.
+
+## 2026-11-16 21:05 · Opened the game on localhost
+**Asked:** "open this in localhost".
+**Did:** Started the Vite dev server (`cd game && npx vite --port 5179 --strictPort --host 127.0.0.1`) and opened http://127.0.0.1:5179/ in the browser.
+**Left:** the server is still running in the background.
+
+## 2026-11-16 21:30 · Smoother movement and camera (part 1 of "front of the Clock Tower + smoother animation")
+**Asked:** "we need to edit the area in front of the clock tower joining to the rotunda. i have the satellite view,
+how can we smoothen the animation and add more things to the map? help me". Taken as: (1) make walking/scrolling
+smooth, (2) redo the porch→Rotunda area after the satellite view already saved (`art/satellite/main_rotunda.jpg`),
+(3) add more plants/details there. The user was not asked which animation they meant; walking/scrolling judder was the
+measurable problem (flags and grass were not touched).
+**Cause found:** the 800×450 canvas was stretched to the window by a non-whole factor (e.g. ×3.6 on a 1440-wide
+retina screen), so map pixels were 3 or 4 screen pixels wide and the pattern crawled while scrolling; and the camera
+rounded its scroll to whole map pixels while the player moved in fractions, so the player wobbled against the ground.
+**Did:**
+- New `game/src/view.ts`: `VIEW_W = 800`, `screenSize()`, `pixelZoom()` = the whole-number zoom closest to 800 map px across.
+- `game/src/main.ts`: canvas at device-pixel size (`zoom: 1/dpr`, `Scale.NONE`), resizes with the window and emits `pixelzoom`.
+- `game/src/scenes/WorldScene.ts`: exact float position `pos`; `place()` draws the player and centres the camera at
+  that position snapped to 1/zoom map px (= one screen pixel); no `startFollow`; camera `setRoundPixels(false)`.
+  The walk cycle's speed now follows the distance actually covered (legs stop when pushing into a wall).
+- View is now 720×450 map px on a 1440×900 retina screen (zoom 4), 960×540 on 1920×1080 (zoom 2), 640×360 on 1280×720.
+**Checked:** `npx tsc --noEmit -p .` OK. Headless (`/tmp/campus-check/smooth.mjs`, playwright-core reinstalled since
+/tmp was wiped): at all three sizes the player's offset from the camera centre is 0 in every frame while walking
+(before the camera fix it varied 0–3 screen px), 0 console errors; screenshot shows no tile seams.
+**Left:** the map work (next entry).
+
+## 2026-11-16 22:20 · Porch→Rotunda area redone after the satellite view (part 2 of the same request)
+**Asked:** see the 21:30 entry. Reference: `art/satellite/main_rotunda.jpg` (already saved; no new image was given).
+**Compared with the satellite, the old area had:** a ragged tan path-tile blob as the terrace; three rows of hedges
+each side (outer, median, and planters on the Rotunda side; the satellite has no planters there); small scattered
+plants instead of the big red bougainvillea beds on the Rotunda's flanks; no centre line on the drive.
+**Did:**
+- **Converter (`tiled_to_game.py`), three new object kinds on the `props` layer**, all editable in Tiled:
+  - `paving` polygon: pale stone slabs (colours from the art's Rotunda floor, warmed toward the satellite), white
+    kerb + grey rim, walkable. Properties `cx`,`cy` lay the slabs in rings around that point. `road_inset` (px): the
+    polygon's outer band is drawn as asphalt **only where it is beside a road**, so the kerb is an exact arc even though
+    the smoothed road outline wobbles. Drawn after the terrain, before beds/lines/hedges.
+  - `flowerbed` polygon: bougainvillea bed (leaf base, red/magenta/pink bract clumps on a jittered grid, stone kerb),
+    solid.
+  - `roadline` polyline: dashed white centre line (8 on / 8 off, 2 px).
+- **Blueprint (`blueprint.py`, section "front garden"):**
+  - Terrace = one `paving` polygon: the drive's inner kerb circle (centre (1381,1545), radius R−DRIVE_W/2+18, i.e. 18 px
+    under the road, `road_inset` 19) closed level with `TER_END = rcy − 30`; slabs ring the Rotunda centre (1380,1405).
+    It is no longer painted as path tiles, so **in Tiled the terrace shows as the polygon object over grass tiles**.
+    The old disc-grow terrace and the "sliver" fix are removed.
+  - Beds: traced row by row from the Rotunda's wall outwards to the first road/path/occupied pixel (stamp alpha
+    `rot_left`/`rot_right`), smoothed with `chaikin`, plus two `bougainvillea` props standing in each bed when it is
+    wide enough. West bed is narrow (3253 px) because an OSM footpath runs between it and the road; it was **not**
+    paved over. East bed 9159 px.
+  - Removed the Rotunda-side planter hedges (`west_in`/`east_in`) and the old flank plant list (palms, bushes, flowers
+    beside the Rotunda); the beds replace them.
+  - Tree row: conifers/bushes/shrubs at OUT+34 px outside the outer hedges, via `plant_free` (only 3 fit; the lawns
+    are already full of the art's plants).
+  - Dashed `roadline` along the two-lane part of the drive (between the medians and the terrace), clipped off other roads.
+  - Preview render draws the new shapes; new shapes are written as polygon/polyline objects with typed properties.
+- **`tiled_kit.py`:** project classes `paving`, `flowerbed`, `roadline` added to `campus.tiled-project`.
+**Failed on the way:** first bed tracer walked the wrong way (into the Rotunda: 70k px beds, bougainvillea in the
+Rotunda's centre); tree rows first placed 0 (footprint overlapped the hedge clearance; moved 8 px out); `int64` in JSON;
+leaf colour index out of range; asphalt band first ran along the terrace's lawn edge too; paving drawn under the road
+left the road's wavy kerb visible (replaced by `road_inset`); two lawn specks remained at inset 12 (fixed at 19).
+**Commands:**
+```
+python3 tools/v4/blueprint.py phase1                                 # writes phase1.generated.tmj (phase1.tmj untouched)
+python3 tools/v4/tiled_to_game.py tiled/maps/phase1.generated.tmj
+cd /tmp/campus-check && node walk.mjs && node smooth.mjs
+```
+**Checked:** `data/debug/game_render.png` vs the satellite; collision image (terrace and line walkable; hedges, beds,
+Rotunda walls solid); playtest at 1280×720: porch → south stops at the arcade y 1223 (as before), west along the terrace
+to x 1157 freely, 0 console errors; smoothness test still 0 px offset at all sizes.
+**Left / undecided:**
+- **The game now runs the converted `phase1.generated.tmj`; `phase1.tmj` is unchanged.** Replacing it needs
+  `blueprint.py phase1 --force` → asked the user (CLAUDE.md rule). Map unchanged since generated on 11-11 (mtime 22:34).
+- West bed narrow (OSM footpath); amphitheatre/bottom of Rotunda still cut flat (needs `rotunda.png`).
+- Lawn rows have few trees because the lawns are full; more variety needs more prop cut-outs.
+- Not committed or pushed.
+
+## 2026-11-16 22:55 · New Rotunda art (Part A of "replace the rotunda art… fix the roads and extra spaces")
+**Asked:** (with a complete Rotunda image and 5 aerial photos, two of them identical) "replace the rotunda art with
+this, additionally i am adding more satellite images of the entire campus, fix the roads and extra spaces
+accordingly, so that only the buildings are left to be added".
+**Answers to my questions:** scope = **Phase 1 area first**; satellite = **"I'll add top-down ones"** (into
+`art/satellite/`); replacing `phase1.tmj` = **"avoid wasting effort on tiled"** (taken as: replace freely after a
+backup, no effort on Tiled-side polish). Plan approved: `~/.claude/plans/adaptive-finding-quilt.md` (Parts A, B, C).
+**Did (Part A):**
+- Saved the user's images (they were only in a temp folder): `art/pieces/_raw/rotunda_raw.png` (1024×572, black
+  background, "ENT"/"EXIT" labels, ✦ watermark), `art/photos/aerial_{rotunda_east,rotunda_west,nab_corridor_to_clock_tower,nab_to_saraswati}.png`.
+- `blueprint.py` → new `prep_rotunda()` (+ `_flood`, `_close`): makes **once**, then never overwrites,
+  - `art/pieces/rotunda.png`: background flooded away from the border (sum < 60), loose parts < 1500 px dropped (the
+    watermark), the three labels painted out (onion-peel median fill; text boxes measured at (312,318,329,325),
+    (740,259,761,266), (504,439,520,446));
+  - `art/pieces/rotunda_collision.png` (painted = wall): south half by colour (flood from the plaza centre over floor
+    colours with 2 px gap closing; blocked islands < 700 px become floor); north half by geometry (band between the
+    plaza ellipse (512,266; 211×164) and the outer ellipse (512,255; 258×236), north of the line (300,330)–(760,262));
+    green inside the plaza = hedge arcs; the west landing + stepped ramp opened by hand (polygon in the code).
+- Stamp `rotunda_piece` = the piece × `ROT_SCALE = 0.70`, own 128-colour palette, placed with its axis on the porch
+  and its apron 36 px (TERRACE) below the drive. Old `rotunda` / `rotunda_art` cuts are no longer built; their files
+  in `art/stamps/` are untouched (that is why the new stamp is not called `rotunda`).
+- **Deviation from the plan, told to the user:** scale 0.70 instead of "same width as the old stamp". At 1:1 the
+  piece (1024 px wide with its stair path) lay on top of the west road; the satellite gives a plaza ≈ 61 m (443 px in
+  the piece → 0.73) and porch→plaza centre ≈ 51 m (map now 53 m).
+- NAB slots trimmed to start below the amphitheatre. South stub joined to the snake path and the west stair path to
+  the west road by `join()` (short footpaths). Terrace = paving from the drive's kerb to the stamp, ending in a
+  straight edge at `rcy − 20`. Bougainvillea bed tracer and its props removed (the piece has its own beds).
+- `tiled_to_game.py`: collision grid **4 px cells, solid from 25 % covered** (was 8 px / 40 %): 2–3 px walls always
+  block and the 24 px stair path stays open. `main.meta.json` is now ~690 KB.
+- Tiled: backed up `phase1.tmj` → `phase1.backup-1116-2250.tmj`, `blueprint.py phase1 --force`, removed
+  `phase1.generated.tmj`; the game is converted from `phase1.tmj` again.
+**Failed on the way:** first collision seed had holes (east arcade wall, hedges walkable) that I misread as solid in
+the first overlay → north half made geometric; the stair path dead-ended at the landing until the ramp was opened;
+terrace tried as a thin band around the arcade (showed the road's wavy edge) → back to the full crescent; a width
+check on the 8 px grid wrongly failed the stair path → replaced by a search with the game's exact `canStand` rule.
+**Commands:** `python3 tools/v4/blueprint.py phase1 --force`, `python3 tools/v4/tiled_to_game.py tiled/maps/phase1.tmj`,
+`python3 /tmp/rot/routes.py`, `cd /tmp/campus-check && node rot.mjs && node smooth.mjs`, `npx tsc --noEmit -p .`
+**Checked:** render vs the user's image (no black, labels or watermark); mask overlay; route search with the game's
+hitbox, foot and bike: west stair path → ramp → plaza/steps/east stairs ✓, south entrance from the snake path ✓,
+arcade blocks from the terrace ✓, all reachable from the porch ✓; in-game walk into the plaza, 0 console errors;
+smoothness still 0 px offset; type-check OK.
+**Left:** the west stair path lies on the east edge of the 12 m-wide west road ("drive over buildings: 770 px" in
+the blueprint print) → Part C road widths. No door through the arcade from the terrace (the art has none). East
+stairs end in a closed corner. Parts B and C. Not committed.
+
+## 2026-11-16 23:15 · Satellite alignment tool (Part B) and the OSM audit; stopped before Part C
+**Did:**
+- `blueprint.py` now writes `data/<area>_frame.json` (rotation, origin, px per metre, size). Written for phase1 by
+  the same maths without a full run (values: θ −8.75°, 2992×3680).
+- New `tools/v4/sat_register.py`: for each image in `art/satellite/`, finds metres-per-pixel and position by
+  FFT-correlating its bright-roof mask with the OSM building raster (coarse pass at 2 m over scales 0.10–1.20 m/px,
+  fine pass at 0.25 m, ±2 % scale, ±6 m). Saves `art/satellite/registration.json`; an entry with `points` is fitted
+  from control points instead; an entry with `m_per_px` is reused. Outputs the mosaic and overlays (see HANDOFF §2f).
+  Runs in ~15 s.
+- Results: `central_strip.png` 0.369 m/px, `fd2_area.png` 0.184 m/px (both automatic; roofs sit on their slots and
+  roads coincide in the overlay). `main_rotunda.jpg` was placed wrongly by the automatic match (few roofs in it) →
+  entered by hand: 0.1845 m/px (same zoom as fd2_area), plaza centre px (462, 658) on the OSM Rotunda point.
+- The overlay confirms the new Rotunda's size and position (plaza on the satellite's plaza).
+- OSM audit of the Phase 1 box: every highway is drawn (22 service, 1 unclassified, 15 footway, 4 steps); nothing
+  is filtered out. Missing lanes are missing from OSM itself.
+- `art/pieces/README.md`: Rotunda marked done.
+**Not done (Part C), and why:** the user said they will add top-down screenshots; the plan says to stop and ask
+when they have not arrived. Existing coverage is 61 % of the map.
+**Left:** Part C once the screenshots are in `art/satellite/` (run `sat_register.py`, then road widths, missing
+lanes via `data/phase1_corrections.json`, tree/bare-ground areas, NAB corridor). Nothing committed or pushed.
+**Note:** the first FFT version would have taken minutes per image and the fine pass hours (pixel loops); rewritten
+before running.
+
+## 2026-11-17 · Hostel piece on every bhawan
+**Asked:** (with a hostel image) "here is a hostel. add this to the map. this can be vk, bhagirath, krishna, gandhi,
+shankar, vyas. mirror this for ram, budh, malviya. vk has a lawn in front of it, ensure you lay down enough space for
+the lawn. mirror the image for ranapratap and ashok as well."
+**Asked back:** VK's lawn side → "West, at the gate"; size → "Not sure, use satellite" (VK is not covered by any
+screenshot yet) → reserved 30 m.
+**Did:**
+- Saved the image as `art/pieces/_raw/bhawan_raw.png` (765×1024, white background, a watermark on the bottom-right
+  colonnade).
+- `blueprint.py`: `prep_bhawan()` makes once `art/pieces/bhawan.png` (white flooded off from the border; watermark
+  patched from two colonnade bays to the left, bay = 54.5 px, checked seamless) and `art/pieces/bhawan_collision.png`
+  (all walls except the gate's stone landing, piece px (4, 488)–(37, 586)). Stamps `bhawan` / `bhawan_m` (mirrored),
+  cropped to the building and resized to 21×32 tiles (63×96 m, the usual OSM footprint; the art is 0.76 wide:tall,
+  so it is squeezed 13 % horizontally), 96-colour palette.
+- Placement after the Main Building slot: name lists `BHAWAN_AS_DRAWN` / `BHAWAN_MIRRORED` (Malviya written as
+  Malviya-A, Malviya-B and Malviya Bhawan, because OSM has "Malviya-A" and "Malviya-B"); centred on the OSM footprint;
+  `gate_path()` = straight footpath from the gate to the first road/path pixel; `LAWNS` keeps metres clear in front of
+  the gate and removes small slots under a hostel or on its lawn (2 removed under Ram Bhawan).
+- In Phase 1: Ram, Budh, Malviya-A (gate east); Krishna, Gandhi, Shankar, Vishwakarma, Bhagirath (gate west). Vyas,
+  Rana Pratap, Ashok, Malviya-B are outside this map area; they are in the lists for later areas.
+- Backed up `phase1.tmj` → `phase1.backup-1117-hostels.tmj`, regenerated with `--force`, converted.
+**Checked:** full render; all 8 gates reachable on foot from the porch (search with the game's hitbox); in-game walk
+across VK's lawn to its gate (stops on the landing at x 2454), zone banner "Vishwakarma Bhawan", 0 console errors.
+VK's gap to the road was already ~30 m (path from the gate is 163 px long), so VK did not move.
+**Not done / notes:** Bhagirath's and VK's real OSM outlines are not double-courtyard (Bhagirath is E-shaped); the
+user asked for this art on them anyway. Courtyards are not walkable (no way in through the gatehouse). VK lawn depth
+is a guess until a satellite screenshot. Nothing committed.
+
+## 2026-11-17 · Green courtyards; street-side strip (footpath, kerb, hedge, trees) for Krishna Bhawan only
+**Asked:** (with 3 Street View screenshots and a pasted task spec) courtyards a different colour from the grass outside
+→ make consistent; the outer garden + hedge "wall" between road and hostel is missing; roads look bland, more
+greenery (more screenshots to come). "do it first for krishna bhawan". The pasted spec: palette-only 16 px tiles,
+`tools/v4/exterior.py`, new assets only under `tiled/generated/` + `tiled/tilesets/`, 3-tile hedge gap at the door,
+work on crops, STOP for approval after one hostel.
+**Answers to my questions:** courtyards → "make them green lawn"; street trees → canopy "from your hostel art".
+Plan approved: `~/.claude/plans/adaptive-finding-quilt.md` (overwritten for this task).
+**Did:**
+- `blueprint.py: prep_bhawan()`: courtyard earth → the map's grass tile, tree shadows → darker palette green, decided
+  on the resized art, painted on the stamp (`BHAWAN_COURTS`); `art/pieces/bhawan.png` untouched. Applies to every
+  hostel (one shared stamp). Hostel slots now carry `gate: [x, y, side]` (in `data/phase1_slots.json`).
+- New `tools/v4/exterior.py`: `make_assets()` → `tiled/generated/exterior_tiles.png` (+ `.json`; 23 tiles: 3 pavers,
+  4 kerbs + 4 corners, hedge v/h + 4 corners + 4 ends, 2 fence posts), `tree_whitewashed.png`, `tree_plain.png`
+  (32×45; canopy cut from the hostel art's round courtyard tree, trunk/band/ring added), `tiled/tilesets/exterior.tsj`
+  (hedge tiles `solid`; edge-type terrain sets "Paver path" and "Hedge") and `exterior_props.tsj`. `layout()` lays
+  road | kerb | paver | hedge for one slot on `decor`, trees on `props`, rectangles on `collision` (all named
+  `ext:<slot>`), re-runnable; `validate()` re-opens the map. Approved slots are kept in `data/phase1_exterior.json`.
+- `tiled_to_game.py`: only corner-type terrain sets are smoothed terrain; decor tiles are drawn after the terrain
+  repaint (so the kerb covers the road's mid-tile edge).
+- Ran for **Krishna Bhawan only**: rows 103–136, kerb columns 110/111 (the road jogs a tile below the gate), gap rows
+  119–121, 103 tiles, 31 hedge tiles, 4 trees. Backup `phase1.backup-1117-exterior.tmj`.
+**Deviations from the pasted spec (told to the user):** palette = `tiled_kit.PAL_IMG` (same 128 colours, same
+nearest-colour rule as v3 `to_palette`); gate position instead of door objects (none exist); trees 32×45 with the
+canopy from the user's art instead of script-drawn 16×32; own tileset instead of appending to the ground tileset;
+zone rectangles (name banners) are not treated as blocking events, only spawn/door objects.
+**Fixed on the way:** red band on the trunk too close to the brown (→ (185,125,104)); wedge of verge at the road's
+jog (the footpath now takes a partly-road tile beside the kerb); stray kerb wrapped around the strip's ends.
+**Commands:** `python3 tools/v4/blueprint.py phase1 --force` → `python3 tools/v4/exterior.py phase1 "Krishna Bhawan"`
+→ `python3 tools/v4/tiled_to_game.py tiled/maps/phase1.tmj`. **New pipeline order: blueprint → `exterior.py phase1
+--approved` → converter** (a blueprint regenerate wipes decor).
+**Checked:** asserts (palette-only pixels, no tile on a building/slot/spawn/collision, no hedge in the gap); map
+re-opened and valid (5 tilesets, 113 objects); 4× crops of top/middle/bottom; route search with the game's hitbox:
+road → gap → gate ✓ (foot and bike), hedge blocks north and south of the gap ✓, footpath walkable end to end ✓, tree
+base blocks ✓; in-game walk to the gate landing (1846, 1932), hedge stop at x 1786, 0 console errors; type-check OK.
+`data/debug/exterior_krishna.png` = before | after.
+**Left (waiting for the user's approval):** the other hostels, the messes and library (they have no gate data yet),
+roadside greenery on the main road (user will send more screenshots). The kerb column narrows the road by half a
+tile along the strip. Pavers are grey-beige with salmon accents (the palette has no true pink-grey). Not committed.
+
+## 2026-11-17 (later) · Streets restyled after the user's street reference; laid on six hostels; road centre lines
+**Asked:** (with a pixel-art street image and 4 street photos taken in front of Krishna Bhawan; two were the same
+file) "use the attached image as reference to draw the roads and greenery around campus".
+**Read as:** the Krishna sample's style was not the target; the reference is. No separate approval of the first
+sample was given; this message replaced the "stop and wait" step, so the new style was laid on every hostel it fits.
+**Did:**
+- Saved `art/reference_street.png` (the reference) and `art/photos/street_krishna_{12,13,14,15}.png`.
+- `exterior.py` restyled: grey **herringbone** pavers (8×4 slabs, 16 px period), **black/white striped kerb** (4 px,
+  8 px blocks), `tree_pit`, `zebra_v/h` tiles (new tiles appended; ids of the old 23 unchanged). Trees are now
+  `tree_street_a/b` (81×86, b = mirrored), **cut from the reference's top-right tree**: lawn + shadow flooded away,
+  canopy = left half mirrored about the trunk inside a scalloped outline (it runs off the picture / into the next
+  tree), leaf pixels kept to the palette's greens. The trunk is red-brown with a white band above, as in the photos
+  (the first sample had it the wrong way round). `tree_whitewashed/plain.png` removed (generated files).
+- `layout()` rewritten: near side (kerb, paver, hedge with posts, 3-tile paved gap, dropped kerb) + **far side of
+  the road** (kerb, paver, trees) + **zebra crossing** on the two rows at the gate + trees in pits every 9 tiles
+  (far side staggered) + **shrubs** (existing props from the main art) on the lawn behind the hedge. Other slots'
+  props count as occupied. `exterior_props.tsj` is added before `exterior.tsj` so the latter can grow.
+- `blueprint.py`: dashed **centre lines** (`roadline`) on straight stretches of 4-tile and named roads, none inside
+  junctions (10 stretches).
+- Ran on all 8 hostels: laid on Krishna, Gandhi, Shankar, Ram, Budh, Malviya-A; **skipped Vishwakarma and Bhagirath**
+  ("no road within 6 tiles on the gate side": VK has its lawn there). `data/phase1_exterior.json` lists the six.
+**Checked:** palette asserts; map valid (253 objects); 3× crops of Krishna; contact sheet of the others; every
+hostel gate reachable from the porch; in-game walk to Krishna's gate over the zebra, hedge stops the player,
+0 console errors; type-check OK. `data/debug/exterior_krishna.png` updated (before | after).
+**Left / known:** trees are tall (86 px): the player is hidden while passing behind a canopy. Roads are a tile
+narrower between the two kerbs. Some older shrub cut-outs carry stray dark specks. Far-side strip breaks where a
+side path meets the road. VK/Bhagirath, messes, library, roads away from hostels, people/bicycles from the reference:
+not done. Not committed.
+
+## 2026-11-17 (evening) · Part A: tree sheet sliced into registered sprites (map untouched); stopped for approval
+**Asked:** two-part task; Part A = slice `art/new/trees_sheet.png` (4×3 sprites on purple) into registered sprites by
+colour key, remove the watermark, find the art's pixel size, downsample, scale to tiles, snap to the palette, split
+trees into canopy / trunk base with split row + collision footprint, hold the palm and grass tuft, register in a
+"collection of images" tileset; then STOP. (The message ended mid-sentence at step 7, and Part B's details were
+not included.)
+**Did:** saved the sheet from the chat to `art/new/trees_sheet.png` (new file). New `tools/v4/slice_trees.py`
+(deterministic; reruns give byte-identical files) → `tiled/generated/trees/` (10 sprites, + `_canopy` / `_trunk` for
+the 7 trees, `_contact_sheet.png`, `trees.json`) and `tiled/tilesets/trees.tsj` (24 images; properties: kind,
+tiles_w/h, split_row, collision_x/y/w/h, canopy_layer `above`, trunk_layer `props`).
+- Background: the corner pixel is the darker frame/gutter purple (157,51,123); the cells are (194,90,158) → keyed on
+  both, tolerance 60, plus any purple-ish pixel. No flood fill. Watermark right of the grass tuft removed (8 px).
+- Art pixel = 2.91 screen px (Fourier peak of edge positions, same in x and y); sampled once per art pixel.
+- Scale (nearest): row 1 canopy 3 tiles, row 2 → 2 tiles, row 3 → 1 tile. **Deviations:** never above 1.0 (column
+  36 px and cypress 20 px keep their own size; forcing 3 / 2 tiles made them 7 / 6 tiles tall); umbrella 4 tiles and
+  twin 5 tiles (3 would crush them).
+- Palette: leaves (and the deep shade under crowns) snap to the palette's greens only; the red trunks come out
+  brown (the palette has no saturated red). Split at 27.5 % of each sprite's height (pixel row, not a tile boundary).
+- Held: `palm`, `grass_tuft` (not cut, not registered).
+**Checked:** asserts (palette only, alpha 0/255, no purple); looked at the contact sheet twice (fixed: near-black
+canopy shade, footprints spanning the crown, twin footprint, oversized canvases, grid finder missing the last
+row/column); rerun identical; tileset images exist with the stated sizes.
+**Left:** Part B (not started, needs the user's approval and its instructions). Note for Part B: the map's `above`
+layer is a tile layer and the converter depth-sorts upright props; placing canopy images above the player needs an
+object layer or a converter change. Not committed.
+
+## 2026-11-17 (evening) · Part A steps 8–10: contact sheets, defects found and fixed; stopped for approval
+**Asked:** steps 8–10 of Part A (contact sheets at 4x on the real grass tile and on a hostel roof tile, look, report
+and fix purple edges / holes / clipped canopies, save to `data/debug/`, STOP), plus the full text of Part B (not
+started; it needs approval of Part A first).
+**Did (`tools/v4/slice_trees.py`):** `data/debug/trees_on_grass.png` (terrain tile 64) and `trees_on_roof.png` (a
+plain roof patch of `tiled/stamps/bhawan.png`); per-sprite defect numbers in `tiled/generated/trees/trees.json`
+(purple px, enclosed holes, margin to the sheet cell, fringe px repainted).
+**Found and fixed:**
+- The purple rule (r and b above g) also deleted crimson flowers in `shrub_red` and red trunk shading → now needs
+  blue far above green and close to red (b > g+45, r > g+30, r−b < 60). Holes: shrub_red 13 → 2 px, twin 6 → 0.
+- Rim pixels were blends of outline and purple (grey / pink / brown once keyed), a broken outline on every sprite →
+  every non-green rim pixel is repainted as outline (dark green beside leaves or crown shade, dark brown beside
+  trunk): 90–292 px per sprite at art resolution.
+- No canopy is clipped (smallest margin to the cell edge: 1 art pixel). Remaining holes are the umbrella's real gaps
+  (25 px) and 1–2 single pixels.
+**Checked:** looked at both sheets and 4x zooms before and after; asserts pass; rerun byte-identical; map and game
+files untouched.
+**Left:** Part B waits for approval. Notes for it: no `data/reference/street_mood.png` exists (the mood image is
+`art/reference_street.png`); the task says `trees.tsx`, the file is `tiled/tilesets/trees.tsj`; a `shadows` layer and
+above-player canopies need converter + game support (alpha layers); current `exterior.py` strips would be replaced
+by `beautify.py` in the test area. Not committed.
+
+## 2026-11-17 (night) · Part B on the test area only: tools/v4/beautify.py; stopped for approval
+**Asked:** Part B (full spec in the user's message): beautify streets on ONE test area (beside Krishna Bhawan, porch to
+the crossing south of it), mood after `art/reference_street.png`; STOP after showing before/after. Answers given:
+mood file = `art/reference_street.png`; umbrella/twin: "shrink" for streets, full size for lawns; replace the old
+strip in the test area; converter/game changes allowed.
+**Test area:** rows 119–160 (gate crossing at 119–121 → the crossing where the NAB footpath meets the road at
+158–159), cols 102–137 (street + the lawns beside it). Asphalt fixed at cols 107–109 for the whole area (the north
+alignment): matches the existing street at the north end and lets the 3-tile footpath pass the Warden's Residence.
+**Did:**
+- `slice_trees.py` (Part A outputs, ids of the first 24 unchanged): street copies `tree_umbrella_road`,
+  `tree_twin_road` (canopy 3 tiles); `<tree>_canopy_cell.png` (rows above the trunk tile, for `above`); trunk tiles'
+  collision relative to the trunk image. trees.tsj now 39 images.
+- New `tools/v4/beautify.py` (SEED 20261117, stable crc32 sub-seeds): assets `tiled/generated/street/` →
+  `street.tsj` (52 tiles: asphalt ×3 + cracks/worn/manhole/dash/zebra, 4 pavers, kerbs, ramps, corners, dirt-spill
+  and dirt-end pavers, tree pit, 3 grass + tufts/flowers/dirt, hedge pieces) and `street_objects.tsj` (street lamp =
+  the art's lamp with its lawn specks removed; dustbin, bench, bike rack, barricade drawn small in the palette).
+  Layout: kerb + 3 pavers each side; zebra + ramps at both crossings; paved 3-tile corridor to Krishna's gate;
+  hedge with wire posts on the building side (gaps at the door, stops at the residence); shrub clusters (3–5) on the
+  NAB verge and behind the hedge; trees every 5–9 tiles jittered with skips, trunk in a pit on the outer column,
+  canopy on `above`, shadow 25 % + 7–11 dapples 12 % on `shadows`; two full-size lawn trees (twin, umbrella);
+  per 20 rows 2 lamps / bin / bench-or-rack / maybe a manhole and barricade; ground variety on the lawns; ends join
+  the neighbouring footpath or fade into earth, the kerb turns the corner. Blueprint's dashed line cut out of the area.
+  Writes only decor / props / above / shadows (+ `data/phase1_beautify.json`: area box and its canopy anchors).
+- `tiled_to_game.py`: tiles taller than the grid anchored bottom-left (Tiled's rule); `shadows` object layer
+  (ellipses, `opacity`, darkened then snapped to the palette); `collision_x/y/w/h` tile properties used as exact
+  collision boxes (flip-aware).
+- `exterior.py`: leaves beautify areas alone (cells blocked, rows dropped from its edges, no crowns reaching in).
+- Pipeline: `blueprint.py phase1 --force` → `exterior.py phase1 --approved` → `beautify.py phase1 krishna_test` →
+  `tiled_to_game.py`. Backup `phase1.backup-1117-beautify.tmj`.
+**Iterations vs the mood (5 differences each, all fixed):** (1) pale-box tree pits → dark soil + stone rim; cracks
+looked like letters → subtle zigzags, fewer; bright unbroken paving → more dapples; Gandhi's street tree hid the south
+crossing → exterior keeps crowns out; stray kerb bar at the north join → exterior drops the area's rows. (2) bench
+hidden under a crown → details avoid crowns; bare lawn behind the hedge → shrub clusters there; no lawn trees →
+twin + umbrella full size on the lawn; (small crowns = the user's 3/2-tile cap, kept). (3) dark grass tiles formed a
+dot grid → removed, darker patches are irregular faint ovals on `shadows`; perfect ovals → 3–5 overlapping; dirt
+dots beside lawn trunks → removed.
+**Bugs found on the way:** `hash()` of strings (salted per process) made the layout and the grass tiles change per
+run → crc32; a wide far-side tree anchored its canopy one column outside the box, so a rerun tripped the overlap
+check → anchors recorded and cleared; bike rack collision 20 px spilled into the next footpath column → 16 px.
+**Checked:** asserts in beautify (widths 3/3 every row, kerb every row with ramps exactly at crossings, nothing on a
+door approach / crossing / ramp, nothing on buildings / events / collision, canopy overhang into the road 0 px and
+never over a crossing or door row, canopy ≤ 3/2 tiles); rendered street area 0 colours outside the palette; map
+re-opened valid; content identical on rerun and on a fresh pipeline (only Tiled object ids grow); game walk: crossing
+→ gate landing (1847, 1930), near footpath south under crowns to y 2246 unobstructed; trunk/hedge/lamp block,
+pavers beside them walkable; 0 console errors; tsc OK. Before/after: `data/debug/beautify_test.png`.
+**Left (needs approval):** rollout to every road + `--seed` flag + report of skipped segments. Seam at the south edge:
+the untouched road below steps one tile east (both kerbs jog at row 161). twin_road unused on footpaths (two trunks
+need 3 tiles). Palm / grass tuft still held. Not committed.
+
+## 2026-11-17 (night, later) · Test area: soil pits removed, denser trees, hedge on both sides; crown/trunk gap fixed
+**Asked:** "remove the dark soil pit beneath the trees, it is overlapping with the trunks and make it more dense.
+there are a lot of trees irl in the road borders"; then, mid-turn: "keep the hedge on both sides of the road".
+**Did:**
+- `beautify.py`: no `tree_pit` / dirt-spill tiles under street trees (trunks stand on the pavers; the tiles stay in
+  the atlas, unused, so ids do not move). `TREE_GAP` 5–9 → **3–5**, `TREE_SKIP` 0.15 → 0.05 (about 18 street trees
+  in 42 rows instead of 7). Hedge (with posts) on **both** sides; gaps only at Krishna's door corridor and where a
+  path meets it (the NAB side path at rows 158–159). The NAB-side shrub clusters gave way to the hedge (no lawn
+  behind it there); shrubs behind the Krishna-side hedge stay.
+- **Bug found while checking the flat-bottomed crowns:** on trees whose split row lies inside the trunk's tile (lime,
+  ball, cypress, …) the canopy cell ended at the top of the trunk tile but the trunk piece only started at the split
+  row: 5 pixel rows were in neither piece. `slice_trees.py`: the trunk piece now starts at min(split row, top of the
+  trunk tile) (`trunk_from_row` in trees.json); its collision box moved to match. Tileset ids unchanged.
+**Checked:** looked at 3× crops of both halves; beautify's asserts pass (widths, kerbs, ramps, nothing on crossings
+or door rows, canopy limits); 0 colours outside the palette in the street; game walk crossing → gate and along the
+footpath unobstructed, 0 console errors. `data/debug/beautify_test.png` updated.
+**Left:** still the test area only, waiting for the user's approval before the rollout to every road.
+
+## 2026-11-17 (late night) · Rollout: every road around the hostels, laid out like the approved test area
+**Asked:** "cool, make all the roads surrounding the hostels this consistent." (= approval of the test area.)
+**Did:**
+- `blueprint.py` writes `data/phase1_roads.json`: every drawn road's centre line (map px) and width, the drive's two
+  ends. (Noticed, not changed: blueprint never draws roundabouts: the `continue` for roundabout lines in the
+  highway branch also skips the roundabout block below it. Fixing it would change the junctions; left for the user.)
+- `beautify.py` rewritten from the hand-set test area to `layout_network()` (area `hostels`: all bhawans, margin 10):
+  - straight pieces from the OSM lines (vertical / horizontal stretches; a way's kinks merged; position = weighted
+    median, so the jog at Krishna's gate is straightened); diagonal stretches left as drawn with a clear zone round
+    them; the front garden's drive ends kept clear (7 tiles);
+  - each piece nudged by up to 2 tiles where that keeps the footpaths off buildings, and lined up with the road
+    continuing from its end (no stepped junctions); collinear ends a few tiles apart joined (the Gandhi Marg gap);
+    ends run on while the ground is road; at a clipped end the road goes on untouched;
+  - rings by distance from the asphalt (8-neighbour): 1 kerb (strip facing the road; corners; inner corner blocks),
+    2–4 pavers, 5 hedge with wire posts and corner pieces, 6 shrub clusters; junction corners pave themselves;
+  - every path that meets the hedge ring → a 3-wide paved gap, the way through kept clear, and a zebra + ramps across
+    the road; crossings within 4 tiles merge, hostel gates first;
+  - trees 3–5 tiles apart on each piece's outer line (crown never over a crossing, a building or more than one tile
+    of road; trunks of crossing roads ≥ 2 apart); 23 full-size lawn trees on open lawns; details per 20 tiles with
+    spacing (lamps 4, bins / benches 6, barricades 12); `bench_h` for east-west footpaths; ground variety on every
+    lawn of the region; footpaths fade into earth where they stop at a cleared zone.
+  - new tiles `asphalt_dash_h`, `asphalt_zebra_h`, `kerb_inner_*`, `hedge_corner_*`; new prop `bench_h`.
+  - `--areas-only` writes the region box for exterior.py; `--seed N` rerolls the planting.
+- `exterior.py`: clamps beautify boxes at the map edge (a negative column made the slice empty). With the hostels
+  region in `data/phase1_beautify.json`, exterior.py lays nothing for the hostels now (all its strips skipped).
+- Pipeline: `beautify.py phase1 hostels --areas-only` (once) → `blueprint.py phase1 --force` → `exterior.py phase1
+  --approved` → `beautify.py phase1 hostels` → `tiled_to_game.py tiled/maps/phase1.tmj`. Backup
+  `phase1.backup-1117-rollout.tmj`.
+**Result:** 17 road pieces, 250 street trees, 23 lawn trees, 237 shrubs, 69 lamps, 35 bins, 11 benches, 6 bike racks,
+13 barricades, 10 crossings, ~7000 lawn cells varied. Skipped: the bend of `w312156566` (diagonal, north-west of
+Malviya). 453 footpath lines narrower than 3 tiles where a building stands closer to the road (Ram and Malviya-A on
+the 2-lane west road, placeholders by Krishna Marg, the Rotunda's stair path) — they narrow, nothing is drawn on a
+building.
+**Fixed on the way:** asphalt over the front garden's props near Ram Marg's top (asphalt now avoids blocked cells);
+Krishna Marg north / south pieces at different columns (collinear line-up); a paved strip cutting Gandhi Marg (gap
+join); doubled lamps / bins at corners and overlapping trunks (spacing); two zebras a row apart at Ram (merge); a bin
+in Krishna's gate corridor after the merge (corridors always kept clear, gates first).
+**Checked:** asserts (nothing on buildings / events / cleared zones, no object on a crossing or corridor); every
+rendered pixel of the 15.5k beautified cells is in the palette except building art drawn over them (Rotunda, gatehouse
+edges); map valid; rerun gives identical content; all 8 hostel gates reachable from the porch; game walks to
+Krishna's and Ram's gates, along Krishna Marg and Gandhi Marg, bike down Krishna Marg at full speed, 0 console errors;
+tsc OK. Overview: `data/debug/beautify_hostels.png`.
+**Left:** roundabout bug in blueprint (above); roads outside the hostel district (Main Building side) untouched;
+palm / grass tuft still held; nothing committed.
+
+## 2026-11-17 (late night) · HANDOFF.md rewritten; summary of the 2026-11-16/17 sessions; corrections
+**Asked:** "write the logs and handoff well".
+**Did:**
+- **HANDOFF.md rewritten from scratch** as a description of the current state (it had grown into §2–§2j update
+  sections, several contradicting each other). New layout: state now · pipeline · tools table · buildings · streets
+  · front garden · waiting on the user · known issues · preferences · how to check work · legacy · next steps.
+  Facts re-checked before writing (git log/status, `tools/v4/` listing, map backups, playtest scripts, art folders).
+- This entry (WORKLOG stays append-only; older entries untouched).
+- Updated the auto-memory note `campus-game-project.md` (it still said 5 m/tile and Tiled as the editing tool).
+
+**Summary of 2026-11-16/17 (detail in the entries above):**
+| when | what | entry |
+|---|---|---|
+| 11-16 21:30 | smooth movement: whole-number zoom, player + camera snapped (`game/src/view.ts`, `WorldScene.place()`) | "Smoother movement and camera" |
+| 11-16 22:20 | porch → Rotunda after the satellite: paving terrace, beds, centre line | "Porch→Rotunda area redone" |
+| 11-16 22:55 | the user's complete Rotunda (`prep_rotunda()`, scale 0.70); collision grid 4 px | "New Rotunda art" |
+| 11-16 23:15 | `sat_register.py` (satellite ↔ map); OSM road audit | "Satellite alignment tool" |
+| 11-17 | one hostel image on all 8 bhawans, mirrored by gate side; VK lawn | "Hostel piece on every bhawan" |
+| 11-17 | green courtyards; first street strips (`exterior.py`), then restyled after the street reference | "Green courtyards…", "Streets restyled…" |
+| 11-17 eve | tree sheet sliced (`slice_trees.py`, Part A) | "Part A…" (two entries) |
+| 11-17 night | `beautify.py` on a test street (Part B), then no pits / denser / hedge both sides | "Part B…", "Test area: soil pits removed…" |
+| 11-17 late | rollout to every road around the hostels (`layout_network()`) | "Rollout: every road around the hostels" |
+
+**Corrections to older entries (they were right when written, now superseded):**
+- "Streets restyled… laid on six hostels" (11-17 later) and "Hostel piece…" mention `exterior.py` strips on the
+  hostels: since the rollout `exterior.py` lays **nothing** for the hostels (it skips beautify's region); the streets
+  are `beautify.py`'s.
+- "Part B on the test area only" describes tree pits, `TREE_GAP` 5–9, shrub clusters on the NAB verge and the
+  hand-set `krishna_test` area: pits were removed, the gap is 3–5, the verge has a hedge, and `krishna_test` no longer
+  exists (replaced by `hostels`).
+- 11-16 22:20: "the game now runs `phase1.generated.tmj`": superseded the same night; `phase1.tmj` is current.
+- 11-16 23:15: Part C (roads after the satellite) was never done as planned; the roads around the hostels were done
+  from OSM by `beautify.py` instead. The satellite screenshots are still wanted for VK's lawn and the missing lanes.
+**Files:** `HANDOFF.md`, `WORKLOG.md`, `~/.claude/projects/-Users-ishanmalhotra-Documents-campus/memory/campus-game-project.md`.
+**Left:** nothing new; open items are in HANDOFF §8–§9.
+
+## 2026-11-17 18:05 · Pushed "added roads" update to GitHub
+**Asked:** "push this to github with new update: added roads".
+**Did:** Committed all uncommitted work on `garden-3m-scale` (hostel-district roads from `beautify.py`, street
+tiles/props, Rotunda and bhawan pieces, regenerated map/game assets, photos and docs) and pushed to
+`origin/garden-3m-scale`. `main` is unchanged.
+**Left:** merge into `main` / PR is up to the user.

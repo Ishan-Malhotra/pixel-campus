@@ -1,0 +1,65 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "name": "exterior_props",
+ "tilewidth": 81,
+ "tileheight": 86,
+ "tilecount": 2,
+ "columns": 0,
+ "margin": 0,
+ "spacing": 0,
+ "grid": {
+  "orientation": "orthogonal",
+  "width": 1,
+  "height": 1
+ },
+ "tiles": [
+  {
+   "id": 0,
+   "image": "../generated/tree_street_a.png",
+   "imagewidth": 81,
+   "imageheight": 86,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_street_a"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    },
+    {
+     "name": "base_w",
+     "type": "float",
+     "value": 0.2
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "image": "../generated/tree_street_b.png",
+   "imagewidth": 81,
+   "imageheight": 86,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_street_b"
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    },
+    {
+     "name": "base_w",
+     "type": "float",
+     "value": 0.2
+    }
+   ]
+  }
+ ]
+}

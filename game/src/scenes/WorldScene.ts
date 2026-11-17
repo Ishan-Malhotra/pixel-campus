@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import type { MapMeta, Zone } from '../types';
+import { pixelZoom } from '../view';
 
 const DIRS = ['down', 'left', 'right', 'up'] as const;
 type Dir = (typeof DIRS)[number];
@@ -15,6 +16,9 @@ export class WorldScene extends Phaser.Scene {
   private zoneName = '';
   private bannerTimer?: number;
   private miniDot!: HTMLElement;
+  /** the player's exact position; the sprite and the camera are drawn at it snapped to whole screen pixels */
+  private pos = { x: 0, y: 0 };
+  private zoom = 1;
 
   constructor() { super('world'); }
 
@@ -63,10 +67,18 @@ export class WorldScene extends Phaser.Scene {
       });
     }
 
+    // camera: no startFollow. It is centred on the player in update(), after the move, using the same snapped
+    // position as the sprite, so player and ground can never be a pixel apart (that 1 px wobble was the jitter).
+    this.pos = { x: w.spawn.x, y: w.spawn.y };
     const cam = this.cameras.main;
     cam.setBounds(0, 0, w.width, w.height);
-    cam.startFollow(this.player, true, 1, 1);
-    cam.setRoundPixels(true);
+    // place() already snaps everything to whole screen pixels; the camera's own rounding (to whole MAP pixels)
+    // would pull the ground up to 3 screen px away from the player at zoom 4
+    cam.setRoundPixels(false);
+    const applyZoom = (z: number) => { this.zoom = z; cam.setZoom(z); this.place(); };
+    applyZoom(pixelZoom());
+    this.game.events.on('pixelzoom', applyZoom);
+    this.events.once('shutdown', () => this.game.events.off('pixelzoom', applyZoom));
 
     const kb = this.input.keyboard!;
     this.keys = kb.addKeys('W,A,S,D,UP,DOWN,LEFT,RIGHT,SHIFT,B,SPACE,M') as Record<string, Phaser.Input.Keyboard.Key>;
@@ -117,20 +129,37 @@ export class WorldScene extends Phaser.Scene {
       const len = Math.hypot(vx, vy);
       const sp = this.onBike ? SPEED.bike : k.SHIFT.isDown ? SPEED.run : SPEED.walk;
       const dx = (vx / len) * sp * dt, dy = (vy / len) * sp * dt;
-      const p = this.player;
+      const p = this.pos, x0 = p.x, y0 = p.y;
       if (this.canStand(p.x + dx, p.y)) p.x += dx;
       if (this.canStand(p.x, p.y + dy)) p.y += dy;
-      p.anims.play(`${mode}-${this.dir}`, true);
-      p.anims.timeScale = !this.onBike && k.SHIFT.isDown ? 1.6 : 1;
+      // the legs keep pace with the ground actually covered: full speed when free, slower when sliding along a
+      // wall, standing still when pushing straight into one
+      const moved = Math.hypot(p.x - x0, p.y - y0) / (sp * dt);
+      if (moved < 0.05) {
+        this.player.anims.stop();
+        this.player.setFrame((this.onBike ? 12 : 0) + DIRS.indexOf(this.dir) * 3);
+      } else {
+        this.player.anims.play(`${mode}-${this.dir}`, true);
+        this.player.anims.timeScale = (!this.onBike && k.SHIFT.isDown ? 1.6 : 1) * moved;
+      }
     } else {
       this.player.anims.stop();
       this.player.setFrame((this.onBike ? 12 : 0) + DIRS.indexOf(this.dir) * 3);
     }
-    this.player.setDepth(this.player.y);
+    this.place();
     if (vx || vy) this.maybeRustle();
     this.updateZone();
     this.miniDot.style.left = `${(this.player.x / this.w.width) * 100}%`;
     this.miniDot.style.top = `${(this.player.y / this.w.height) * 100}%`;
+  }
+
+  /** draw the player and centre the camera at the exact position snapped to whole screen pixels (1 / zoom map px) */
+  private place() {
+    const z = this.zoom, x = Math.round(this.pos.x * z) / z, y = Math.round(this.pos.y * z) / z;
+    this.player.setPosition(x, y).setDepth(y);
+    this.cameras.main.centerOn(x, y);
+    const c = this.cameras.main;
+    c.setScroll(Math.round(c.scrollX * z) / z, Math.round(c.scrollY * z) / z);
   }
 
   private lastRustle = { x: -999, y: -999 };

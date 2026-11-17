@@ -1,0 +1,22 @@
+{
+ "central_strip.png": {
+  "m_per_px": 0.3691,
+  "x0": 544.25,
+  "y0": 643.5,
+  "how": "auto",
+  "score": 0.197
+ },
+ "fd2_area.png": {
+  "m_per_px": 0.1836,
+  "x0": 672.0,
+  "y0": 632.75,
+  "how": "auto",
+  "score": 0.188
+ },
+ "main_rotunda.jpg": {
+  "m_per_px": 0.1845,
+  "x0": 653.28,
+  "y0": 659.73,
+  "how": "manual: zoom as fd2_area.png, plaza centre (462, 658) on the OSM Rotunda point"
+ }
+}

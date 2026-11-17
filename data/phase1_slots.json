@@ -2,47 +2,72 @@
  {
   "name": "Budh Bhawan",
   "osm": "r5372452",
-  "type": "bhawan",
+  "type": "stamp:bhawan_m",
   "x": 36,
   "y": 162,
   "w": 21,
-  "h": 32
+  "h": 32,
+  "gate": [
+   912,
+   2857,
+   1
+  ]
  },
  {
   "name": "Gandhi Bhawan",
   "osm": "r5372453",
-  "type": "bhawan",
+  "type": "stamp:bhawan",
   "x": 116,
   "y": 162,
   "w": 21,
-  "h": 32
+  "h": 32,
+  "gate": [
+   1856,
+   2857,
+   -1
+  ]
  },
  {
   "name": "Ram Bhawan",
   "osm": "r5372454",
-  "type": "bhawan",
+  "type": "stamp:bhawan_m",
   "x": 36,
   "y": 106,
   "w": 21,
-  "h": 32
+  "h": 32,
+  "gate": [
+   912,
+   1961,
+   1
+  ]
  },
  {
   "name": "Shankar Bhawan",
   "osm": "r5372455",
-  "type": "bhawan",
+  "type": "stamp:bhawan",
   "x": 116,
   "y": 208,
   "w": 21,
-  "h": 32
+  "h": 32,
+  "gate": [
+   1856,
+   3593,
+   -1
+  ]
  },
  {
   "name": "Krishna Bhawan",
   "osm": "r5372458",
-  "type": "bhawan",
+  "type": "stamp:bhawan",
   "x": 115,
   "y": 104,
   "w": 21,
-  "h": 32
+  "h": 32,
+  "gate": [
+   1840,
+   1929,
+   -1
+  ]
  },
  {
   "name": "Student Activity Center (SAC)",
@@ -65,11 +90,17 @@
  {
   "name": "Vishwakarma Bhawan",
   "osm": "r5372514",
-  "type": "bhawan",
-  "x": 152,
-  "y": 105,
+  "type": "stamp:bhawan",
+  "x": 153,
+  "y": 104,
   "w": 21,
-  "h": 31
+  "h": 32,
+  "lawn": 160,
+  "gate": [
+   2448,
+   1929,
+   -1
+  ]
  },
  {
   "name": "building",
@@ -92,11 +123,16 @@
  {
   "name": "Malviya-A",
   "osm": "w360846144",
-  "type": "small",
-  "x": 8,
-  "y": 117,
-  "w": 18,
-  "h": 20
+  "type": "stamp:bhawan_m",
+  "x": 7,
+  "y": 111,
+  "w": 21,
+  "h": 32,
+  "gate": [
+   448,
+   2041,
+   1
+  ]
  },
  {
   "name": "Ram-Budh mess",
@@ -119,11 +155,16 @@
  {
   "name": "Bhagirath Bhawan",
   "osm": "w360846147",
-  "type": "bhawan",
-  "x": 152,
+  "type": "stamp:bhawan",
+  "x": 150,
   "y": 162,
-  "w": 18,
-  "h": 32
+  "w": 21,
+  "h": 32,
+  "gate": [
+   2400,
+   2857,
+   -1
+  ]
  },
  {
   "name": "KG mess",
@@ -145,30 +186,12 @@
  },
  {
   "name": "building",
-  "osm": "w360846154",
-  "type": "small",
-  "x": 39,
-  "y": 124,
-  "w": 14,
-  "h": 11
- },
- {
-  "name": "building",
   "osm": "w360846155",
   "type": "small",
   "x": 56,
   "y": 27,
   "w": 3,
   "h": 5
- },
- {
-  "name": "building",
-  "osm": "w360846156",
-  "type": "small",
-  "x": 39,
-  "y": 108,
-  "w": 14,
-  "h": 11
  },
  {
   "name": "building",
@@ -346,18 +369,18 @@
   "osm": "w1384781374",
   "type": "nab",
   "x": 71,
-  "y": 94,
+  "y": 100,
   "w": 12,
-  "h": 81
+  "h": 75
  },
  {
   "name": "NAB",
   "osm": "w1384781375",
   "type": "nab",
   "x": 89,
-  "y": 94,
+  "y": 100,
   "w": 13,
-  "h": 81
+  "h": 75
  },
  {
   "name": "Department of Pharmacy",
@@ -378,11 +401,11 @@
  },
  {
   "name": "Rotunda",
-  "type": "stamp:rotunda_art",
-  "x": 70,
-  "y": 76,
-  "w": 33,
-  "h": 23,
+  "type": "stamp:rotunda_piece",
+  "x": 64,
+  "y": 75,
+  "w": 45,
+  "h": 25,
   "on_top": true
  }
 ]

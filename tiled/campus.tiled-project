@@ -89,6 +89,39 @@
      "value": 14
     }
    ]
+  },
+  {
+   "id": 7,
+   "name": "paving",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ffe2d6be",
+   "drawFill": true,
+   "members": []
+  },
+  {
+   "id": 8,
+   "name": "flowerbed",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ffc8325a",
+   "drawFill": true,
+   "members": []
+  },
+  {
+   "id": 9,
+   "name": "roadline",
+   "type": "class",
+   "useAs": [
+    "object"
+   ],
+   "color": "#ffffffff",
+   "drawFill": false,
+   "members": []
   }
  ]
 }

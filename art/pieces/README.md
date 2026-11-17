@@ -11,8 +11,8 @@ a building's own name fills just that one.
 | File | Fills | Count | Shape (w : h) | Real size |
 |---|---|---|---|---|
 | `clock tower body.png` + `fd.png` | Main Building (FD3 + tower + FD2) | 1 | done ✅ | 314 × 100 m |
-| `rotunda.png` | Rotunda (complete, round, with the steps) | 1 | ~3 : 2 | ~85 × 60 m |
-| `bhawan.png` | Ram, Budh, Krishna, Gandhi, Shankar, Vishwakarma, Bhagirath (and later Vyas, Rana Pratap, Ashok) | 7 now, 10 total | **2 : 3** (tall) | ~65 × 98 m |
+| `rotunda.png` (+ `rotunda_collision.png`) | Rotunda with amphitheatre and stair path | 1 | done ✅ (cleaned from `_raw/rotunda_raw.png`, used at 0.70×) | plaza ~61 m |
+| `bhawan.png` (+ `bhawan_collision.png`) | gate west: VK, Bhagirath, Krishna, Gandhi, Shankar, Vyas · mirrored (gate east): Ram, Budh, Malviya, Rana Pratap, Ashok | 8 in Phase 1 | done ✅ (cleaned from `_raw/bhawan_raw.png`, drawn 21 × 32 tiles) | 63 × 96 m |
 | `mess.png` | Ram-Budh, KG, VKB messes (later Shankar-Vyas, RP) | 3 now, 5 total | **1 : 1** | ~40 × 38 m |
 | `nab.png` | both NAB blocks (mirrored for the second) | 2 | **1 : 6** (long, thin) | ~38 × 245 m |
 | `fd1.png` *(optional)* | FD 1 | 1 | ~1 : 1 | ~115 × 105 m |

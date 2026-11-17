@@ -1,0 +1,349 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "name": "street",
+ "image": "../generated/street/street_tiles.png",
+ "imagewidth": 128,
+ "imageheight": 128,
+ "tilewidth": 16,
+ "tileheight": 16,
+ "tilecount": 62,
+ "columns": 8,
+ "margin": 0,
+ "spacing": 0,
+ "tiles": [
+  {
+   "id": 0,
+   "type": "asphalt_0"
+  },
+  {
+   "id": 1,
+   "type": "asphalt_1"
+  },
+  {
+   "id": 2,
+   "type": "asphalt_2"
+  },
+  {
+   "id": 3,
+   "type": "asphalt_crack_0"
+  },
+  {
+   "id": 4,
+   "type": "asphalt_crack_1"
+  },
+  {
+   "id": 5,
+   "type": "asphalt_worn"
+  },
+  {
+   "id": 6,
+   "type": "asphalt_manhole"
+  },
+  {
+   "id": 7,
+   "type": "asphalt_dash"
+  },
+  {
+   "id": 8,
+   "type": "asphalt_zebra"
+  },
+  {
+   "id": 9,
+   "type": "paver_0"
+  },
+  {
+   "id": 10,
+   "type": "paver_1"
+  },
+  {
+   "id": 11,
+   "type": "paver_2"
+  },
+  {
+   "id": 12,
+   "type": "paver_3"
+  },
+  {
+   "id": 13,
+   "type": "kerb_l"
+  },
+  {
+   "id": 14,
+   "type": "ramp_l"
+  },
+  {
+   "id": 15,
+   "type": "paver_dirt_l"
+  },
+  {
+   "id": 16,
+   "type": "paver_end_l"
+  },
+  {
+   "id": 17,
+   "type": "kerb_t"
+  },
+  {
+   "id": 18,
+   "type": "ramp_t"
+  },
+  {
+   "id": 19,
+   "type": "paver_dirt_t"
+  },
+  {
+   "id": 20,
+   "type": "paver_end_t"
+  },
+  {
+   "id": 21,
+   "type": "kerb_r"
+  },
+  {
+   "id": 22,
+   "type": "ramp_r"
+  },
+  {
+   "id": 23,
+   "type": "paver_dirt_r"
+  },
+  {
+   "id": 24,
+   "type": "paver_end_r"
+  },
+  {
+   "id": 25,
+   "type": "kerb_b"
+  },
+  {
+   "id": 26,
+   "type": "ramp_b"
+  },
+  {
+   "id": 27,
+   "type": "paver_dirt_b"
+  },
+  {
+   "id": 28,
+   "type": "paver_end_b"
+  },
+  {
+   "id": 29,
+   "type": "kerb_corner_nw"
+  },
+  {
+   "id": 30,
+   "type": "kerb_corner_ne"
+  },
+  {
+   "id": 31,
+   "type": "kerb_corner_sw"
+  },
+  {
+   "id": 32,
+   "type": "kerb_corner_se"
+  },
+  {
+   "id": 33,
+   "type": "tree_pit"
+  },
+  {
+   "id": 34,
+   "type": "grass_0"
+  },
+  {
+   "id": 35,
+   "type": "grass_1"
+  },
+  {
+   "id": 36,
+   "type": "grass_2"
+  },
+  {
+   "id": 37,
+   "type": "grass_tuft_0"
+  },
+  {
+   "id": 38,
+   "type": "grass_tuft_1"
+  },
+  {
+   "id": 39,
+   "type": "grass_flowers_0"
+  },
+  {
+   "id": 40,
+   "type": "grass_flowers_1"
+  },
+  {
+   "id": 41,
+   "type": "grass_dirt_0"
+  },
+  {
+   "id": 42,
+   "type": "grass_dirt_1"
+  },
+  {
+   "id": 43,
+   "type": "grass_dark"
+  },
+  {
+   "id": 44,
+   "type": "asphalt_dash_h"
+  },
+  {
+   "id": 45,
+   "type": "asphalt_zebra_h"
+  },
+  {
+   "id": 46,
+   "type": "kerb_inner_nw"
+  },
+  {
+   "id": 47,
+   "type": "kerb_inner_ne"
+  },
+  {
+   "id": 48,
+   "type": "kerb_inner_sw"
+  },
+  {
+   "id": 49,
+   "type": "kerb_inner_se"
+  },
+  {
+   "id": 50,
+   "type": "hedge_corner_nw",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 51,
+   "type": "hedge_corner_ne",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 52,
+   "type": "hedge_corner_sw",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 53,
+   "type": "hedge_corner_se",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 54,
+   "type": "hedge_v",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 55,
+   "type": "hedge_post_v",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 56,
+   "type": "hedge_end_top",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 57,
+   "type": "hedge_end_bottom",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 58,
+   "type": "hedge_h",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 59,
+   "type": "hedge_post_h",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 60,
+   "type": "hedge_end_left",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 61,
+   "type": "hedge_end_right",
+   "properties": [
+    {
+     "name": "solid",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  }
+ ]
+}

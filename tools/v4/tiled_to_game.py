@@ -1,7 +1,8 @@
 """Tiled map -> playable game. Reads the Tiled JSON only; never modifies any art or map file.
 
 What it reads (tiled/maps/<area>.tmj):
-  ground, decor (tile layers)   painted tiles; tile property `solid` blocks, `tallgrass` rustles + sways.
+  ground, decor (tile layers)   painted tiles; tile property `solid` blocks, `tallgrass` rustles + sways. Decor tiles
+                                are drawn after the smoothed terrain, so they cover it (tools/v4/exterior.py's kerbs).
                                 Terrain-brush tiles (road, dirt path, hedge, garden lawn) are repainted on SMOOTHED
                                 outlines, so stair-stepped diagonals in Tiled come out as clean curves in the game.
   above (tile layer)            drawn OVER the player (tree canopies, roof edges)
@@ -9,6 +10,12 @@ What it reads (tiled/maps/<area>.tmj):
   props (objects)               flags (wave); lamps, palms, bushes, signs (upright: the player walks behind them, their
                                 base blocks); props with the tile property `flat` (flowers, crops) lie on the ground;
                                 `hedge` polylines are drawn as smooth hedges `width` px wide (solid)
+                                `paving` polygons: pale stone paving (walkable); with properties `cx`, `cy` the slabs
+                                run in rings around that point, otherwise in a square grid; `road_inset` = that many px
+                                along the outline are asphalt (the polygon reaches under a road; its kerb stays exact)
+                                `flowerbed` polygons: a bougainvillea bed with a stone kerb (solid)
+                                `roadline` polylines: a dashed white centre line on a road (walkable)
+  shadows (objects)             ellipses with an `opacity` property darken the ground (palette-snapped): tree shadows
   collision (objects)           any rectangle = blocked
   events (objects)              `zone` rectangles = area-name banners, a point named `spawn` = start position
 Writes game/public/maps/main.json (+ main.meta.json, minimap.png), game/public/tiles/campus.png, game/public/props/*.png
@@ -41,6 +48,8 @@ for ref in M['tilesets']:
     ts_dir = os.path.dirname(os.path.join(base_dir, ref['source'])) if 'source' in ref else base_dir
     entry = {'first': ref['firstgid'], 'ts': ts, 'props': {}, 'anim': {}, 'images': {}, 'wang': {}}
     for ws in ts.get('wangsets', []):                  # terrain brushes: tile id -> (kind, TL, TR, BL, BR corner is terrain)
+        if ws.get('type', 'corner') != 'corner':       # edge sets (exterior.tsj: pavers, hedge pieces) are ordinary tiles
+            continue
         kind = ws['name'].split(' ')[0].lower()        # Road, Path, Hedge, Garden lawn
         entry['grass'] = ws['colors'][0]['tile']
         for wt in ws['wangtiles']:                     # wangid = [top, top-right, right, bottom-right, bottom, bottom-left, left, top-left]
@@ -99,11 +108,12 @@ def blend(dst, src, x, y):
 
 
 layers = {l['name'].split(' ')[0]: l for l in M['layers']}
-C = 8
+C = 4
 solid = np.zeros((H, W), bool)
 base = np.zeros((H, W, 4), np.uint8); base[..., 3] = 255
 above = np.zeros((H, W, 4), np.uint8)
 tall_tiles = []
+late_tiles = []                                  # decor tiles: drawn after the terrain is repainted (a kerb covers the road's edge)
 corners = {}                                     # terrain kind -> which tile corners it covers, bool (MH + 1, MW + 1)
 
 # ---------------------------------------------------------------- tile layers
@@ -123,7 +133,11 @@ for lname, target in (('ground', base), ('decor', base), ('above', above)):
             c[ty, tx] |= tl; c[ty, tx + 1] |= tr; c[ty + 1, tx] |= bl; c[ty + 1, tx + 1] |= br
             blend(target, tile_rgba(e['first'] + e['grass']), tx * T, ty * T)
             continue
-        blend(target, tile_rgba(gid), tx * T, ty * T)
+        if lname == 'decor':
+            late_tiles.append((gid, tx, ty))
+        else:
+            img_ = tile_rgba(gid)                      # tiles taller than the grid (tree canopies) are anchored bottom-left, as in Tiled
+            blend(target, img_, tx * T, (ty + 1) * T - img_.shape[0])
         pr = props_of(gid)
         if lname != 'above' and pr.get('solid'):
             solid[ty * T:(ty + 1) * T, tx * T:(tx + 1) * T] = True
@@ -151,6 +165,7 @@ anim_flags = []
 upright = []                                     # (prop name, rgba, x, y): sprites the player can walk behind
 drawables = []                                   # (sort key, rgba, x, y)
 hedges = []                                      # (points, width in px): hedge polylines
+shapes = []                                      # (class, points, properties): paving / flowerbed polygons, roadline polylines
 grass_rects = []                                 # [x0, y0, x1, y1]: ground that rustles underfoot (flat props marked `tallgrass`)
 for lname in ('buildings', 'props'):
     L = layers.get(lname)
@@ -162,6 +177,9 @@ for lname in ('buildings', 'props'):
         if 'polyline' in o and obj_kind(o) == 'hedge':
             pts = [(o['x'] + p['x'], o['y'] + p['y']) for p in o['polyline']]
             hedges.append((pts, next((p['value'] for p in o.get('properties', []) if p['name'] == 'width'), 17)))
+        elif obj_kind(o) in ('paving', 'flowerbed', 'roadline') and ('polygon' in o or 'polyline' in o):
+            pts = [(o['x'] + p['x'], o['y'] + p['y']) for p in o.get('polygon') or o['polyline']]
+            shapes.append((obj_kind(o), pts, {p['name']: p['value'] for p in o.get('properties', [])}))
         elif 'gid' in o:
             img = tile_rgba(o['gid'])
             w, h = int(round(o.get('width') or img.shape[1])), int(round(o.get('height') or img.shape[0]))
@@ -198,6 +216,11 @@ for lname in ('buildings', 'props'):
                 sub = solid[max(0, y):y + h, max(0, x):x + w]
                 mm = m[max(0, -y):max(0, -y) + sub.shape[0], max(0, -x):max(0, -x) + sub.shape[1]]
                 sub |= mm
+            elif 'collision_w' in pr:                    # an exact collision box in the tile's properties (trees.tsj, street props)
+                cx_, cy_, cw_, ch_ = (int(pr.get(k_, 0)) for k_ in ('collision_x', 'collision_y', 'collision_w', 'collision_h'))
+                if o['gid'] & FLIP_H:
+                    cx_ = img.shape[1] - cx_ - cw_
+                solid[max(0, y + cy_):max(0, y + cy_ + ch_), max(0, x + cx_):max(0, x + cx_ + cw_)] = True
             elif pr.get('solid_base') or pr.get('anim') == 'flag':
                 # the base blocks: a third of the width and 6 px deep, or the tile's base_w / base_h fractions (wide bushes)
                 bw, bh = max(4, int(w * pr.get('base_w', 1 / 3))), max(6, int(h * pr.get('base_h', 0)))
@@ -292,7 +315,110 @@ def draw_hedge(rgb, pts, width):
     return inside, y0, x0
 
 
-if corners or hedges:
+# ---------------------------------------------------------------- paving, flower beds, road markings
+PAVE = np.array([230, 206, 182]); PAVE_LT = np.array([238, 218, 196]); PAVE_JOINT = np.array([206, 196, 190])
+PAVE_RIM = np.array([168, 172, 178]); KERB_W = np.array([238, 236, 228])
+LEAF = np.array([[47, 96, 30], [76, 130, 46], [110, 168, 60]])
+BLOOM = np.array([[200, 44, 72], [170, 60, 130], [214, 104, 168], [226, 70, 96]])
+BLOOM_HI = np.array([244, 170, 204])
+
+
+def poly_mask(pts):
+    x0, y0 = max(0, int(min(p[0] for p in pts)) - 4), max(0, int(min(p[1] for p in pts)) - 4)
+    x1, y1 = min(W, int(max(p[0] for p in pts)) + 5), min(H, int(max(p[1] for p in pts)) + 5)
+    im = Image.new('L', (x1 - x0, y1 - y0), 0)
+    ImageDraw.Draw(im).polygon([(x - x0, y - y0) for x, y in pts], fill=255)
+    return np.array(im) > 0, y0, x0
+
+
+def hash2(a, b, k=0):
+    """deterministic per-cell noise in 0..1"""
+    return ((a * 73856093 ^ b * 19349663 ^ k * 83492791) & 0xFFFF) / 65535.0
+
+
+def draw_paving(rgb, pts, props, road=None):
+    m, y0, x0 = poly_mask(pts)
+    h, w = m.shape
+    yy_, xx_ = np.mgrid[y0:y0 + h, x0:x0 + w]
+    if 'cx' in props and 'cy' in props:                # slabs in rings around the Rotunda, like its own floor
+        dx, dy = xx_ - props['cx'], yy_ - props['cy']
+        r = np.hypot(dx, dy); ring = (r // 12).astype(int)
+        seg = ((np.arctan2(dy, dx) + math.pi) * (r + 1e-6) // 14).astype(int)
+        joint = (r % 12 < 1) | (((np.arctan2(dy, dx) + math.pi) * r) % 14 < 1)
+    else:
+        ring, seg = yy_ // 12, (xx_ + 6 * ((yy_ // 12) % 2)) // 14
+        joint = (yy_ % 12 == 0) | ((xx_ + 6 * ((yy_ // 12) % 2)) % 14 == 0)
+    tone = hash2(ring, seg, 7) < 0.18                 # a few lighter slabs, scattered
+    out = rgb[y0:y0 + h, x0:x0 + w]
+    inset = int(props.get('road_inset', 0))
+    if inset:                                          # the polygon's outer `road_inset` px are asphalt: a clean kerb line
+        core = np.array(Image.fromarray(m.astype(np.uint8) * 255).filter(ImageFilter.MinFilter(2 * inset + 1))) > 0
+        band = m & ~core                               # wherever the smoothed road outline falls short of it
+        if road is not None:                           # ... only beside a road; elsewhere the paving keeps its edge
+            near = np.array(Image.fromarray(road[y0:y0 + h, x0:x0 + w].astype(np.uint8) * 255)
+                            .filter(ImageFilter.MaxFilter(2 * inset + 7))) > 0
+            core |= band & ~near
+            band &= near
+        asph = out.copy()
+        tiled_kit.paint('road', asph, np.full(m.shape, 99.0), xx_, yy_)
+        out[band] = asph[band]
+        m = core
+    d = edge_dist(m)
+    out[m] = PAVE
+    out[m & tone] = PAVE_LT
+    out[m & joint] = PAVE_JOINT
+    out[m & (d < 2.2)] = KERB_W                          # a white stone kerb all round, with a grey line inside it
+    out[m & (d < 1.2)] = PAVE_RIM
+
+
+def draw_flowerbed(rgb, pts):
+    """a bed packed with bougainvillea: dark leaves, clumps of red / magenta / pink bracts, inside a stone kerb"""
+    m, y0, x0 = poly_mask(pts)
+    h, w = m.shape
+    yy_, xx_ = np.mgrid[y0:y0 + h, x0:x0 + w]
+    d = edge_dist(m, n_in=5)
+    out = rgb[y0:y0 + h, x0:x0 + w]
+    leaf = LEAF[np.where((xx_ * 5 + yy_ * 3) % 7 == 0, 2, ((xx_ * 3 + yy_ * 7) % 11 == 0).astype(int))]
+    col = leaf.copy()
+    # bloom clumps on a jittered 6 px grid: radius 2-3 px, each in one colour with a highlight at its top-left
+    gx, gy = xx_ // 6, yy_ // 6
+    for oy in (-1, 0, 1):
+        for ox in (-1, 0, 1):
+            cx_, cy_ = gx + ox, gy + oy
+            px = cx_ * 6 + (hash2(cx_, cy_, 1) * 6).astype(int)
+            py = cy_ * 6 + (hash2(cx_, cy_, 2) * 6).astype(int)
+            rr = 2 + (hash2(cx_, cy_, 3) > 0.45)
+            on = ((xx_ - px) ** 2 + (yy_ - py) ** 2 <= rr * rr) & (hash2(cx_, cy_, 4) < 0.85)
+            k = (hash2(cx_, cy_, 5) * len(BLOOM)).astype(int)
+            col[on] = BLOOM[k[on]]
+            hi = on & (xx_ - px == -1) & (yy_ - py == -1)
+            col[hi] = BLOOM_HI
+    out[m] = col[m]
+    out[m & (d < 4.2) & (d >= 2.2)] = LEAF[0]            # the leaves darken towards the kerb
+    out[m & (d < 2.2)] = KERB_W
+    out[m & (d < 1.2)] = PAVE_RIM
+    return m, y0, x0
+
+
+def draw_roadline(rgb, pts, dash=8, gap=8):
+    """dashed centre line, 2 px wide, dashes measured along the line"""
+    im = Image.new('L', (W, H), 0); dr = ImageDraw.Draw(im)
+    run, on = 0.0, True
+    for (ax, ay), (bx, by) in zip(pts, pts[1:]):
+        L_ = math.hypot(bx - ax, by - ay); t = 0.0
+        while t < L_:
+            step = min((dash if on else gap) - run, L_ - t)
+            if on:
+                f0, f1 = t / L_, (t + step) / L_
+                dr.line([(ax + (bx - ax) * f0, ay + (by - ay) * f0), (ax + (bx - ax) * f1, ay + (by - ay) * f1)], fill=255, width=2)
+            t += step; run += step
+            if run >= (dash if on else gap) - 1e-6:
+                run, on = 0.0, not on
+    m = np.array(im) > 0
+    rgb[m] = KERB_W
+
+
+if corners or hedges or shapes:
     rgb = base[..., :3]
     yy, xx = np.mgrid[0:H, 0:W] % T                # texture phase repeats per tile, as in the Tiled tiles
     none = np.zeros((MH + 1, MW + 1), bool)
@@ -313,11 +439,50 @@ if corners or hedges:
         else:
             tiled_kit.paint(kind, rgb, edge_dist(m), xx, yy, top=across(m) if kind == 'hedge' else None)
     solid |= masks['hedge']
+    for kind, pts, props in shapes:                    # paving, then the beds, then the markings
+        if kind == 'paving':
+            draw_paving(rgb, pts, props, masks['road'])
+    for kind, pts, props in shapes:
+        if kind == 'flowerbed':
+            m, by_, bx_ = draw_flowerbed(rgb, pts)
+            solid[by_:by_ + m.shape[0], bx_:bx_ + m.shape[1]] |= m
+    for kind, pts, props in shapes:
+        if kind == 'roadline':
+            draw_roadline(rgb, pts)
     for pts, width in hedges:
         m, hy, hx = draw_hedge(rgb, pts, width)
         solid[hy:hy + m.shape[0], hx:hx + m.shape[1]] |= m
     base[..., :3] = np.array(Image.fromarray(rgb).quantize(palette=tiled_kit.PAL_IMG, dither=Image.Dither.NONE).convert('RGB'))
 
+for gid, tx, ty in late_tiles:                    # painted decor (footpaths, kerbs, hedge tiles) lies on top of the terrain
+    img_ = tile_rgba(gid)
+    blend(base, img_, tx * T, (ty + 1) * T - img_.shape[0])
+
+# shadows layer (tools/v4/beautify.py): ellipse objects with an `opacity` property darken the ground under them (tree
+# shadows, dappled shade, darker grass patches). Overlaps add up; every darkened pixel is snapped back to the locked
+# palette, so the map stays palette-only. Hard edges, no anti-aliasing.
+L_sh = layers.get('shadows')
+if L_sh and L_sh.get('objects'):
+    keep_dark = np.ones((H, W), np.float32)
+    for o in L_sh['objects']:
+        if not o.get('visible', True):
+            continue
+        op = float(next((p_['value'] for p_ in o.get('properties', []) if p_['name'] == 'opacity'), 0.25))
+        x0_, y0_ = int(round(o['x'])), int(round(o['y']))
+        w_, h_ = max(1, int(round(o['width']))), max(1, int(round(o['height'])))
+        m_ = Image.new('L', (w_, h_), 0)
+        ImageDraw.Draw(m_).ellipse((0, 0, w_ - 1, h_ - 1), fill=255)
+        m_ = np.array(m_) > 0
+        sub = keep_dark[max(0, y0_):y0_ + h_, max(0, x0_):x0_ + w_]
+        mm = m_[max(0, -y0_):max(0, -y0_) + sub.shape[0], max(0, -x0_):max(0, -x0_) + sub.shape[1]]
+        sub[mm] *= (1 - op)
+    dk = keep_dark < 0.999
+    if dk.any():
+        pal_ = np.array(tiled_kit.PAL_IMG.getpalette()[:384], np.int32).reshape(-1, 3)
+        want = (base[..., :3][dk].astype(np.float32) * keep_dark[dk][:, None]).round().astype(np.int32)
+        uq, inv = np.unique(want, axis=0, return_inverse=True)
+        snapped = pal_[np.argmin(((uq[:, None, :] - pal_[None, :, :]) ** 2).sum(axis=2), axis=1)]
+        base[..., :3][dk] = snapped[inv.ravel()].astype(np.uint8)
 for _, img, x, y in sorted(drawables, key=lambda d: d[0]):
     blend(base, img, x, y)
 
@@ -433,7 +598,8 @@ json.dump({'type': 'map', 'version': '1.10', 'tiledversion': '1.10.2', 'orientat
           open(f'{OUT}/maps/main.json', 'w'))
 solid[:, :T // 2] = solid[:, -T // 2:] = True
 solid[:T // 2, :] = solid[-T // 2:, :] = True
-grid = solid.reshape(H // C, C, W // C, C).mean(axis=(1, 3)) > 0.4
+grid = solid.reshape(H // C, C, W // C, C).mean(axis=(1, 3)) > 0.2     # 4 px cells: solid from a quarter covered, so
+# 2-3 px walls (the Rotunda's low walls at 0.7 scale) always block, yet a 24 px stair path between two of them stays open
 sx, sy = spawn['x'] // C, spawn['y'] // C
 if grid[min(sy, grid.shape[0] - 1), min(sx, grid.shape[1] - 1)]:
     free = np.argwhere(~grid)
@@ -455,4 +621,4 @@ big = np.kron(grid, np.ones((C, C), bool))
 dbg[big] = (dbg[big] * 0.5 + np.array([255, 0, 0]) * 0.5).astype(np.uint8)
 Image.fromarray(dbg).save('data/debug/game_collision.png')
 print(f'{MW}x{MH} tiles -> {len(tiles)} unique game tiles; {len(anim_flags)} flags, {len(upright)} upright props, '
-      f'{len(hedges)} hedges, {len(tall_tiles)} tall-grass tiles + {len(grass_rects)} grass-patch cells, {len(zones)} zones, above layer: {bool(has_above)}, spawn {spawn}')
+      f'{len(hedges)} hedges, {len(shapes)} paving/bed/line shapes, {len(tall_tiles)} tall-grass tiles + {len(grass_rects)} grass-patch cells, {len(zones)} zones, above layer: {bool(has_above)}, spawn {spawn}')

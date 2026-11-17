@@ -1,13 +1,13 @@
 {
-    "maps": [
-        {
-            "fileName": "maps/phase1.tmj",
-            "height": 2208,
-            "width": 1792,
-            "x": 336,
-            "y": -48
-        }
-    ],
-    "onlyShowAdjacentMaps": false,
-    "type": "world"
+ "type": "world",
+ "maps": [
+  {
+   "fileName": "maps/phase1.tmj",
+   "x": 0,
+   "y": 0,
+   "width": 2992,
+   "height": 3680
+  }
+ ],
+ "onlyShowAdjacentMaps": false
 }

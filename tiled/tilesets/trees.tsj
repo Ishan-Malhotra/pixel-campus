@@ -1,0 +1,2771 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "name": "trees",
+ "tilewidth": 112,
+ "tileheight": 80,
+ "tilecount": 39,
+ "columns": 0,
+ "margin": 0,
+ "spacing": 0,
+ "objectalignment": "bottomleft",
+ "grid": {
+  "orientation": "orthogonal",
+  "width": 1,
+  "height": 1
+ },
+ "tiles": [
+  {
+   "id": 0,
+   "type": "whole",
+   "image": "../generated/trees/tree_round_big.png",
+   "imagewidth": 48,
+   "imageheight": 64,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_round_big"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_round_big"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 47
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "type": "canopy",
+   "image": "../generated/trees/tree_round_big_canopy.png",
+   "imagewidth": 48,
+   "imageheight": 47,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_round_big_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_round_big"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 47
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "type": "trunk",
+   "image": "../generated/trees/tree_round_big_trunk.png",
+   "imagewidth": 48,
+   "imageheight": 17,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_round_big_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_round_big"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 47
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 1
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "type": "whole",
+   "image": "../generated/trees/tree_umbrella.png",
+   "imagewidth": 80,
+   "imageheight": 64,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_umbrella"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_umbrella"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 49
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "type": "canopy",
+   "image": "../generated/trees/tree_umbrella_canopy.png",
+   "imagewidth": 80,
+   "imageheight": 49,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_umbrella_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_umbrella"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 49
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "type": "trunk",
+   "image": "../generated/trees/tree_umbrella_trunk.png",
+   "imagewidth": 80,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_umbrella_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_umbrella"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 49
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "type": "whole",
+   "image": "../generated/trees/tree_column.png",
+   "imagewidth": 48,
+   "imageheight": 80,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_column"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_column"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 59
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 64
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "type": "canopy",
+   "image": "../generated/trees/tree_column_canopy.png",
+   "imagewidth": 48,
+   "imageheight": 59,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_column_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_column"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 59
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 64
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "type": "trunk",
+   "image": "../generated/trees/tree_column_trunk.png",
+   "imagewidth": 48,
+   "imageheight": 21,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_column_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_column"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 59
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "type": "whole",
+   "image": "../generated/trees/tree_twin.png",
+   "imagewidth": 112,
+   "imageheight": 64,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_twin"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_twin"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 7
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 49
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "type": "canopy",
+   "image": "../generated/trees/tree_twin_canopy.png",
+   "imagewidth": 112,
+   "imageheight": 49,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_twin_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_twin"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 7
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 49
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "type": "trunk",
+   "image": "../generated/trees/tree_twin_trunk.png",
+   "imagewidth": 112,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_twin_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_twin"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 7
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 49
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "type": "whole",
+   "image": "../generated/trees/tree_ball.png",
+   "imagewidth": 48,
+   "imageheight": 48,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_ball"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_ball"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "type": "canopy",
+   "image": "../generated/trees/tree_ball_canopy.png",
+   "imagewidth": 48,
+   "imageheight": 37,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_ball_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_ball"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "type": "trunk",
+   "image": "../generated/trees/tree_ball_trunk.png",
+   "imagewidth": 48,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_ball_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_ball"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "type": "whole",
+   "image": "../generated/trees/tree_lime.png",
+   "imagewidth": 48,
+   "imageheight": 48,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_lime"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_lime"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 16,
+   "type": "canopy",
+   "image": "../generated/trees/tree_lime_canopy.png",
+   "imagewidth": 48,
+   "imageheight": 37,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_lime_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_lime"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 17,
+   "type": "trunk",
+   "image": "../generated/trees/tree_lime_trunk.png",
+   "imagewidth": 48,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_lime_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_lime"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 18,
+   "type": "whole",
+   "image": "../generated/trees/tree_cypress.png",
+   "imagewidth": 48,
+   "imageheight": 64,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_cypress"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_cypress"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 50
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 19,
+   "type": "canopy",
+   "image": "../generated/trees/tree_cypress_canopy.png",
+   "imagewidth": 48,
+   "imageheight": 50,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_cypress_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_cypress"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 50
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 20,
+   "type": "trunk",
+   "image": "../generated/trees/tree_cypress_trunk.png",
+   "imagewidth": 48,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_cypress_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_cypress"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 50
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 21,
+   "type": "whole",
+   "image": "../generated/trees/shrub_red.png",
+   "imagewidth": 16,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "shrub_red"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "shrub_red"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "shrub"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 1
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 1
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    }
+   ]
+  },
+  {
+   "id": 22,
+   "type": "whole",
+   "image": "../generated/trees/shrub_yellow.png",
+   "imagewidth": 16,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "shrub_yellow"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "shrub_yellow"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "shrub"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 1
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 1
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    }
+   ]
+  },
+  {
+   "id": 23,
+   "type": "whole",
+   "image": "../generated/trees/shrub_green.png",
+   "imagewidth": 16,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "shrub_green"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "shrub_green"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "shrub"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 1
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 1
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    }
+   ]
+  },
+  {
+   "id": 24,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_round_big_canopy_cell.png",
+   "imagewidth": 48,
+   "imageheight": 48,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_round_big_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_round_big"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 47
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": 25,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_umbrella_canopy_cell.png",
+   "imagewidth": 80,
+   "imageheight": 48,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_umbrella_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_umbrella"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 49
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": 26,
+   "type": "whole",
+   "image": "../generated/trees/tree_umbrella_road.png",
+   "imagewidth": 80,
+   "imageheight": 48,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_umbrella_road"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_umbrella_road"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 27,
+   "type": "canopy",
+   "image": "../generated/trees/tree_umbrella_road_canopy.png",
+   "imagewidth": 80,
+   "imageheight": 37,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_umbrella_road_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_umbrella_road"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 28,
+   "type": "trunk",
+   "image": "../generated/trees/tree_umbrella_road_trunk.png",
+   "imagewidth": 80,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_umbrella_road_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_umbrella_road"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 29,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_umbrella_road_canopy_cell.png",
+   "imagewidth": 80,
+   "imageheight": 32,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_umbrella_road_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_umbrella_road"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": 30,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_column_canopy_cell.png",
+   "imagewidth": 48,
+   "imageheight": 64,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_column_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_column"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 59
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": 31,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_twin_canopy_cell.png",
+   "imagewidth": 112,
+   "imageheight": 48,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_twin_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_twin"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 7
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 49
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 3
+    }
+   ]
+  },
+  {
+   "id": 32,
+   "type": "whole",
+   "image": "../generated/trees/tree_twin_road.png",
+   "imagewidth": 80,
+   "imageheight": 48,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_twin_road"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_twin_road"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "whole"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 39
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 33,
+   "type": "canopy",
+   "image": "../generated/trees/tree_twin_road_canopy.png",
+   "imagewidth": 80,
+   "imageheight": 39,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_twin_road_canopy"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_twin_road"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 39
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 32
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    }
+   ]
+  },
+  {
+   "id": 34,
+   "type": "trunk",
+   "image": "../generated/trees/tree_twin_road_trunk.png",
+   "imagewidth": 80,
+   "imageheight": 16,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_twin_road_trunk"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_twin_road"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "trunk"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 39
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 48
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "solid_base",
+     "type": "bool",
+     "value": true
+    }
+   ]
+  },
+  {
+   "id": 35,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_twin_road_canopy_cell.png",
+   "imagewidth": 80,
+   "imageheight": 32,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_twin_road_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_twin_road"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 39
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 2
+    }
+   ]
+  },
+  {
+   "id": 36,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_ball_canopy_cell.png",
+   "imagewidth": 48,
+   "imageheight": 32,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_ball_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_ball"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": 37,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_lime_canopy_cell.png",
+   "imagewidth": 48,
+   "imageheight": 32,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_lime_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_lime"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 37
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 1
+    }
+   ]
+  },
+  {
+   "id": 38,
+   "type": "canopy_cell",
+   "image": "../generated/trees/tree_cypress_canopy_cell.png",
+   "imagewidth": 48,
+   "imageheight": 48,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "tree_cypress_canopy_cell"
+    },
+    {
+     "name": "sprite",
+     "type": "string",
+     "value": "tree_cypress"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "canopy_cell"
+    },
+    {
+     "name": "kind",
+     "type": "string",
+     "value": "tree"
+    },
+    {
+     "name": "tiles_w",
+     "type": "int",
+     "value": 3
+    },
+    {
+     "name": "tiles_h",
+     "type": "int",
+     "value": 4
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 50
+    },
+    {
+     "name": "canopy_layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "trunk_layer",
+     "type": "string",
+     "value": "props"
+    },
+    {
+     "name": "trunk_cell_offset_x",
+     "type": "int",
+     "value": 1
+    }
+   ]
+  }
+ ]
+}

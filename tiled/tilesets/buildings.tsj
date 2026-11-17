@@ -5,7 +5,7 @@
  "name": "buildings",
  "tilewidth": 1664,
  "tileheight": 528,
- "tilecount": 2,
+ "tilecount": 4,
  "columns": 0,
  "margin": 0,
  "spacing": 0,
@@ -17,6 +17,42 @@
  "tiles": [
   {
    "id": 0,
+   "image": "../stamps/bhawan.png",
+   "imagewidth": 336,
+   "imageheight": 512,
+   "properties": [
+    {
+     "name": "stamp",
+     "type": "string",
+     "value": "bhawan"
+    },
+    {
+     "name": "collision",
+     "type": "file",
+     "value": "../stamps/bhawan_collision.png"
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "image": "../stamps/bhawan_m.png",
+   "imagewidth": 336,
+   "imageheight": 512,
+   "properties": [
+    {
+     "name": "stamp",
+     "type": "string",
+     "value": "bhawan_m"
+    },
+    {
+     "name": "collision",
+     "type": "file",
+     "value": "../stamps/bhawan_m_collision.png"
+    }
+   ]
+  },
+  {
+   "id": 2,
    "image": "../stamps/main_building.png",
    "imagewidth": 1664,
    "imageheight": 528,
@@ -34,20 +70,20 @@
    ]
   },
   {
-   "id": 1,
-   "image": "../stamps/rotunda_art.png",
-   "imagewidth": 528,
-   "imageheight": 368,
+   "id": 3,
+   "image": "../stamps/rotunda_piece.png",
+   "imagewidth": 720,
+   "imageheight": 400,
    "properties": [
     {
      "name": "stamp",
      "type": "string",
-     "value": "rotunda_art"
+     "value": "rotunda_piece"
     },
     {
      "name": "collision",
      "type": "file",
-     "value": "../stamps/rotunda_art_collision.png"
+     "value": "../stamps/rotunda_piece_collision.png"
     }
    ]
   }

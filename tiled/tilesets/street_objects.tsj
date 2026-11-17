@@ -1,0 +1,217 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "name": "street_objects",
+ "tilewidth": 30,
+ "tileheight": 35,
+ "tilecount": 6,
+ "columns": 0,
+ "margin": 0,
+ "spacing": 0,
+ "grid": {
+  "orientation": "orthogonal",
+  "width": 1,
+  "height": 1
+ },
+ "tiles": [
+  {
+   "id": 0,
+   "image": "../generated/street/street_lamp.png",
+   "imagewidth": 10,
+   "imageheight": 35,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "street_lamp"
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": -3
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 19
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 16
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "image": "../generated/street/dustbin.png",
+   "imagewidth": 11,
+   "imageheight": 14,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "dustbin"
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 6
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 11
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 8
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "image": "../generated/street/bench.png",
+   "imagewidth": 12,
+   "imageheight": 30,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "bench"
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 12
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 30
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "image": "../generated/street/bike_rack.png",
+   "imagewidth": 20,
+   "imageheight": 29,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "bike_rack"
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 2
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 2
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 16
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 25
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "image": "../generated/street/barricade.png",
+   "imagewidth": 15,
+   "imageheight": 14,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "barricade"
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 8
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 15
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 6
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "image": "../generated/street/bench_h.png",
+   "imagewidth": 30,
+   "imageheight": 12,
+   "properties": [
+    {
+     "name": "prop",
+     "type": "string",
+     "value": "bench_h"
+    },
+    {
+     "name": "collision_x",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_y",
+     "type": "int",
+     "value": 0
+    },
+    {
+     "name": "collision_w",
+     "type": "int",
+     "value": 30
+    },
+    {
+     "name": "collision_h",
+     "type": "int",
+     "value": 12
+    }
+   ]
+  }
+ ]
+}

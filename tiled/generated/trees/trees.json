@@ -1,0 +1,519 @@
+{
+ "sheet": "art/new/trees_sheet.png",
+ "background": {
+  "corner_frame": [
+   157,
+   51,
+   123
+  ],
+  "cell": [
+   194,
+   90,
+   158
+  ],
+  "key_tolerance": 60
+ },
+ "cells_x": [
+  [
+   0,
+   249
+  ],
+  [
+   256,
+   509
+  ],
+  [
+   515,
+   681
+  ],
+  [
+   688,
+   1024
+  ]
+ ],
+ "cells_y": [
+  [
+   3,
+   238
+  ],
+  [
+   245,
+   414
+  ],
+  [
+   421,
+   572
+  ]
+ ],
+ "native_px": 2.91,
+ "grid_offset": [
+  1.76,
+  2.69
+ ],
+ "sprites": {
+  "tree_round_big": {
+   "file": "tree_round_big.png",
+   "kind": "tree",
+   "sheet_cell": [
+    0,
+    0
+   ],
+   "native_size": [
+    59,
+    75
+   ],
+   "roadside_copy_of": null,
+   "scale": 0.814,
+   "size_px": [
+    48,
+    64
+   ],
+   "size_tiles": [
+    3,
+    4
+   ],
+   "canopy_px": 48,
+   "colours": 44,
+   "margin_to_cell_edge": 1,
+   "fringe_px_repainted": 176,
+   "split_row": 47,
+   "trunk_from_row": 47,
+   "trunk_base_pct": 27.9,
+   "collision": [
+    16,
+    48,
+    16,
+    16
+   ],
+   "canopy_file": "tree_round_big_canopy.png",
+   "trunk_file": "tree_round_big_trunk.png",
+   "holes_px": 1,
+   "purple_px": 0
+  },
+  "tree_umbrella": {
+   "file": "tree_umbrella.png",
+   "kind": "tree",
+   "sheet_cell": [
+    0,
+    1
+   ],
+   "native_size": [
+    83,
+    69
+   ],
+   "roadside_copy_of": null,
+   "scale": 0.771,
+   "size_px": [
+    80,
+    64
+   ],
+   "size_tiles": [
+    5,
+    4
+   ],
+   "canopy_px": 64,
+   "colours": 45,
+   "margin_to_cell_edge": 1,
+   "fringe_px_repainted": 292,
+   "split_row": 49,
+   "trunk_from_row": 48,
+   "trunk_base_pct": 28.3,
+   "collision": [
+    32,
+    48,
+    16,
+    16
+   ],
+   "canopy_file": "tree_umbrella_canopy.png",
+   "trunk_file": "tree_umbrella_trunk.png",
+   "holes_px": 25,
+   "purple_px": 0
+  },
+  "tree_umbrella_road": {
+   "file": "tree_umbrella_road.png",
+   "kind": "tree",
+   "sheet_cell": [
+    0,
+    1
+   ],
+   "native_size": [
+    83,
+    69
+   ],
+   "roadside_copy_of": "tree_umbrella",
+   "scale": 0.578,
+   "size_px": [
+    80,
+    48
+   ],
+   "size_tiles": [
+    5,
+    3
+   ],
+   "canopy_px": 48,
+   "colours": 42,
+   "margin_to_cell_edge": 1,
+   "fringe_px_repainted": 292,
+   "split_row": 37,
+   "trunk_from_row": 32,
+   "trunk_base_pct": 27.5,
+   "collision": [
+    32,
+    32,
+    16,
+    16
+   ],
+   "canopy_file": "tree_umbrella_road_canopy.png",
+   "trunk_file": "tree_umbrella_road_trunk.png",
+   "holes_px": 18,
+   "purple_px": 0
+  },
+  "tree_column": {
+   "file": "tree_column.png",
+   "kind": "tree",
+   "sheet_cell": [
+    0,
+    2
+   ],
+   "native_size": [
+    36,
+    75
+   ],
+   "roadside_copy_of": null,
+   "scale": 1.0,
+   "size_px": [
+    48,
+    80
+   ],
+   "size_tiles": [
+    3,
+    5
+   ],
+   "canopy_px": 36,
+   "colours": 32,
+   "margin_to_cell_edge": 1,
+   "fringe_px_repainted": 147,
+   "split_row": 59,
+   "trunk_from_row": 59,
+   "trunk_base_pct": 28.0,
+   "collision": [
+    16,
+    64,
+    16,
+    16
+   ],
+   "canopy_file": "tree_column_canopy.png",
+   "trunk_file": "tree_column_trunk.png",
+   "holes_px": 0,
+   "purple_px": 0
+  },
+  "tree_twin": {
+   "file": "tree_twin.png",
+   "kind": "tree",
+   "sheet_cell": [
+    0,
+    3
+   ],
+   "native_size": [
+    101,
+    71
+   ],
+   "roadside_copy_of": null,
+   "scale": 0.792,
+   "size_px": [
+    112,
+    64
+   ],
+   "size_tiles": [
+    7,
+    4
+   ],
+   "canopy_px": 80,
+   "colours": 40,
+   "margin_to_cell_edge": 3,
+   "fringe_px_repainted": 277,
+   "split_row": 49,
+   "trunk_from_row": 48,
+   "trunk_base_pct": 26.8,
+   "collision": [
+    48,
+    48,
+    32,
+    16
+   ],
+   "canopy_file": "tree_twin_canopy.png",
+   "trunk_file": "tree_twin_trunk.png",
+   "holes_px": 0,
+   "purple_px": 0
+  },
+  "tree_twin_road": {
+   "file": "tree_twin_road.png",
+   "kind": "tree",
+   "sheet_cell": [
+    0,
+    3
+   ],
+   "native_size": [
+    101,
+    71
+   ],
+   "roadside_copy_of": "tree_twin",
+   "scale": 0.475,
+   "size_px": [
+    80,
+    48
+   ],
+   "size_tiles": [
+    5,
+    3
+   ],
+   "canopy_px": 48,
+   "colours": 32,
+   "margin_to_cell_edge": 3,
+   "fringe_px_repainted": 277,
+   "split_row": 39,
+   "trunk_from_row": 32,
+   "trunk_base_pct": 26.5,
+   "collision": [
+    16,
+    32,
+    48,
+    16
+   ],
+   "canopy_file": "tree_twin_road_canopy.png",
+   "trunk_file": "tree_twin_road_trunk.png",
+   "holes_px": 0,
+   "purple_px": 0
+  },
+  "tree_ball": {
+   "file": "tree_ball.png",
+   "kind": "tree",
+   "sheet_cell": [
+    1,
+    0
+   ],
+   "native_size": [
+    41,
+    51
+   ],
+   "roadside_copy_of": null,
+   "scale": 0.78,
+   "size_px": [
+    48,
+    48
+   ],
+   "size_tiles": [
+    3,
+    3
+   ],
+   "canopy_px": 32,
+   "colours": 13,
+   "margin_to_cell_edge": 2,
+   "fringe_px_repainted": 111,
+   "split_row": 37,
+   "trunk_from_row": 32,
+   "trunk_base_pct": 27.5,
+   "collision": [
+    16,
+    32,
+    16,
+    16
+   ],
+   "canopy_file": "tree_ball_canopy.png",
+   "trunk_file": "tree_ball_trunk.png",
+   "holes_px": 0,
+   "purple_px": 0
+  },
+  "tree_lime": {
+   "file": "tree_lime.png",
+   "kind": "tree",
+   "sheet_cell": [
+    1,
+    1
+   ],
+   "native_size": [
+    42,
+    52
+   ],
+   "roadside_copy_of": null,
+   "scale": 0.762,
+   "size_px": [
+    48,
+    48
+   ],
+   "size_tiles": [
+    3,
+    3
+   ],
+   "canopy_px": 32,
+   "colours": 17,
+   "margin_to_cell_edge": 2,
+   "fringe_px_repainted": 129,
+   "split_row": 37,
+   "trunk_from_row": 32,
+   "trunk_base_pct": 27.5,
+   "collision": [
+    16,
+    32,
+    16,
+    16
+   ],
+   "canopy_file": "tree_lime_canopy.png",
+   "trunk_file": "tree_lime_trunk.png",
+   "holes_px": 0,
+   "purple_px": 0
+  },
+  "tree_cypress": {
+   "file": "tree_cypress.png",
+   "kind": "tree",
+   "sheet_cell": [
+    1,
+    2
+   ],
+   "native_size": [
+    22,
+    52
+   ],
+   "roadside_copy_of": null,
+   "scale": 1.0,
+   "size_px": [
+    48,
+    64
+   ],
+   "size_tiles": [
+    3,
+    4
+   ],
+   "canopy_px": 21,
+   "colours": 14,
+   "margin_to_cell_edge": 1,
+   "fringe_px_repainted": 90,
+   "split_row": 50,
+   "trunk_from_row": 48,
+   "trunk_base_pct": 26.9,
+   "collision": [
+    16,
+    48,
+    16,
+    16
+   ],
+   "canopy_file": "tree_cypress_canopy.png",
+   "trunk_file": "tree_cypress_trunk.png",
+   "holes_px": 0,
+   "purple_px": 0
+  },
+  "shrub_red": {
+   "file": "shrub_red.png",
+   "kind": "shrub",
+   "sheet_cell": [
+    2,
+    0
+   ],
+   "native_size": [
+    45,
+    39
+   ],
+   "roadside_copy_of": null,
+   "scale": 0.364,
+   "size_px": [
+    16,
+    16
+   ],
+   "size_tiles": [
+    1,
+    1
+   ],
+   "canopy_px": 16,
+   "colours": 26,
+   "margin_to_cell_edge": 6,
+   "fringe_px_repainted": 194,
+   "collision": [
+    0,
+    0,
+    16,
+    16
+   ],
+   "holes_px": 2,
+   "purple_px": 0
+  },
+  "shrub_yellow": {
+   "file": "shrub_yellow.png",
+   "kind": "shrub",
+   "sheet_cell": [
+    2,
+    1
+   ],
+   "native_size": [
+    47,
+    35
+   ],
+   "roadside_copy_of": null,
+   "scale": 0.34,
+   "size_px": [
+    16,
+    16
+   ],
+   "size_tiles": [
+    1,
+    1
+   ],
+   "canopy_px": 16,
+   "colours": 25,
+   "margin_to_cell_edge": 8,
+   "fringe_px_repainted": 110,
+   "collision": [
+    0,
+    0,
+    16,
+    16
+   ],
+   "holes_px": 0,
+   "purple_px": 0
+  },
+  "shrub_green": {
+   "file": "shrub_green.png",
+   "kind": "shrub",
+   "sheet_cell": [
+    2,
+    2
+   ],
+   "native_size": [
+    40,
+    35
+   ],
+   "roadside_copy_of": null,
+   "scale": 0.4,
+   "size_px": [
+    16,
+    16
+   ],
+   "size_tiles": [
+    1,
+    1
+   ],
+   "canopy_px": 16,
+   "colours": 9,
+   "margin_to_cell_edge": 8,
+   "fringe_px_repainted": 95,
+   "collision": [
+    0,
+    0,
+    16,
+    16
+   ],
+   "holes_px": 0,
+   "purple_px": 0
+  }
+ },
+ "held": [
+  "grass_tuft",
+  "palm"
+ ],
+ "watermark_removed_px": 13,
+ "watermark_box": [
+  889,
+  494,
+  891,
+  521
+ ]
+}

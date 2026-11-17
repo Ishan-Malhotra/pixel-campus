@@ -11,7 +11,8 @@
   tiled/tilesets/props.tsj + tiled/props/*.png  flags (wave in game), palm, lamp, bush, tree, shrub, flowers, sign, crop:
                                              all cut from the user's art
   tiled/campus.tiled-project                 object classes: zone, spawn, slot, collision, door, hedge (a polyline that the
-                                             game draws as a smooth hedge)
+                                             game draws as a smooth hedge), paving / flowerbed (polygons), roadline
+                                             (a polyline drawn as a dashed centre line)
 
 Used by tools/v4/blueprint.py (to pre-paint the ground from OpenStreetMap) and tools/v4/tiled_to_game.py.
 """
@@ -323,6 +324,12 @@ def build_project():
              'members': [{'name': 'target', 'type': 'string', 'value': ''}]},
             {'id': 6, 'name': 'hedge', 'type': 'class', 'useAs': ['object'], 'color': '#ff2e7d32', 'drawFill': False,
              'members': [{'name': 'width', 'type': 'int', 'value': 14}]},
+            # polygon: pale stone paving, walkable; cx / cy (optional) = centre the slabs ring around
+            {'id': 7, 'name': 'paving', 'type': 'class', 'useAs': ['object'], 'color': '#ffe2d6be', 'drawFill': True, 'members': []},
+            # polygon: bougainvillea bed with a stone kerb, solid
+            {'id': 8, 'name': 'flowerbed', 'type': 'class', 'useAs': ['object'], 'color': '#ffc8325a', 'drawFill': True, 'members': []},
+            # polyline: dashed white road centre line
+            {'id': 9, 'name': 'roadline', 'type': 'class', 'useAs': ['object'], 'color': '#ffffffff', 'drawFill': False, 'members': []},
         ],
     }, open('tiled/campus.tiled-project', 'w'), indent=1)
 
