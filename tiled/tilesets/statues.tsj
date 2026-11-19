@@ -1,0 +1,216 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "name": "statues",
+ "tilewidth": 176,
+ "tileheight": 208,
+ "tilecount": 4,
+ "columns": 0,
+ "margin": 0,
+ "spacing": 0,
+ "objectalignment": "bottomleft",
+ "grid": {
+  "orientation": "orthogonal",
+  "width": 1,
+  "height": 1
+ },
+ "tiles": [
+  {
+   "id": 0,
+   "type": "statue_base",
+   "image": "../generated/statues/gandhi_island_base.png",
+   "imagewidth": 176,
+   "imageheight": 208,
+   "properties": [
+    {
+     "name": "name",
+     "type": "string",
+     "value": "Gandhi Statue"
+    },
+    {
+     "name": "statue",
+     "type": "string",
+     "value": "gandhi"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "base"
+    },
+    {
+     "name": "layer",
+     "type": "string",
+     "value": "buildings"
+    },
+    {
+     "name": "footprint_w",
+     "type": "int",
+     "value": 11
+    },
+    {
+     "name": "footprint_h",
+     "type": "int",
+     "value": 11
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 77
+    },
+    {
+     "name": "collision",
+     "type": "string",
+     "value": "../generated/statues/gandhi_island_collision.png"
+    },
+    {
+     "name": "collision_rects",
+     "type": "string",
+     "value": "[[76, 40, 24, 4], [60, 44, 56, 4], [52, 48, 72, 4], [44, 52, 88, 4], [40, 56, 96, 4], [36, 60, 104, 4], [32, 64, 112, 4], [28, 68, 120, 4], [24, 72, 128, 4], [20, 76, 136, 4], [20, 80, 136, 4], [16, 84, 144, 4], [16, 88, 144, 4], [12, 92, 152, 4], [12, 96, 152, 4], [12, 100, 152, 4], [12, 104, 152, 4], [8, 108, 160, 4], [8, 112, 160, 4], [8, 116, 160, 4], [8, 120, 160, 4], [8, 124, 160, 4], [8, 128, 160, 4], [12, 132, 152, 4], [12, 136, 152, 4], [12, 140, 152, 4], [12, 144, 152, 4], [16, 148, 144, 4], [16, 152, 144, 4], [20, 156, 136, 4], [20, 160, 136, 4], [24, 164, 128, 4], [28, 168, 120, 4], [32, 172, 112, 4], [36, 176, 104, 4], [40, 180, 96, 4], [44, 184, 88, 4], [52, 188, 72, 4], [60, 192, 56, 4], [76, 196, 24, 4]]"
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "type": "statue_top",
+   "image": "../generated/statues/gandhi_island_top.png",
+   "imagewidth": 176,
+   "imageheight": 80,
+   "properties": [
+    {
+     "name": "name",
+     "type": "string",
+     "value": "Gandhi Statue"
+    },
+    {
+     "name": "statue",
+     "type": "string",
+     "value": "gandhi"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "top"
+    },
+    {
+     "name": "layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "footprint_w",
+     "type": "int",
+     "value": 11
+    },
+    {
+     "name": "footprint_h",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 77
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "type": "statue_base",
+   "image": "../generated/statues/patel_island_base.png",
+   "imagewidth": 176,
+   "imageheight": 208,
+   "properties": [
+    {
+     "name": "name",
+     "type": "string",
+     "value": "Patel Statue"
+    },
+    {
+     "name": "statue",
+     "type": "string",
+     "value": "patel"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "base"
+    },
+    {
+     "name": "layer",
+     "type": "string",
+     "value": "buildings"
+    },
+    {
+     "name": "footprint_w",
+     "type": "int",
+     "value": 11
+    },
+    {
+     "name": "footprint_h",
+     "type": "int",
+     "value": 11
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 77
+    },
+    {
+     "name": "collision",
+     "type": "string",
+     "value": "../generated/statues/patel_island_collision.png"
+    },
+    {
+     "name": "collision_rects",
+     "type": "string",
+     "value": "[[76, 40, 24, 4], [60, 44, 56, 4], [52, 48, 72, 4], [44, 52, 88, 4], [40, 56, 96, 4], [36, 60, 104, 4], [32, 64, 112, 4], [28, 68, 120, 4], [24, 72, 128, 4], [20, 76, 136, 4], [20, 80, 136, 4], [16, 84, 144, 4], [16, 88, 144, 4], [12, 92, 152, 4], [12, 96, 152, 4], [12, 100, 152, 4], [12, 104, 152, 4], [8, 108, 160, 4], [8, 112, 160, 4], [8, 116, 160, 4], [8, 120, 160, 4], [8, 124, 160, 4], [8, 128, 160, 4], [12, 132, 152, 4], [12, 136, 152, 4], [12, 140, 152, 4], [12, 144, 152, 4], [16, 148, 144, 4], [16, 152, 144, 4], [20, 156, 136, 4], [20, 160, 136, 4], [24, 164, 128, 4], [28, 168, 120, 4], [32, 172, 112, 4], [36, 176, 104, 4], [40, 180, 96, 4], [44, 184, 88, 4], [52, 188, 72, 4], [60, 192, 56, 4], [76, 196, 24, 4]]"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "type": "statue_top",
+   "image": "../generated/statues/patel_island_top.png",
+   "imagewidth": 176,
+   "imageheight": 80,
+   "properties": [
+    {
+     "name": "name",
+     "type": "string",
+     "value": "Patel Statue"
+    },
+    {
+     "name": "statue",
+     "type": "string",
+     "value": "patel"
+    },
+    {
+     "name": "part",
+     "type": "string",
+     "value": "top"
+    },
+    {
+     "name": "layer",
+     "type": "string",
+     "value": "above"
+    },
+    {
+     "name": "footprint_w",
+     "type": "int",
+     "value": 11
+    },
+    {
+     "name": "footprint_h",
+     "type": "int",
+     "value": 5
+    },
+    {
+     "name": "split_row",
+     "type": "int",
+     "value": 77
+    }
+   ]
+  }
+ ]
+}

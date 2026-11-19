@@ -1,0 +1,115 @@
+{
+ "bronze_px": 1565,
+ "bronze_ramp": [
+  [
+   156,
+   149,
+   119
+  ],
+  [
+   133,
+   124,
+   97
+  ],
+  [
+   91,
+   121,
+   98
+  ],
+  [
+   69,
+   90,
+   61
+  ],
+  [
+   26,
+   42,
+   40
+  ],
+  [
+   20,
+   15,
+   16
+  ]
+ ],
+ "stone_colours": 14,
+ "outline_px_set": 603,
+ "white_pockets_px": 55,
+ "face_colours": [
+  [
+   216,
+   212,
+   210
+  ],
+  [
+   226,
+   222,
+   209
+  ],
+  [
+   234,
+   232,
+   215
+  ]
+ ],
+ "grain_px_fixed": 258,
+ "art": "art/new/gandhi_statue_topdown.png",
+ "art_px": [
+  1024,
+  1024
+ ],
+ "native_px": 5.12,
+ "grid_offset": [
+  4.1,
+  4.15
+ ],
+ "native_size": [
+  120,
+  163
+ ],
+ "background_corner": [
+  251,
+  249,
+  252
+ ],
+ "key_tolerance": 30,
+ "specks_dropped_px": 0,
+ "pale_edge_px": 0,
+ "platform_art": [
+  0,
+  77,
+  119,
+  162
+ ],
+ "statue_cols_art": [
+  38,
+  80
+ ],
+ "canvas_px": [
+  176,
+  208
+ ],
+ "canvas_tiles": [
+  11,
+  13
+ ],
+ "circle_centre_px": [
+  88.0,
+  120.0
+ ],
+ "island_diameter_px": 160,
+ "art_at_px": [
+  28,
+  0
+ ],
+ "split_row": 77,
+ "top_png_h": 80,
+ "collision_rects": 40,
+ "colours_used": 18,
+ "off_palette_colours": 0,
+ "alpha_values": [
+  0,
+  255
+ ],
+ "platform_corner_dist_px": 73.8
+}

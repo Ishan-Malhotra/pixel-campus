@@ -1,6 +1,6 @@
 # Handoff: BITS Pilani Campus Explorer
 
-_Last updated: 2026-11-17, late night. Rewritten from scratch as a description of the **current** state; the history
+_Last updated: 2026-11-20 (Gandhi statue roundabout). Rewritten from scratch as a description of the **current** state; the history
 of how it got here is in `WORKLOG.md`, which is append-only._
 
 **Read in this order:** this file → the last few entries of `WORKLOG.md` → `art/pieces/README.md` (the user's art
@@ -60,6 +60,7 @@ is Phaser 3 + TypeScript (`game/`); maps are built by Python scripts (`tools/v4/
 python3 tools/v4/blueprint.py phase1 --force     # OSM -> Tiled map, stamps, front garden; ~60 s
 python3 tools/v4/exterior.py phase1 --approved   # legacy street strips; lays nothing inside beautify's area now
 python3 tools/v4/beautify.py phase1 hostels      # roads, footpaths, trees, details round the hostels; ~10 s
+python3 tools/v4/roundabout.py                   # the statue roundabouts (Gandhi, Patel) over beautify's crossings; ~3 s (always after beautify)
 python3 tools/v4/tiled_to_game.py tiled/maps/phase1.tmj   # Tiled -> game/public/*; ~60 s
 cd game && npx tsc --noEmit -p .                 # type-check (only needed if game/src changed)
 ```
@@ -67,7 +68,7 @@ cd game && npx tsc --noEmit -p .                 # type-check (only needed if ga
   the whole chain.
 - **Tiled:** the user said "avoid wasting effort on tiled". `blueprint.py --force` may replace `phase1.tmj` freely,
   but **back it up first** (`cp -p tiled/maps/phase1.tmj tiled/maps/phase1.backup-<date>-<what>.tmj`). Backups so far:
-  `phase1.backup-{1747,2130,2233,1116-2250,1117-hostels,1117-exterior,1117-beautify,1117-rollout}.tmj`. The user has
+  `phase1.backup-{1747,2130,2233,1116-2250,1117-hostels,1117-exterior,1117-beautify,1117-rollout,1120-roundabout}.tmj`. The user has
   never edited the map in Tiled; if they ever do, stop and ask before `--force`.
 - **Plain `python3`, never `python3 -I`:** Pillow and numpy are in the user's site-packages.
 - Every step is **deterministic:** reruns give the same map content; only Tiled object ids grow.
@@ -80,6 +81,8 @@ cd game && npx tsc --noEmit -p .                 # type-check (only needed if ga
 | `tiled_to_game.py` | Tiled → game. Smooths terrain outlines (`SMOOTH`); decor tiles drawn over the terrain; `paving` / `flowerbed` / `roadline` / `hedge` shapes; **`shadows`** layer (ellipses, `opacity`, darkened then snapped to the palette); tiles taller than the grid anchored bottom-left (canopies on `above`); `collision_x/y/w/h` tile properties as exact collision boxes; upright props depth-sorted against the player | `game/public/maps/main.json`, `main.meta.json`, `minimap.png`, `tiles/campus.png`, `props/*`, `data/debug/game_render.png`, `game_collision.png` |
 | `slice_trees.py` | the user's tree sheet `art/new/trees_sheet.png` → sprites. Colour-keyed (two background purples), watermark removed, sampled on the art's own pixel grid (2.91 px), palette-snapped, rims cleaned. Trees: whole / canopy / trunk / `canopy_cell` (for `above`); `_road` copies of the umbrella and twin with 3-tile crowns. **Palm and grass tuft are held** (not cut) until the user decides | `tiled/generated/trees/*`, `tiled/tilesets/trees.tsj` (39 images, first 24 ids fixed), `data/debug/trees_on_{grass,roof}.png` |
 | `beautify.py` | street layout for an area (`AREAS`, currently `hostels`). See §6 | `tiled/generated/street/*`, `tiled/tilesets/street.tsj` + `street_objects.tsj`, the map's `decor` / `props` / `above` / `shadows` layers, `data/phase1_beautify.json` |
+| `statue_island.py` | the user's statue art (`STATUES`: `art/new/{gandhi,patel}_statue_topdown.png`) → roundabout island stamps (2 tiles each in `statues.tsj`): 10-tile lawn circle with a white kerb, statue at 1:1 (5.12 px art grid), bronze on one palette ramp, statue top split for `above`, collision | `tiled/generated/statues/*`, `tiled/tilesets/statues.tsj`, `data/debug/statue_island_*_4x.png` |
+| `roundabout.py` | the statue roundabouts (`ROUNDABOUTS`): Gandhi at tile (64.5, 201.5), Patel at (108.5, 201.5); each: ring 4 tiles, curved striped kerbs, ring footpath, curved hedges, zebras + ramps on all four arms, no lane circle, island stamp, collision rects, "Gandhi Statue" zone; generated per pixel and cut into tiles (cells unchanged keep their tiles); removes beautify's props within 16.5 tiles | the map (`decor`, `buildings`, `above`, `props`, `shadows`, `collision`, `events`; objects `rb:*`), `tiled/generated/roundabout/*`, `tiled/tilesets/roundabout.tsj`, `data/phase1_roundabout.json` |
 | `exterior.py` | the first, superseded street strips (2-tile footpath per hostel). Still in the pipeline but it skips every box listed in `data/phase1_beautify.json`, so it lays nothing for the hostels | `tiled/generated/exterior_tiles.*`, `tree_street_{a,b}.png`, `tiled/tilesets/exterior*.tsj`, `data/phase1_exterior.json` |
 | `sat_register.py` | lines up every screenshot in `art/satellite/` with the map (roofs vs OSM buildings, or hand control points in `registration.json`) | `art/satellite/registration.json`, `data/debug/sat_{onmap,overlay,side}.png`, `tiled/underlay/phase1_satellite.png` |
 
@@ -169,9 +172,18 @@ files are left alone because they're the user's.
    - whether to keep the 7–9 MB aerial photos in `art/photos/` in the public repo;
    - whether to fix the roundabout bug (§9);
    - committing and pushing.
+   - **Patel statue roundabout** (Krishna Marg × Gandhi Marg): built 2026-11-20, waiting for approval
+     (`data/debug/roundabout_patel.png`).
+   - **Gandhi statue roundabout:** built and approved 2026-11-20 (no lane circle: `LANE_CIRCLE = False`;
+     `data/debug/roundabout.png`). Held for later: the mural wall (SW corner in map terms) and trees / lamps round it.
 
 ## 9. Known issues
-- **Roundabouts are never drawn** (existing blueprint bug). In the highway branch, `if t.get('junction') ==
+- **Roundabout at the Gandhi statue:** done by `roundabout.py` (not by blueprint). Budh Bhawan's SE corner covers the
+  outer ~1.2 tiles of its NW footpath; one stray dark kerb pixel at each straight/curve join. Rerunning `beautify.py`
+  without `roundabout.py` after it brings back the old crossing.
+- **Patel roundabout:** Gandhi Bhawan's SW and Shankar Bhawan's NW corners cover the outer edge of two footpath
+  corners (≥ 2.3 tiles stay clear by the kerb).
+- **Roundabouts are never drawn by blueprint** (existing blueprint bug); both statue roundabouts come from `roundabout.py`. In the highway branch, `if t.get('junction') ==
   'roundabout': continue` also skips the roundabout block below it. Fixing it changes junction shapes, so it's left
   for the user to decide.
 - **Narrow footpaths:** 453 footpath lines are narrower than 3 tiles. These are places where a building stands closer

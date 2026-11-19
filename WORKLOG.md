@@ -676,3 +676,191 @@ palm / grass tuft still held; nothing committed.
 tiles/props, Rotunda and bhawan pieces, regenerated map/game assets, photos and docs) and pushed to
 `origin/garden-3m-scale`. `main` is unchanged.
 **Left:** merge into `main` / PR is up to the user.
+
+## 2026-11-20 03:00 · Launched the game on localhost
+**Asked:** "launch this on localhost".
+**Did:** Started the Vite dev server on port 5179 (`cd game && npx vite --port 5179 --strictPort --host 127.0.0.1`)
+and opened http://127.0.0.1:5179/ in the browser. The earlier server had stopped, so this is a new one.
+**Left:** the server runs in the background until it is stopped.
+
+## 2026-11-20 · Avatar request: Pokémon sprites declined, code-drawn editor abandoned
+**Asked:** "add sprites from all editions of pokemon games (Brendan, May etc) and add an option to edit your avatar as
+settings in the map". Then the user sent ripped Brendan and May overworld sheets and said "do not build it yourself.
+use these".
+**Did:**
+- Declined to add the official Pokémon trainer sprites (Brendan, May or any others). They're Nintendo/Game Freak's
+  copyrighted characters and art, and this repo is public.
+- Began an original avatar system: `tools/draw_player.py` rewritten to draw 48 styles (hair × headwear × bottoms) in
+  key colours for recolouring at runtime. The user stopped it before it ran ("do not build it yourself"), so it was
+  reverted with `git checkout -- tools/draw_player.py`. No sprites were written; `game/public/sprites/player.png` is
+  unchanged.
+**Left:** the avatar settings panel has not been built. Offered instead: the user makes their own original character
+sheets (same free image tool as the buildings), and Claude slices them and adds an avatar picker to the game.
+
+## 2026-11-20 · Gandhi statue roundabout, Stage 1 (diagnose + plan); stopped for approval
+**Asked:** rebuild the Ram Marg / Gandhi Marg crossroads (Gandhi statue) as a real roundabout in 3 approved stages
+(diagnose → island stamp → build). Stage 1 only; nothing in the map was changed.
+**Found:**
+- Junction centre: OSM statue `n3404339402` maps to tile (63.4, 201.4); OSM roundabout `w375917303` (centre-line ring
+  ≈ 7.5 tiles across) is **not drawn**, because of the blueprint bug in HANDOFF §9 (`junction=roundabout` skipped).
+  `data/phase1_roads.json` has `roundabouts: []`, so `beautify.py` treats it as a plain cross.
+- Arms (from the `decor` layer): N = Ram Marg `w31175178`, asphalt cols 63–65 (3), dash col 64, toward NAB;
+  E = Gandhi Marg `w285871639`, rows 200–202 (3), dash row 201; W = service `w312156567`, rows 200–201 (2), no
+  centre line, toward SAC; S = service `w312156569`, cols 63–64 (2), no centre line, runs off the map edge (row 229).
+  W and S are each ½ tile off the N/E axis.
+- Defects in cells (62–64, 200–202): a `paver_2` tile at (63,201) in the middle of the carriageway; kerb pieces
+  (`kerb_l` col 62 rows 200–201, `kerb_b`/`kerb_corner_se` row 202, `kerb_t`/`kerb_corner_ne` row 200, `kerb_inner_nw`)
+  running across the junction, which cut the W and S arms off from the N/E asphalt; the N and E dashes stop short.
+- Scale: the map is **3 m/tile** (not 5), so a real ~20 m island ≈ 7 tiles. The user's statue art (pasted image 5)
+  has a ~5 px native grid: at 1:1 the platform ≈ 123 px ≈ 7.7 tiles and the statue ≈ 37 px tall (player frame 32 px),
+  so a 10-tile island fits the art at 1:1.
+- Constraint: Budh Bhawan's visible SE corner (≈ tile 55.6, 193.8) is 11.8 tiles from the centre. Plan A (island 10,
+  ring 4 → asphalt r 9, kerb r 9–10, footpath r 10–13) overlaps it by ~1.2 tiles; plan B (ring 3, matching the arm
+  asphalt → footpath r 9–12) by ~0.2.
+- Displaced within r 13 (all `beautify.py` output): 14 street trees, 15 shrubs, 3 lamps, 1 bin, 2 barricades, the
+  four corner hedges and ~180 shadow ellipses.
+- `art/new/gandhi_island.png` does not exist yet (only `trees_sheet.png` in `art/new/`). Pasted image 5 has a white
+  background and no lawn circle, unlike the Stage 2 description (magenta, with circle).
+- The photos face west (SAC ahead, NAB right, "Ganga" left): in map terms SAC is the **W** arm, NAB the **N** arm, and
+  the mural wall sits in the **SW** quadrant, not NW.
+**Proposed:** centre (64.5, 201.5) (aligned with the N and E arms); W/S arms stay where they are (their ½-tile offset
+vanishes where they flare into the ring). Build as a new step `tools/v4/roundabout.py` run after `beautify.py`, so a
+pipeline rerun doesn't wipe it (hand edits to decor/props would be lost on the next beautify/blueprint run).
+**Files:** new `data/debug/roundabout_before_4x.png`, `data/debug/roundabout_plan_4x.png` (sketch: red = asphalt edge
+r 9, black = kerb r 10, blue = footpath edge r 13, orange dashed = plan B, yellow = zebras, magenta = Budh corner).
+**Commands:** python one-liners reading `tiled/maps/phase1.tmj`, `data/campus_full.features.json`,
+`data/phase1_frame.json`, cropping `data/debug/game_render.png` (rendered 2026-11-17 17:42, same as the map).
+**Left:** waiting for approval of the size (plan A vs B) and for `art/new/gandhi_island.png`.
+
+## 2026-11-20 · Gandhi statue roundabout, Stage 2 (island stamp); stopped for approval
+**Asked:** "go plan a" (island 10 tiles, ring 4) and the statue art (a front/top view of the statue on its platform,
+white background, no lawn): "you'll have to add the green circle underneath it yourself".
+**Did:**
+- Saved the art as `art/new/gandhi_statue_topdown.png` (new file; nothing overwritten). Camera: straight top-down /
+  front view with horizontal and vertical edges, not isometric.
+- New `tools/v4/statue_island.py` (deterministic, ~2 s): white background keyed by flood fill (tol 30), largest piece
+  kept (0 specks; no watermark/sparkle in this image), native grid measured 5.12 px (1024/200, offset 4.1/4.15) → art
+  120 × 163 px at 1:1; island drawn round it: map grass tiles, 1 px dark outline, 3 px white kerb, 1 px grey inner
+  edge, 16 px stone path to the north (hidden behind the statue) and south; platform centred on the circle (its
+  corners 73.8 px from the centre, inside the 75 px kerb).
+- Canvas 11 × 13 tiles (176 × 208): circle Ø160 centred on a tile centre, 2 tiles above it for the statue. Split
+  row 77 (the platform's top edge): statue + upper pedestal → `gandhi_island_top.png` (176 × 80, for `above`), the
+  whole island → `gandhi_island_base.png`. Collision: 40 rectangles on the game's 4 px cells inside the kerb circle,
+  also as `gandhi_island_collision.png` (the mask format `tiled_to_game.py` reads for `buildings` objects).
+- `tiled/tilesets/statues.tsj` (collection of images, 2 tiles, bottom-left aligned) with name, footprint_w/h,
+  split_row, collision (+ collision_rects). **JSON `.tsj`, not `.tsx` as asked:** `tiled_to_game.py` loads every
+  tileset with `json.load`, and all the others are `.tsj`.
+- Checks: 0 off-palette colours, alpha only 0/255, no pale fringe; renders `data/debug/statue_island_{asphalt,grass,
+  collision}_4x.png` (with a stand-in player north of the island: it is hidden behind the statue as intended).
+**Failed attempts (all fixed, in order):**
+1. plain palette snap → camouflage blotches on the bronze (no dark olives in the locked palette: shades jumped
+   between a grey, a green and a brown) → bronze mapped by brightness onto one ramp `BRONZE_RAMP` (khaki ×2, sage,
+   olive-green, near-black teal, near-black).
+2. the bronze test also caught beige shadow lines and the brown plaque → limited to the art above the platform top.
+3. sampler "most common colour of the middle 3 × 3" broke outlines and the plaque (dotted edges) → tried closing line
+   gaps and despeckling, which thickened lines and erased the plaque → reverted; replaced by a dark-priority sampler
+   (centre pixel, or the darkest if ≥ 30 % of the cell is line). Compared the 3 samplers side by side first.
+4. enclosed white background between the legs/staff showed as white blocks → near-white art pixels made clear (55 px).
+5. platform grain → stone flattened to 14 colours, the light faces to their 3 main colours, then lone pixels
+   (≤ 1 same-colour neighbour) recoloured (258 px). 8 colours was flat but lost the plaque, so not used.
+**Placement for Stage 3:** base object top-left at tile (59, 194) → circle centre (64.5, 201.5); top image in the
+`above` layer at cell (59, 198) (bottom-left anchor).
+**Files:** `art/new/gandhi_statue_topdown.png` (new), `tools/v4/statue_island.py` (new), `tiled/generated/statues/*`,
+`tiled/tilesets/statues.tsj`, `data/debug/statue_island_*_4x.png`. Map not touched.
+**Command:** `python3 tools/v4/statue_island.py`.
+**Left:** Stage 3 (build the roundabout) after the user approves the stamp.
+
+## 2026-11-20 · Gandhi statue roundabout, Stage 3 (built); stopped for approval
+**Asked:** "go for it, ensure the island grass green colour matches the grass colour from the rest of the map, and the
+roads have enough space for a full proper crossing".
+**Did:**
+- Backup: `tiled/maps/phase1.backup-1120-roundabout.tmj` (the map as `beautify.py` left it, 2026-11-17).
+- New `tools/v4/roundabout.py` (deterministic, ~2 s), a new pipeline step **after `beautify.py`, before
+  `tiled_to_game.py`**. Centre tile (64.5, 201.5); island r 80 px; ring asphalt to r 144 (4 tiles); fillets 40 px
+  (smooth minimum of distances). Everything in cells 47–82 × 184–219 is generated pixel by pixel from the distance to
+  the asphalt, with the same bands as `beautify.py` (kerb 0–4 px in 8 px stripes, shade line, pavers to 64, hedge
+  66–78 with `exterior.hedge()`'s colouring), then cut into 16 px tiles: cells with the same layout as before keep their
+  tile (742), the others (554) take the generated pixels: existing street tile if identical, else one of 250 new tiles
+  in `tiled/generated/roundabout/roundabout_tiles.png` + `tiled/tilesets/roundabout.tsj` (firstgid 237; `statues.tsj` is
+  235). Kerb ring = generated tiles (16 px kerb tiles can't curve), as the request allowed.
+- Crossings: zebra 2 tiles long over the full asphalt width + ramp tiles on both kerbs, on the first straight stretch
+  past each fillet: N rows 188–189, E cols 76–77, W cols 51–52, S rows 213–214. Ring footpath (3 tiles + kerb) all round;
+  dashed centre lines on Ram Marg and Gandhi Marg up to the ring (the service roads have none anywhere, so none added);
+  a dashed lane circle at r 112 px.
+- Island stamp on `buildings` (object `rb:gandhi_island`, gid 235, x 944, y 3312), its top on `above` at cell (59, 198).
+  Collision layer: 40 `rb:island` rectangles + 152 `rb:hedge` rectangles (4 px cells of the new curved hedge; the
+  hedges are solid everywhere else too). Zone event "Gandhi Statue" (888, 3080, 288 × 288) = the ring.
+- Removed `beautify.py`'s objects within 16.5 tiles: 23 trees (trunks + canopies), 18 shrubs, 5 lamps, 3 bins,
+  3 barricades, 212 shadows. Listed in `data/phase1_roundabout.json`.
+- Grass: island lawn = the street grass tiles = the map lawn: (110, 213, 149) base, (89, 184, 121) and (113, 214, 153);
+  checked by pixel counts on the render.
+**Failed attempts (fixed):**
+1. The "same layout as before → keep the tile" test modelled E and W as one road running through, so two stubs of the
+   W arm's straight hedge (cells 53–55 × 206, 69 × 210–212) stayed on the new footpath → model = four arms each ending at
+   the centre; rerun from the backup.
+2. Kerb stripes on the curve by angle × radius left a 21–24 px block at each straight/curve join; per-quadrant phase
+   fit by angle still did, because next to the arms the kerb runs almost radially → the kerb line is now traced (rays
+   + bisection) and stripes follow its true length, stretched 0.99–1.03 per quadrant so they run on into the next
+   arm's straight kerb.
+**Checks:** render crops at 2x and 4x (`data/debug/game_render.png`); collision crop (`game_collision.png`); flood fill
+over `main.meta.json` collision with a 12 × 8 px feet box from the N arm: ring all round (450/450 points), every arm's
+far end, every zebra, all four footpath corners and the spawn porch reachable; island 0/249 standable. Off-palette
+colours 0 in all new images. The game data has the "Gandhi Statue" zone.
+**Outside the junction:** 117 cells changed beyond 13 tiles from the centre (cols 49–82, rows 184–216): the fillets,
+footpath corners and curved hedges where they rejoin the straight streets; no building, door, gate path or event touched.
+**Doesn't fit:** Budh Bhawan's SE corner covers the outer ~1.2 tiles of the NW ring footpath (cols 53.9–55.5,
+rows 192–194; ≥ 44 px of footpath stays clear by the kerb) and that quadrant's hedge passes under it (hidden).
+**Left / not done:** one stray dark kerb pixel where a straight kerb hands over to a curve (cosmetic); the mural wall
+(held); trees/lamps round the roundabout (to come from a beautify pass that knows about it); a rerun of `beautify.py`
+must be followed by `roundabout.py`; blueprint's roundabout bug (HANDOFF §9) still unfixed (the Patel roundabout by
+Gandhi Bhawan is untouched). No headless browser playtest this time (collision flood fill only).
+**Files:** `tools/v4/roundabout.py` (new), `tiled/maps/phase1.tmj`, `tiled/maps/phase1.backup-1120-roundabout.tmj`,
+`tiled/generated/roundabout/*`, `tiled/tilesets/roundabout.tsj`, `data/phase1_roundabout.json`, game outputs from
+`tiled_to_game.py` (`game/public/*`, `data/debug/game_*.png`), `data/debug/roundabout.png` (before | after, 4x).
+**Commands:** `python3 tools/v4/roundabout.py`; `python3 tools/v4/tiled_to_game.py tiled/maps/phase1.tmj`.
+
+## 2026-11-20 · Roundabout: dashed lane circle removed; rest approved
+**Asked:** "remove the dashed lane circle, rest looks good".
+**Did:** `tools/v4/roundabout.py`: new switch `LANE_CIRCLE = False` (the code stays, off). Reran from the backup:
+`cp -p tiled/maps/phase1.backup-1120-roundabout.tmj tiled/maps/phase1.tmj && python3 tools/v4/roundabout.py &&
+python3 tools/v4/tiled_to_game.py tiled/maps/phase1.tmj`. 554 cells changed as before; new tiles 250 → 202 (the
+circle's dashes made many ring tiles unique). Rebuilt `data/debug/roundabout.png` (before | after).
+**Checked:** 4x crop of the ring: plain asphalt, centre lines on Ram Marg / Gandhi Marg still end at the ring.
+**Left:** Stage 3 approved by the user. Still held: the mural wall, trees / lamps round the roundabout. Nothing committed.
+
+## 2026-11-20 · Patel statue roundabout (Krishna Marg × Gandhi Marg), built like the Gandhi one
+**Asked:** the Patel statue art (same layout as Gandhi's: front/top view on the same platform, white background),
+"similarly place the patel statue".
+**Found:** OSM statue `n3404339403` → tile (110.0, 201.6); OSM roundabout `w285871636` not drawn (blueprint bug). The
+junction in `decor` is a clean cross of four 3-tile arms: Krishna Marg cols 107–109 (dash col 108), Gandhi Marg rows
+200–202 (dash row 201) → centre (108.5, 201.5). Nearest building art: Gandhi Bhawan SW corner 11.8 tiles, Shankar
+Bhawan NW corner 11.3 (Budh was 11.8 at the Gandhi roundabout) → same plan A.
+**Did:**
+- Art saved as `art/new/patel_statue_topdown.png` (new file).
+- `tools/v4/statue_island.py` → `STATUES` list (gandhi, patel); one `build()` per statue; `statues.tsj` has 2 tiles per
+  statue (Gandhi ids 0/1 unchanged, Patel 2/3) with a `statue` property. Gandhi stamp byte-identical after the change.
+  Patel: grid 5.12 px, 120 × 163 art px, same platform, split row 77, 0 off-palette. Debug renders renamed
+  `data/debug/statue_island_<key>_{asphalt,grass,collision}_4x.png`.
+- `tools/v4/roundabout.py` → `ROUNDABOUTS` list (centre, zone, arms, statue key, banner name); `build_cells()` /
+  `place()` per roundabout; new tiles shared in one atlas (262); both tilesets dropped and re-added with fresh first
+  gids every run (statues 235, roundabout 239), with a check that no decor cell is left on an old gid; old statue tops
+  cleared from `above`; zones marked `source = rb:roundabout.py`.
+- Patel: 559 cells changed, 737 kept; zebras + ramps N rows 188–189, E cols 120–121, W cols 95–96, S rows 213–214; dashed
+  centre lines on all four arms (all Krishna / Gandhi Marg) up to the ring; island at (1648, 3312), top at cell
+  (103, 198); 40 island + 144 hedge collision rects; zone "Patel Statue" (1592, 3080, 288 × 288). Removed 52 props
+  (trees, shrubs, lamps, bins, barricades), 24 canopies, 215 shadows within 16.5 tiles.
+**Checked:** Gandhi area of the render pixel-identical to the approved one (0 px differ). Patel at 2x and 4x (kerb
+joins continuous, stretch 0.98–1.02). Flood fill from the spawn porch: both rings 270/270, all 8 arm ends, all 8
+footpath corners reachable; both islands 0 standable. Both zones in `main.meta.json`.
+**Doesn't fit:** Gandhi Bhawan's SW corner covers cols 117.4–119.1 × rows 192.1–193.9 of the NE footpath (≥ 44 px clear
+by the kerb); Shankar Bhawan's NW corner covers cols 117.4–119.8 × rows 208.2–210.9 of the SE footpath (≥ 36.7 px ≈ 2.3
+tiles clear). The hedges of those quadrants run hidden under the corners. 126 cells changed beyond 13 tiles from the
+Patel centre (fillets, footpath corners, curved hedges rejoining the streets).
+**Files:** `art/new/patel_statue_topdown.png`, `tools/v4/statue_island.py`, `tools/v4/roundabout.py`,
+`tiled/generated/statues/patel_island_*`, `tiled/tilesets/statues.tsj`, `tiled/generated/roundabout/*`,
+`tiled/tilesets/roundabout.tsj`, `tiled/maps/phase1.tmj`, `data/phase1_roundabout.json` (now one entry per
+roundabout), game outputs, `data/debug/roundabout_patel.png` (before | after; the "before" rendered from the backup
+map, then the current map converted again and checked byte-identical).
+**Commands:** `python3 tools/v4/statue_island.py`; `cp -p tiled/maps/phase1.backup-1120-roundabout.tmj tiled/maps/phase1.tmj
+&& python3 tools/v4/roundabout.py && python3 tools/v4/tiled_to_game.py tiled/maps/phase1.tmj`.
+**Left:** approval; trees / lamps round both roundabouts; nothing committed.
